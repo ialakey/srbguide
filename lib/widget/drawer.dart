@@ -69,7 +69,7 @@ class DrawerScreen extends StatelessWidget {
                 leading: Icon(Icons.account_balance),
                 title: Text('Обменники'),
                 onTap: () {
-                  onNavItemTapped(4);
+                  onNavItemTapped(8);
                   Navigator.pop(context);
                 },
               ),

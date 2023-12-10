@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'screens/author.dart';
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
+import 'screens/exchange.dart';
 import 'screens/russian_places.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/smokers_lounge.dart';
@@ -70,6 +71,8 @@ class _MainScreenState extends State<MainScreen> {
         return AuthorScreen();
       case 7:
         return SmokersLoungeScreen();
+      case 8:
+        return ExchangePlacesScreen();
       default:
         return InformationForm();
     }

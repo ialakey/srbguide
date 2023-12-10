@@ -25,8 +25,8 @@ class _InformationFormState extends State<InformationForm> {
   DateTime? _arrivalDate;
   DateTime? _registrationDate;
 
-  String _gender = 'М';
-  List<String> _genderOptions = ['М', 'Ж'];
+  String _gender = 'M';
+  List<String> _genderOptions = ['M', 'Ž'];
 
   @override
   Widget build(BuildContext context) {
@@ -127,7 +127,7 @@ class _InformationFormState extends State<InformationForm> {
               ),
               TextFormField(
                 controller: _addressController,
-                decoration: InputDecoration(labelText: 'Адрес прописки'),
+                decoration: InputDecoration(labelText: 'Адрес регистрации'),
               ),
               TextFormField(
                 controller: _ownerInfoController,
