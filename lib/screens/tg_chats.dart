@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class TgChatScreen extends StatefulWidget {
@@ -7,41 +10,43 @@ class TgChatScreen extends StatefulWidget {
 }
 
 class _TgChatScreenState extends State<TgChatScreen> {
-  final Map<String, String> buttonUrls = {
-    'Чат Сербских IT-ИП. Паушал, налоги, книжар': 'https://t.me/serbia_self_it',
-    'Кнопка 2': 'https://example.com/button2',
-    'Кнопка 3': 'https://example.com/button3',
-    'Кнопка 4': 'https://example.com/button4',
-    'Кнопка 5': 'https://example.com/button5',
-    'Кнопка 6': 'https://example.com/button2',
-    'Кнопка 7': 'https://example.com/button3',
-    'Кнопка 8': 'https://example.com/button4',
-    'Кнопка 9': 'https://example.com/button5',
-    'Кнопка 10': 'https://example.com/button2',
-    'Кнопка 11': 'https://example.com/button3',
-    'Кнопка 12': 'https://example.com/button4',
-    'Кнопка 13': 'https://example.com/button5',
-    'Кнопка 14': 'https://example.com/button2',
-    'Кнопка 15': 'https://example.com/button3',
-    'Кнопка 16': 'https://example.com/button4',
-    'Кнопка 17': 'https://example.com/button5',
-  };
-
-  late List<String> filteredButtons;
+  late List<Map<String, dynamic>> buttonUrls = [];
+  late List<Map<String, dynamic>> filteredButtons = [];
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    filteredButtons = buttonUrls.keys.toList();
+    loadJsonData();
+    searchController.addListener(_filterButtons);
   }
 
-  void _filterButtons(String query) {
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  Future<void> loadJsonData() async {
+    try {
+      String jsonString = await rootBundle.loadString('assets/tg_chats.json');
+      List<dynamic> jsonData = json.decode(jsonString);
+      buttonUrls = List<Map<String, dynamic>>.from(jsonData);
+      filteredButtons = List.from(buttonUrls);
+      setState(() {});
+    } catch (e) {
+      print("Error loading JSON data: $e");
+    }
+  }
+
+  void _filterButtons() {
     setState(() {
+      String query = searchController.text.toLowerCase();
       if (query.isEmpty) {
-        filteredButtons = buttonUrls.keys.toList();
+        filteredButtons = List.from(buttonUrls);
       } else {
-        filteredButtons = buttonUrls.keys.where((button) {
-          return button.toLowerCase().contains(query.toLowerCase());
+        filteredButtons = buttonUrls.where((map) {
+          return map['name'].toLowerCase().contains(query);
         }).toList();
       }
     });
@@ -58,10 +63,21 @@ class _TgChatScreenState extends State<TgChatScreen> {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
             child: TextField(
-              onChanged: _filterButtons,
+              controller: searchController,
               decoration: InputDecoration(
                 labelText: 'Поиск',
                 prefixIcon: Icon(Icons.search),
+                suffixIcon: searchController.text.isNotEmpty
+                    ? IconButton(
+                  icon: Icon(Icons.clear),
+                  onPressed: () {
+                    setState(() {
+                      searchController.clear();
+                      filteredButtons = List.from(buttonUrls);
+                    });
+                  },
+                )
+                    : null,
                 contentPadding: EdgeInsets.symmetric(vertical: 10.0),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(20.0),
@@ -73,8 +89,8 @@ class _TgChatScreenState extends State<TgChatScreen> {
             child: ListView.builder(
               itemCount: filteredButtons.length,
               itemBuilder: (context, index) {
-                String title = filteredButtons[index];
-                String url = buttonUrls[title]!;
+                String title = filteredButtons[index]['name']!;
+                String url = filteredButtons[index]['url']!;
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
