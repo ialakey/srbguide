@@ -114,82 +114,89 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
     );
   }
 
-  void _showDateTimePickerDialog(BuildContext context, DateTime? timeVisarun) async {
+  Future<void> _showDateTimePickerDialog(
+      BuildContext context,
+      DateTime? timeVisarun,
+      ) async {
     DateTime? selectedDateTime = timeVisarun;
+
     showModalBottomSheet<DateTime>(
       context: context,
       builder: (BuildContext builder) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: Icon(Icons.calendar_today),
-              title: Text('Выбрать дату'),
-              subtitle: Text(selectedDateTime != null
-                  ? DateFormat.yMMMd().format(selectedDateTime!)
-                  : 'Выберите дату'),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                  context: context,
-                  initialDate: selectedDateTime!,
-                  firstDate: DateTime.now(),
-                  lastDate: DateTime(2101),
-                );
-
-                if (pickedDate != null) {
-                  setState(() {
-                    selectedDateTime = DateTime(
-                      pickedDate.year,
-                      pickedDate.month,
-                      pickedDate.day,
-                      selectedDateTime!.hour,
-                      selectedDateTime!.minute,
+        return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  leading: Icon(Icons.calendar_today),
+                  title: Text('Выбрать дату'),
+                  subtitle: Text(selectedDateTime != null
+                      ? DateFormat.yMMMd().format(selectedDateTime!)
+                      : 'Выберите дату'),
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDateTime ?? DateTime.now(),
+                      firstDate: DateTime.now(),
+                      lastDate: DateTime(2101),
                     );
-                  });
-                }
-              },
-            ),
-            ListTile(
-              leading: Icon(Icons.access_time),
-              title: Text('Выбрать время'),
-              subtitle: Text(selectedDateTime != null
-                  ? DateFormat.Hm().format(selectedDateTime!)
-                  : 'Выберите время'),
-              onTap: () async {
-                TimeOfDay? pickedTime = await showTimePicker(
-                  context: context,
-                  initialTime: TimeOfDay.fromDateTime(selectedDateTime!),
-                );
 
-                if (pickedTime != null) {
-                  setState(() {
-                    selectedDateTime = DateTime(
-                      selectedDateTime!.year,
-                      selectedDateTime!.month,
-                      selectedDateTime!.day,
-                      pickedTime.hour,
-                      pickedTime.minute,
+                    if (pickedDate != null) {
+                      setState(() {
+                        selectedDateTime = DateTime(
+                          pickedDate.year,
+                          pickedDate.month,
+                          pickedDate.day,
+                          selectedDateTime?.hour ?? 0,
+                          selectedDateTime?.minute ?? 0,
+                        );
+                      });
+                    }
+                  },
+                ),
+                ListTile(
+                  leading: Icon(Icons.access_time),
+                  title: Text('Выбрать время'),
+                  subtitle: Text(selectedDateTime != null
+                      ? DateFormat.Hm().format(selectedDateTime!)
+                      : 'Выберите время'),
+                  onTap: () async {
+                    TimeOfDay? pickedTime = await showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.fromDateTime(selectedDateTime ?? DateTime.now()),
                     );
-                  });
-                }
-              },
-            ),
-            ElevatedButton.icon(
-              icon: Icon(Icons.create),
-              onPressed: () {
-                if (selectedDateTime != null) {
-                  createCalendarEvent(selectedDateTime!);
-                  Navigator.pop(context);
-                }
-              },
-              label: Text('Создать'),
-            ),
-          ],
+
+                    if (pickedTime != null) {
+                      setState(() {
+                        selectedDateTime = DateTime(
+                          selectedDateTime!.year,
+                          selectedDateTime!.month,
+                          selectedDateTime!.day,
+                          pickedTime.hour,
+                          pickedTime.minute,
+                        );
+                      });
+                    }
+                  },
+                ),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.create),
+                  onPressed: () {
+                    if (selectedDateTime != null) {
+                      createCalendarEvent(selectedDateTime!);
+                      Navigator.pop(context);
+                    }
+                  },
+                  label: Text('Создать'),
+                ),
+              ],
+            );
+          },
         );
       },
     );
   }
-
 
   Future<void> createCalendarEvent(DateTime noticeDate) async {
     try {
