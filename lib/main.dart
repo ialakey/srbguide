@@ -36,9 +36,7 @@ class _MainScreenState extends State<MainScreen> {
             setState(() {
               _selectedNavItem = index;
             });
-            Navigator.pop(context);
           },
-          mainContext: context,
         ),
         body: _buildBody(),
         // bottomNavigationBar: CustomBottomNavigationBar(

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 
 class DrawerScreen extends StatelessWidget {
   final Function(int) onNavItemTapped;
-  final BuildContext mainContext;
 
-  DrawerScreen({required this.onNavItemTapped, required this.mainContext});
+  DrawerScreen({required this.onNavItemTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +40,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Калькулятор визарана'),
                 onTap: () {
                   onNavItemTapped(0);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
@@ -49,7 +48,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Создание белого картона'),
                 onTap: () {
                   onNavItemTapped(1);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
@@ -57,7 +56,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Калькулятор паушального налога'),
                 onTap: () {
                   onNavItemTapped(2);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -71,7 +70,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Обменники'),
                 onTap: () {
                   onNavItemTapped(4);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
@@ -79,7 +78,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Не курящие/Курящие'),
                 onTap: () {
                   onNavItemTapped(4);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                     },
                   ),
               ListTile(
@@ -87,7 +86,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Русские заведения'),
                 onTap: () {
                   onNavItemTapped(4);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
                 ],
@@ -101,7 +100,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('SRB.GUIDE'),
                 onTap: () {
                   onNavItemTapped(3);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
               ListTile(
@@ -109,7 +108,7 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('Телеграм чаты'),
                 onTap: () {
                   onNavItemTapped(5);
-                  Navigator.pop(mainContext);
+                  Navigator.pop(context);
                 },
               ),
             ],
@@ -119,7 +118,7 @@ class DrawerScreen extends StatelessWidget {
             title: Text('Настройки'),
             onTap: () {
               onNavItemTapped(2);
-              Navigator.pop(mainContext);
+              Navigator.pop(context);
             },
           ),
           ListTile(
@@ -127,7 +126,7 @@ class DrawerScreen extends StatelessWidget {
             title: Text('Автор'),
             onTap: () {
               onNavItemTapped(2);
-              Navigator.pop(mainContext);
+              Navigator.pop(context);
             },
           ),
         ],
