@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'screens/author.dart';
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
-import 'screens/map.dart';
+import 'screens/russian_places.dart';
 import 'screens/serbia_guide.dart';
+import 'screens/smokers_lounge.dart';
 import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/bottom_navigation.dart';
@@ -62,11 +63,13 @@ class _MainScreenState extends State<MainScreen> {
       case 3:
         return SerbiaGuideScreen();
       case 4:
-        return MapScreen();
+        return RussianPlacesScreen();
       case 5:
         return TgChatScreen();
       case 6:
         return AuthorScreen();
+      case 7:
+        return SmokersLoungeScreen();
       default:
         return InformationForm();
     }

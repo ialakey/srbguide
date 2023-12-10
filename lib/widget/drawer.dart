@@ -77,7 +77,7 @@ class DrawerScreen extends StatelessWidget {
                 leading: Icon(Icons.smoke_free),
                 title: Text('Не курящие/Курящие'),
                 onTap: () {
-                  onNavItemTapped(4);
+                  onNavItemTapped(7);
                   Navigator.pop(context);
                     },
                   ),
