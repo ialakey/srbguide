@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:device_calendar/device_calendar.dart';
+import 'package:srbguide/utils/snackbarUtils.dart';
 import 'package:timezone/timezone.dart' as tz;
 
 class VisaFreeCalculator extends StatefulWidget {
@@ -102,14 +103,6 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  void _showSnackBar(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
       ),
     );
   }
@@ -216,13 +209,13 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
         var createEventResult = await _deviceCalendarPlugin.createOrUpdateEvent(
             event);
         if (createEventResult?.isSuccess ?? false) {
-          _showSnackBar('Событие успешно создано в календаре!');
+          SnackbarUtils.showSnackbar(context, 'Событие успешно создано в календаре!');
         } else {
-          _showSnackBar('Вы не выбрали дату въезда в Сербию');
+          SnackbarUtils.showSnackbar(context, 'Вы не выбрали дату въезда в Сербию');
         }
       }
     } catch (e) {
-      _showSnackBar('Произошла ошибка при создании события: $e');
+      SnackbarUtils.showSnackbar(context, 'Произошла ошибка при создании события: $e');
     }
   }
 
