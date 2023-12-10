@@ -118,7 +118,7 @@ class DrawerScreen extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Настройки'),
             onTap: () {
-              onNavItemTapped(2);
+              onNavItemTapped(9);
               Navigator.pop(context);
             },
           ),

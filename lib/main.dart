@@ -6,10 +6,10 @@ import 'screens/calculator_tax.dart';
 import 'screens/exchange.dart';
 import 'screens/russian_places.dart';
 import 'screens/serbia_guide.dart';
+import 'screens/settings.dart';
 import 'screens/smokers_lounge.dart';
 import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
-import 'widget/bottom_navigation.dart';
 import 'widget/drawer.dart';
 
 void main() {
@@ -27,9 +27,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: ThemeMode.system,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Serbia guide"),
@@ -42,13 +42,6 @@ class _MainScreenState extends State<MainScreen> {
           },
         ),
         body: _buildBody(),
-        // bottomNavigationBar: CustomBottomNavigationBar(
-        //   onItemTapped: (index) {
-        //     setState(() {
-        //       _selectedNavItem = index;
-        //     });
-        //   },
-        // ),
       ),
     );
   }
@@ -73,6 +66,8 @@ class _MainScreenState extends State<MainScreen> {
         return SmokersLoungeScreen();
       case 8:
         return ExchangePlacesScreen();
+      case 9:
+        return SettingsScreen();
       default:
         return InformationForm();
     }

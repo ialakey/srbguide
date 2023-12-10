@@ -107,13 +107,13 @@ class AuthorScreen extends StatelessWidget {
                 },
                 child: Text('Почта'),
               ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _launchURL('https://www.paypal.com/your-paypal-url');
-                },
-                child: Text('Пожертвовать'),
-              ),
+              // SizedBox(height: 20),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     _launchURL('https://www.paypal.com/your-paypal-url');
+              //   },
+              //   child: Text('Пожертвовать'),
+              // ),
             ],
           ),
         ),
