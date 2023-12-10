@@ -5,6 +5,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:docx_template/docx_template.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class InformationForm extends StatefulWidget {
   @override
@@ -27,6 +28,71 @@ class _InformationFormState extends State<InformationForm> {
 
   String _gender = 'M';
   List<String> _genderOptions = ['M', 'Ž'];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  _loadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String? surname = prefs.getString('surname');
+    String? name = prefs.getString('name');
+    String? placeOfBirth = prefs.getString('placeOfBirth');
+    String? nationality = prefs.getString('nationality');
+    String? documentNumber = prefs.getString('documentNumber');
+    String? address = prefs.getString('address');
+    String? ownerInfo = prefs.getString('ownerInfo');
+
+    if (surname != null) {
+      setState(() {
+        _surnameController.text = surname;
+      });
+    }
+    if (name != null) {
+      setState(() {
+        _nameController.text = name;
+      });
+    }
+    if (placeOfBirth != null) {
+      setState(() {
+        _placeOfBirthController.text = placeOfBirth;
+      });
+    }
+    if (nationality != null) {
+      setState(() {
+        _nationalityController.text = nationality;
+      });
+    }
+    if (documentNumber != null) {
+      setState(() {
+        _documentNumberController.text = documentNumber;
+      });
+    }
+    if (address != null) {
+      setState(() {
+        _addressController.text = address;
+      });
+    }
+    if (ownerInfo != null) {
+      setState(() {
+        _ownerInfoController.text = ownerInfo;
+      });
+    }
+  }
+
+  _saveData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('surname', _surnameController.text);
+    await prefs.setString('name', _nameController.text);
+    await prefs.setString('placeOfBirth', _placeOfBirthController.text);
+    await prefs.setString('nationality', _nationalityController.text);
+    await prefs.setString('documentNumber', _documentNumberController.text);
+    await prefs.setString('address', _addressController.text);
+    await prefs.setString('ownerInfo', _ownerInfoController.text);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -155,11 +221,14 @@ class _InformationFormState extends State<InformationForm> {
                 },
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {},
-                child: Text("Сохранить"),
+              ElevatedButton.icon(
+                onPressed: () {
+                  _saveData();
+                },
+                icon: Icon(Icons.save),
+                label: Text('Сохранить'),
               ),
-              ElevatedButton(
+              ElevatedButton.icon(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final params = {
@@ -178,7 +247,8 @@ class _InformationFormState extends State<InformationForm> {
                     generateAndDownloadDocument(params);
                   }
                 },
-                child: Text('Скачать'),
+                icon: Icon(Icons.download),
+                label: Text('Скачать'),
               ),
             ],
           ),
