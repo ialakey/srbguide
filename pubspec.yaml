@@ -17,6 +17,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   xml: ^6.4.0
   docx_template: ^0.3.6
+  device_calendar: ^4.3.2
+  webview_flutter: ^2.0.13
 
 dev_dependencies:
   flutter_test:

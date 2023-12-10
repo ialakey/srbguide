@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CustomBottomNavigationBar extends StatelessWidget {
+  final Function(int) onItemTapped;
+
+  CustomBottomNavigationBar({required this.onItemTapped});
+
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
@@ -18,6 +22,7 @@ class CustomBottomNavigationBar extends StatelessWidget {
           label: 'Настройки',
         ),
       ],
+      onTap: onItemTapped,
     );
   }
 }

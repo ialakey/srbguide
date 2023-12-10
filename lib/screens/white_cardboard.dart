@@ -31,9 +31,6 @@ class _InformationFormState extends State<InformationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Создание белого кратона'),
-      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -105,6 +102,7 @@ class _InformationFormState extends State<InformationForm> {
                 decoration: InputDecoration(labelText: 'Национальность'),
               ),
               TextFormField(
+                keyboardType: TextInputType.number,
                 controller: _documentNumberController,
                 decoration: InputDecoration(labelText: 'Номер документа'),
               ),
@@ -134,6 +132,8 @@ class _InformationFormState extends State<InformationForm> {
               TextFormField(
                 controller: _ownerInfoController,
                 decoration: InputDecoration(labelText: 'Информация о владельце'),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
               ),
               ListTile(
                 title: Text(
@@ -201,7 +201,7 @@ class _InformationFormState extends State<InformationForm> {
     final generatedDoc = await docx.generate(content);
 
     final directory = await getTemporaryDirectory();
-    final outputFilePath = '${directory.path}/output.docx';
+    final outputFilePath = '${directory.path}/cardboard.docx';
     final outputFile = File(outputFilePath);
     await outputFile.writeAsBytes(generatedDoc!);
 

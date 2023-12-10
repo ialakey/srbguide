@@ -1,18 +1,27 @@
 import 'package:flutter/material.dart';
 
+import 'screens/calculator.dart';
+import 'screens/calculator_tax.dart';
+import 'screens/serbia_guide.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/bottom_navigation.dart';
 import 'widget/drawer.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MainScreen());
 }
 
-class MyApp extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  int _selectedNavItem = 0;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Information Form',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -20,11 +29,40 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: Text("Serbia guide"),
         ),
-        endDrawer: DrawerScreen(onNavItemTapped: (int , String ) {  },),
-        body: InformationForm(),
-        bottomNavigationBar: CustomBottomNavigationBar(),
-    )
+        drawer: DrawerScreen(
+          onNavItemTapped: (index) {
+            setState(() {
+              _selectedNavItem = index;
+            });
+            Navigator.pop(context);
+          },
+          mainContext: context,
+        ),
+        body: _buildBody(),
+        // bottomNavigationBar: CustomBottomNavigationBar(
+        //   onItemTapped: (index) {
+        //     setState(() {
+        //       _selectedNavItem = index;
+        //     });
+        //   },
+        // ),
+      ),
     );
+  }
+
+  Widget _buildBody() {
+    switch (_selectedNavItem) {
+      case 0:
+        return VisaFreeCalculator();
+      case 1:
+        return InformationForm();
+      case 2:
+        return CalculatorTaxScreen();
+      case 3:
+        return SerbiaGuideScreen();
+      default:
+        return InformationForm();
+    }
   }
 }
 
