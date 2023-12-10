@@ -107,6 +107,13 @@ class AuthorScreen extends StatelessWidget {
                 },
                 child: Text('Почта'),
               ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  _launchURL('https://github.com/ialakey');
+                },
+                child: Text('GitHub'),
+              ),
               // SizedBox(height: 20),
               // ElevatedButton(
               //   onPressed: () {
