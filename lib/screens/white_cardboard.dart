@@ -156,6 +156,10 @@ class _InformationFormState extends State<InformationForm> {
               ),
               SizedBox(height: 20),
               ElevatedButton(
+                onPressed: () {},
+                child: Text("Сохранить"),
+              ),
+              ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final params = {
