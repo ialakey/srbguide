@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/author.dart';
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
 import 'screens/map.dart';
@@ -64,6 +65,8 @@ class _MainScreenState extends State<MainScreen> {
         return MapScreen();
       case 5:
         return TgChatScreen();
+      case 6:
+        return AuthorScreen();
       default:
         return InformationForm();
     }

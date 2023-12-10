@@ -125,7 +125,7 @@ class DrawerScreen extends StatelessWidget {
             leading: Icon(Icons.account_circle),
             title: Text('Автор'),
             onTap: () {
-              onNavItemTapped(2);
+              onNavItemTapped(6);
               Navigator.pop(context);
             },
           ),
