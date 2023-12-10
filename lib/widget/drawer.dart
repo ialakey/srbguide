@@ -32,7 +32,8 @@ class DrawerScreen extends StatelessWidget {
             ),
           ),
           ExpansionTile(
-            title: Text("Сервисы"),
+          initiallyExpanded: true,
+          title: Text("Сервисы"),
             leading: Icon(Icons.android),
             children: [
               ListTile(

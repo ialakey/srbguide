@@ -6,6 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:docx_template/docx_template.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/utils/snackbarUtils.dart';
 
 class InformationForm extends StatefulWidget {
   @override
@@ -224,6 +225,7 @@ class _InformationFormState extends State<InformationForm> {
               ElevatedButton.icon(
                 onPressed: () {
                   _saveData();
+                  SnackbarUtils.showSnackbar(context, 'Данные сохранены!');
                 },
                 icon: Icon(Icons.save),
                 label: Text('Сохранить'),
