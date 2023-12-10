@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
+import 'screens/map.dart';
 import 'screens/serbia_guide.dart';
+import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/bottom_navigation.dart';
 import 'widget/drawer.dart';
@@ -60,6 +62,10 @@ class _MainScreenState extends State<MainScreen> {
         return CalculatorTaxScreen();
       case 3:
         return SerbiaGuideScreen();
+      case 4:
+        return MapScreen();
+      case 5:
+        return TgChatScreen();
       default:
         return InformationForm();
     }
