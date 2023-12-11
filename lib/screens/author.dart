@@ -6,24 +6,19 @@ class AuthorScreen extends StatelessWidget {
 
   final List<Map<String, String>> cryptoData = [
     {
-      'Coin': 'ETH',
-      'Network': 'Ethereum',
-      'Address': '0x2483Dc9e39F16C1DFCc98B3E1445aC0157adB607',
-    },
-    {
       'Coin': 'USDT',
       'Network': 'Tron (TRC20)',
-      'Address': 'TN4eVCvrm8JA21a5y7H2yRQFHAsWx8zjNh',
-    },
-    {
-      'Coin': 'USDT',
-      'Network': 'Ethereum (ERC20)',
-      'Address': '0x001b7c9bd24bec8df46c3c0e9dfa8548a281d41e',
+      'Address': 'TUHt3r2ufuMabviaowEsQmynoV1tYE6DFg',
     },
     {
       'Coin': 'BTC',
       'Network': 'Bitcoin',
-      'Address': '1F3ZDbiuAvb19USN13WQYrSj1CacadJ7Km',
+      'Address': '17RQZqoUcy4jmkk5ciYQAV3DfZU9MfBYX1',
+    },
+    {
+      'Coin': 'ETH',
+      'Network': 'Ethereum (ERC20)',
+      'Address': '0xc3ca11d069f67ffa826ce6172f0e5466b66ef3f8',
     },
   ];
 
@@ -50,7 +45,6 @@ class AuthorScreen extends StatelessWidget {
                 },
                 child: Text(
                   'По номеру телефона +7 952 633 49 42 СПБ Сбер, QIWI',
-                  style: TextStyle(color: Colors.black),
                 ),
               ),
               SizedBox(height: 20),
@@ -103,7 +97,7 @@ class AuthorScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('prosoulk2017@gmail.com');
+                  _launchURL('mailto:prosoulk2017@gmail.com');
                 },
                 child: Text('Почта'),
               ),

@@ -36,7 +36,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void _updateThemeMode(bool isDarkMode) {
     ThemeMode newThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
     _prefs!.setBool('isDarkMode', isDarkMode);
-    // Используем колбэк для передачи информации о смене темы в MainScreen
     final mainScreen = MainScreen.of(context);
     mainScreen?.setThemeMode(newThemeMode);
   }

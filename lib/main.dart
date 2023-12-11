@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'screens/author.dart';
 import 'screens/calculator.dart';
@@ -12,14 +13,22 @@ import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/drawer.dart';
 
-void main() {
-  runApp(MainScreen(setThemeMode: (ThemeMode ) {  },));
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+
+  runApp(MainScreen(
+    initialThemeMode: initialThemeMode,
+  ));
 }
 
 class MainScreen extends StatefulWidget {
-  final Function(ThemeMode) setThemeMode;
+  final ThemeMode initialThemeMode;
 
-  const MainScreen({Key? key, required this.setThemeMode}) : super(key: key);
+  const MainScreen({Key? key, required this.initialThemeMode}) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -30,12 +39,20 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
-  ThemeMode _themeMode = ThemeMode.system;
+  late ThemeMode _themeMode;
 
-  void setThemeMode(ThemeMode themeMode) {
+  @override
+  void initState() {
+    super.initState();
+    _themeMode = widget.initialThemeMode;
+  }
+
+  void setThemeMode(ThemeMode themeMode) async {
     setState(() {
       _themeMode = themeMode;
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('isDarkMode', themeMode == ThemeMode.dark);
   }
 
   int _selectedNavItem = 0;
