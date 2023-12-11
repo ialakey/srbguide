@@ -4,8 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'screens/author.dart';
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
-import 'screens/exchange.dart';
-import 'screens/russian_places.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/settings.dart';
 import 'screens/smokers_lounge.dart';
@@ -89,16 +87,12 @@ class _MainScreenState extends State<MainScreen> {
         return CalculatorTaxScreen();
       case 3:
         return SerbiaGuideScreen();
-      case 4:
-        return RussianPlacesScreen();
       case 5:
         return TgChatScreen();
       case 6:
         return AuthorScreen();
       case 7:
         return SmokersLoungeScreen();
-      case 8:
-        return ExchangePlacesScreen();
       case 9:
         return SettingsScreen();
       default:
