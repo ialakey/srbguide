@@ -2,7 +2,6 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:srbguide/utils/snackbar_utils.dart';
 
 class VisaFreeCalculator extends StatefulWidget {
   @override

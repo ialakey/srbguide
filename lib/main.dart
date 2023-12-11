@@ -13,15 +13,31 @@ import 'screens/white_cardboard.dart';
 import 'widget/drawer.dart';
 
 void main() {
-  runApp(MainScreen());
+  runApp(MainScreen(setThemeMode: (ThemeMode ) {  },));
 }
 
 class MainScreen extends StatefulWidget {
+  final Function(ThemeMode) setThemeMode;
+
+  const MainScreen({Key? key, required this.setThemeMode}) : super(key: key);
+
   @override
   _MainScreenState createState() => _MainScreenState();
+
+  static _MainScreenState? of(BuildContext context) =>
+      context.findAncestorStateOfType<_MainScreenState>();
 }
 
 class _MainScreenState extends State<MainScreen> {
+
+  ThemeMode _themeMode = ThemeMode.system;
+
+  void setThemeMode(ThemeMode themeMode) {
+    setState(() {
+      _themeMode = themeMode;
+    });
+  }
+
   int _selectedNavItem = 0;
 
   @override
@@ -29,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
     return MaterialApp(
       theme: ThemeData.light(),
       darkTheme: ThemeData.dark(),
-      themeMode: ThemeMode.system,
+      themeMode: _themeMode,
       home: Scaffold(
         appBar: AppBar(
           title: Text("Serbia guide"),

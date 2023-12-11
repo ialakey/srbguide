@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/main.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -28,12 +29,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
     setState(() {
       _isDarkMode = isDarkMode;
       _prefs!.setBool('isDarkMode', isDarkMode);
+      _updateThemeMode(isDarkMode);
     });
-    if (isDarkMode) {
-      ThemeMode.dark;
-    } else {
-      ThemeMode.light;
-    }
+  }
+
+  void _updateThemeMode(bool isDarkMode) {
+    ThemeMode newThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+    _prefs!.setBool('isDarkMode', isDarkMode);
+    // Используем колбэк для передачи информации о смене темы в MainScreen
+    final mainScreen = MainScreen.of(context);
+    mainScreen?.setThemeMode(newThemeMode);
   }
 
   @override
