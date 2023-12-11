@@ -6,7 +6,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:docx_template/docx_template.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/utils/snackbarUtils.dart';
+import 'package:srbguide/utils/snackbar_utils.dart';
 
 class InformationForm extends StatefulWidget {
   @override

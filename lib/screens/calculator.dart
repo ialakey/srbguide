@@ -1,9 +1,8 @@
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:device_calendar/device_calendar.dart';
-import 'package:srbguide/utils/snackbarUtils.dart';
-import 'package:timezone/timezone.dart' as tz;
+import 'package:srbguide/utils/snackbar_utils.dart';
 
 class VisaFreeCalculator extends StatefulWidget {
   @override
@@ -177,7 +176,7 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                   icon: Icon(Icons.create),
                   onPressed: () {
                     if (selectedDateTime != null) {
-                      createCalendarEvent(selectedDateTime!);
+                      Add2Calendar.addEvent2Cal(createCalendarEvent(selectedDateTime!));
                       Navigator.pop(context);
                     }
                   },
@@ -191,37 +190,14 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
     );
   }
 
-  Future<void> createCalendarEvent(DateTime noticeDate) async {
-    try {
-      DeviceCalendarPlugin _deviceCalendarPlugin = DeviceCalendarPlugin();
-      var calendarsResult = await _deviceCalendarPlugin.retrieveCalendars();
-      var calendars = calendarsResult.data;
-
-      if (calendars != null && calendars.isNotEmpty) {
-        var calendar = calendars.first;
-
-        var event = Event(calendar.id,
-            title: 'Визаран',
-            description: 'Нужно сделать визаран',
-            start: convertToTZDateTime(noticeDate),
-            end: convertToTZDateTime(noticeDate.add(Duration(hours: 1))));
-
-        var createEventResult = await _deviceCalendarPlugin.createOrUpdateEvent(
-            event);
-        if (createEventResult?.isSuccess ?? false) {
-          SnackbarUtils.showSnackbar(context, 'Событие успешно создано в календаре!');
-        } else {
-          SnackbarUtils.showSnackbar(context, 'Вы не выбрали дату въезда в Сербию');
-        }
-      }
-    } catch (e) {
-      SnackbarUtils.showSnackbar(context, 'Произошла ошибка при создании события: $e');
-    }
-  }
-
-  tz.TZDateTime convertToTZDateTime(DateTime dateTime) {
-    final location = tz.getLocation('Europe/Belgrade');
-    final convertedTime = tz.TZDateTime(location, dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second);
-    return convertedTime;
+  Event createCalendarEvent(DateTime noticeDate) {
+    return Event(
+      title: 'Визаран',
+      description: 'Нужно сделать визаран',
+      location: 'Flutter app',
+      startDate: noticeDate,
+      endDate: noticeDate.add(const Duration(hours: 1)),
+      allDay: false,
+    );
   }
 }
