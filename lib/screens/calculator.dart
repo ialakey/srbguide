@@ -43,8 +43,8 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   _saveDate() async {
     if (exitDate != null) {
       await _prefs.setString('exitDate', exitDate!.toIso8601String());
+      await _prefs.setInt('remainingDays', remainingDays);
     }
-    await _prefs.setInt('remainingDays', remainingDays);
   }
 
   Future<void> _selectEntryDate(BuildContext context) async {
@@ -228,7 +228,6 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
     return Event(
       title: 'Визаран',
       description: 'Нужно сделать визаран до $exitDate',
-      location: 'Serbia guide',
       startDate: noticeDate,
       endDate: noticeDate.add(const Duration(hours: 1)),
       allDay: false,

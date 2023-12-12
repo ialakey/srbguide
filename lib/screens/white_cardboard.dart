@@ -512,24 +512,20 @@ class _InformationFormState extends State<InformationForm> {
                 ),
               ),
               SizedBox(height: 20),
-              // SingleChildScrollView(
-              //   scrollDirection: Axis.horizontal,
-              //   child: Row(
                 Column(
                   children: [
-                    ElevatedButton.icon(
+                    TextButton.icon(
                       onPressed: () {
                         _saveData();
                         SnackbarUtils.showSnackbar(context, 'Данные сохранены!');
                       },
-                      icon: Icon(Icons.save),
+                      icon: Icon(Icons.check),
                       label: Text('Сохранить'),
                     ),
+                    buildButton(Icons.telegram, 'Отправить', true),
                     buildButton(Icons.download, 'Скачать', false),
-                    buildButton(Icons.send, 'Отправить', true),
                   ],
                 ),
-              // ),
             ],
           ),
         ),
@@ -538,7 +534,7 @@ class _InformationFormState extends State<InformationForm> {
   }
 
   Widget buildButton(IconData icon, String label, bool isSending) {
-    return ElevatedButton.icon(
+    return TextButton.icon(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           final params = {
