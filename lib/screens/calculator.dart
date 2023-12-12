@@ -20,7 +20,12 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   @override
   void initState() {
     super.initState();
-    _loadDate();
+    _initDate();
+  }
+
+  _initDate() async {
+    await _loadDate();
+    _setupInitialValues();
   }
 
   _loadDate() async {
@@ -31,12 +36,15 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
       setState(() {
         exitDate = DateTime.parse(savedDate);
         remainingDays = savedRemainingDays ?? 29;
-        if (exitDate != null) {
-          _entryDateController.text =
-              DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
-          calculateRemainingDays();
-        }
       });
+    }
+  }
+
+  _setupInitialValues() {
+    if (exitDate != null) {
+      _entryDateController.text =
+          DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+      calculateRemainingDays();
     }
   }
 

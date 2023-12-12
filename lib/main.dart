@@ -104,7 +104,7 @@ class _MainScreenState extends State<MainScreen> {
       case 6:
         return AuthorScreen();
       default:
-        return InformationForm();
+        return VisaFreeCalculator();
     }
   }
 }
