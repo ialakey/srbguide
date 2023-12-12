@@ -502,9 +502,10 @@ class _InformationFormState extends State<InformationForm> {
                 ),
               ),
               SizedBox(height: 20),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+              // SingleChildScrollView(
+              //   scrollDirection: Axis.horizontal,
+              //   child: Row(
+                Column(
                   children: [
                     ElevatedButton.icon(
                       onPressed: () {
@@ -518,7 +519,7 @@ class _InformationFormState extends State<InformationForm> {
                     buildButton(Icons.send, 'Отправить', true),
                   ],
                 ),
-              ),
+              // ),
             ],
           ),
         ),

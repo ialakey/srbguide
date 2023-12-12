@@ -2,6 +2,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class VisaFreeCalculator extends StatefulWidget {
   @override
@@ -14,6 +15,32 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   int remainingDays = 29;
   DateTime? exitDate;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  late SharedPreferences _prefs;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDate();
+  }
+
+  _loadDate() async {
+    _prefs = await SharedPreferences.getInstance();
+    final savedDate = _prefs.getString('savedDate');
+    if (savedDate != null && savedDate.isNotEmpty) {
+      setState(() {
+        exitDate = DateTime.parse(savedDate);
+        _entryDateController.text =
+            DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+        calculateRemainingDays();
+      });
+    }
+  }
+
+  _saveDate() async {
+    if (exitDate != null) {
+      await _prefs.setString('savedDate', exitDate!.toIso8601String());
+    }
+  }
 
   Future<void> _selectEntryDate(BuildContext context) async {
 
@@ -52,6 +79,7 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                 SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
+                    _saveDate();
                     Navigator.of(context).pop();
                   },
                   child: Text('OK'),
