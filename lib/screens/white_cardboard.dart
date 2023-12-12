@@ -168,6 +168,51 @@ class _InformationFormState extends State<InformationForm> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Text('Образац 1.'),
+        actions: [
+          PopupMenuButton<String>(
+            onSelected: (value) {
+              if (value == 'save') {
+                _saveData();
+                QuickAlert.show(
+                  context: context,
+                  type: QuickAlertType.success,
+                  title: 'Сохранено!',
+                );
+              } else if (value == 'send') {
+                _onButtonPressed(true);
+              } else if (value == 'download') {
+                _onButtonPressed(false);
+              }
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+              const PopupMenuItem<String>(
+                value: 'save',
+                child: ListTile(
+                  leading: Icon(Icons.check),
+                  title: Text('Сохранить'),
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'send',
+                child: ListTile(
+                  leading: Icon(Icons.telegram),
+                  title: Text('Отправить'),
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'download',
+                child: ListTile(
+                  leading: Icon(Icons.download),
+                  title: Text('Скачать'),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -387,25 +432,6 @@ class _InformationFormState extends State<InformationForm> {
                   },
                 ),
               ),
-              SizedBox(height: 18),
-              Column(
-                children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      _saveData();
-                      QuickAlert.show(
-                        context: context,
-                        type: QuickAlertType.success,
-                        title: 'Сохранено!',
-                      );
-                    },
-                    icon: Icon(Icons.check),
-                    label: Text('Сохранить'),
-                  ),
-                  buildButton(Icons.telegram, 'Отправить', true),
-                  buildButton(Icons.download, 'Скачать', false),
-                ],
-              ),
             ],
           ),
         ),
@@ -413,37 +439,31 @@ class _InformationFormState extends State<InformationForm> {
     );
   }
 
-  Widget buildButton(IconData icon, String label, bool isSending) {
-    return TextButton.icon(
-      onPressed: () {
-        if (_formKey.currentState!.validate() && isFormValid()) {
-          final params = {
-            'surname': _surnameController.text,
-            'name': _nameController.text,
-            'dateOfBirth': _dateOfBirth.toString().split(' ')[0],
-            'sex': _gender,
-            'placeOfBirth': _placeOfBirthController.text,
-            'nationality': _nationalityController.text,
-            'documentNumber': _documentNumberController.text,
-            'dateOfEntry': '${_arrivalDate.toString().split(' ')[0]} ${_placeArrivalController.text}',
-            'addressOfPlace': _addressController.text,
-            'landlordInformation': _ownerInfoController.text,
-            'dateOfRegistration': _registrationDate.toString().split(' ')[0],
-          };
-          DocumentGenerator.generateAndEventDocument(params, isSending);
-        } else {
-          QuickAlert.show(
-            context: context,
-            type: QuickAlertType.error,
-            title: 'Ошибка!',
-            text: 'Заполните все поля',
-          );
-        }
-      },
-      icon: Icon(icon),
-      label: Text(label),
-    );
-  }
+  void _onButtonPressed(bool isSending) {
+    if (_formKey.currentState!.validate() && isFormValid()) {
+      final params = {
+        'surname': _surnameController.text,
+        'name': _nameController.text,
+        'dateOfBirth': _dateOfBirth.toString().split(' ')[0],
+        'sex': _gender,
+        'placeOfBirth': _placeOfBirthController.text,
+        'nationality': _nationalityController.text,
+        'documentNumber': _documentNumberController.text,
+        'dateOfEntry': '${_arrivalDate.toString().split(' ')[0]} ${_placeArrivalController.text}',
+        'addressOfPlace': _addressController.text,
+        'landlordInformation': _ownerInfoController.text,
+        'dateOfRegistration': _registrationDate.toString().split(' ')[0],
+      };
+      DocumentGenerator.generateAndEventDocument(params, isSending);
+    } else {
+        QuickAlert.show(
+          context: context,
+          type: QuickAlertType.error,
+          title: 'Ошибка!',
+          text: 'Заполните все поля',
+        );
+      }
+    }
 
   bool isFormValid() {
     return _surnameController.text.isNotEmpty &&

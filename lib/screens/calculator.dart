@@ -92,37 +92,6 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
           },
           showCancelBtn: false,
         );
-        // showDialog(
-        //   context: context,
-        //   builder: (BuildContext context) {
-        //     return AlertDialog(
-        //       title: Column(
-        //         children: [
-        //           Text('Осталось дней: $remainingDays'),
-        //           SizedBox(height: 10),
-        //           Text('Вы должны покинуть Сербию до:'),
-        //           Text(exitDateString, style: TextStyle(fontWeight: FontWeight.bold)),
-        //         ],
-        //       ),
-        //       actions: <Widget>[
-        //         TextButton.icon(
-        //           onPressed: () {
-        //             _showDateTimePickerDialog(context, exitDate);
-        //           },
-        //           icon: Icon(Icons.notifications),
-        //           label: Text('Создать напоминание в календаре'),
-        //         ),
-        //         TextButton(
-        //           onPressed: () {
-        //             _saveDate();
-        //             Navigator.of(context).pop();
-        //           },
-        //           child: Text('OK'),
-        //         ),
-        //       ],
-        //     );
-        //   },
-        // );
       }
     }
     });
@@ -146,6 +115,10 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
 
   @override
   Widget build(BuildContext context) {
+    String exitDateString = '';
+    if (exitDate != null) {
+      exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+    }
     return Scaffold(
       key: _scaffoldKey,
       body: Padding(
@@ -167,13 +140,13 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
               },
             ),
             SizedBox(height: 10),
-            Text(
-              'Осталось дней: $remainingDays\n'
-                  'Вы должны покинуть Сербию до: ${exitDate != null ? exitDate!.toString().split(' ')[0] : 'Выберите дату'}',
+            Text('Осталось дней: $remainingDays\n'
+                'Вы должны покинуть Сербию до: ${exitDateString}',
               style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w500,
               ),
+              textAlign: TextAlign.center,
             ),
           ],
         ),
