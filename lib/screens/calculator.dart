@@ -192,8 +192,8 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   Event createCalendarEvent(DateTime noticeDate) {
     return Event(
       title: 'Визаран',
-      description: 'Нужно сделать визаран',
-      location: 'Flutter app',
+      description: 'Нужно сделать визаран до $exitDate',
+      location: 'Serbia guide',
       startDate: noticeDate,
       endDate: noticeDate.add(const Duration(hours: 1)),
       allDay: false,

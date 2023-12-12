@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:docx_template/docx_template.dart';
 import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
+import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/utils/snackbar_utils.dart';
 
@@ -22,6 +24,7 @@ class _InformationFormState extends State<InformationForm> {
   final TextEditingController _documentNumberController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _ownerInfoController = TextEditingController();
+  final TextEditingController _placeArrivalController = TextEditingController();
 
   DateTime? _dateOfBirth;
   DateTime? _arrivalDate;
@@ -29,6 +32,44 @@ class _InformationFormState extends State<InformationForm> {
 
   String _gender = 'M';
   List<String> _genderOptions = ['M', 'Ž'];
+  String _selectedValue = 'Выбрать';
+  List<String> locations = [
+    'Выбрать',
+    'Badovinci',
+    'Banatski Brestovac',
+    'Bačka Palanka',
+    'Bačka Petrovac',
+    'Bački Vinogradi',
+    'Bajmok',
+    'Bezdan',
+    'Bogovadja',
+    'Bolevec',
+    'Bosilegrad',
+    'Brodarevo',
+    'Bratunac',
+    'Budimpešta',
+    'Dimitrovgrad',
+    'Djala',
+    'Dobrinci',
+    'Đeneral Janković',
+    'Gostun',
+    'Ključ',
+    'Kopaonik',
+    'Kosjerić',
+    'Kosovo Polje',
+    'Novi Sad',
+    'Priboj',
+    'Sremska Raća',
+    'Surčin',
+    'Thermopile',
+    'Vrnjci',
+    'Vatin',
+    'Vlaole',
+    'Žabljak',
+    'Zagubica',
+    'Zaječar',
+    'Zrenjanin',
+    ];
 
   @override
   void initState() {
@@ -49,6 +90,7 @@ class _InformationFormState extends State<InformationForm> {
     String? dateOfBirthString = prefs.getString('dateOfBirth');
     String? arrivalDateString = prefs.getString('arrivalDate');
     String? registrationDateString = prefs.getString('registrationDate');
+    String? placeArrival = prefs.getString('placeArrival');
 
     if (surname != null) {
       setState(() {
@@ -100,6 +142,11 @@ class _InformationFormState extends State<InformationForm> {
         _registrationDate = DateTime.parse(registrationDateString);
       });
     }
+    if (placeArrival != null) {
+      setState(() {
+        _placeArrivalController.text = placeArrival;
+      });
+    }
   }
 
   _saveData() async {
@@ -111,6 +158,7 @@ class _InformationFormState extends State<InformationForm> {
     await prefs.setString('documentNumber', _documentNumberController.text);
     await prefs.setString('address', _addressController.text);
     await prefs.setString('ownerInfo', _ownerInfoController.text);
+    await prefs.setString('placeArrival', _placeArrivalController.text);
     if (_dateOfBirth != null) {
       await prefs.setString('dateOfBirth', _dateOfBirth!.toIso8601String());
     }
@@ -190,6 +238,8 @@ class _InformationFormState extends State<InformationForm> {
               TextFormField(
                 controller: _placeOfBirthController,
                 decoration: InputDecoration(labelText: 'Место рождения'),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
               ),
               TextFormField(
                 controller: _nationalityController,
@@ -199,6 +249,36 @@ class _InformationFormState extends State<InformationForm> {
                 keyboardType: TextInputType.number,
                 controller: _documentNumberController,
                 decoration: InputDecoration(labelText: 'Номер документа'),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: TextFormField(
+                      controller: _placeArrivalController,
+                      decoration: InputDecoration(labelText: 'Место прибытия'),
+                      maxLines: null,
+                      keyboardType: TextInputType.multiline,
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  DropdownButton<String>(
+                    value: _selectedValue,
+                    onChanged: (String? newValue) {
+                      if (newValue != null) {
+                        setState(() {
+                          _selectedValue = newValue;
+                          _placeArrivalController.text = newValue;
+                        });
+                      }
+                    },
+                    items: locations.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
               ListTile(
                 title: Text(
@@ -222,6 +302,8 @@ class _InformationFormState extends State<InformationForm> {
               TextFormField(
                 controller: _addressController,
                 decoration: InputDecoration(labelText: 'Адрес регистрации'),
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
               ),
               TextFormField(
                 controller: _ownerInfoController,
@@ -268,16 +350,38 @@ class _InformationFormState extends State<InformationForm> {
                       'placeOfBirth': _placeOfBirthController.text,
                       'nationality': _nationalityController.text,
                       'documentNumber': _documentNumberController.text,
-                      'dateOfEntry': _arrivalDate.toString().split(' ')[0],
+                      'dateOfEntry': _arrivalDate.toString().split(' ')[0] + ' ' + _placeArrivalController.text,
                       'addressOfPlace': _addressController.text,
                       'landlordInformation': _ownerInfoController.text,
                       'dateOfRegistration': _registrationDate.toString().split(' ')[0],
                     };
-                    generateAndDownloadDocument(params);
+                    generateAndEventDocument(params, false);
                   }
                 },
                 icon: Icon(Icons.download),
                 label: Text('Скачать'),
+              ),
+              ElevatedButton.icon(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final params = {
+                      'surname': _surnameController.text,
+                      'name': _nameController.text,
+                      'dateOfBirth': _dateOfBirth!.toString().split(' ')[0],
+                      'sex': _gender,
+                      'placeOfBirth': _placeOfBirthController.text,
+                      'nationality': _nationalityController.text,
+                      'documentNumber': _documentNumberController.text,
+                      'dateOfEntry': _arrivalDate.toString().split(' ')[0] + ' ' + _placeArrivalController.text,
+                      'addressOfPlace': _addressController.text,
+                      'landlordInformation': _ownerInfoController.text,
+                      'dateOfRegistration': _registrationDate.toString().split(' ')[0],
+                    };
+                    generateAndEventDocument(params, true);
+                  }
+                },
+                icon: Icon(Icons.send),
+                label: Text('Отправить'),
               ),
             ],
           ),
@@ -286,7 +390,7 @@ class _InformationFormState extends State<InformationForm> {
     );
   }
 
-  Future<void> generateAndDownloadDocument(Map<String, Object?> params) async {
+  Future<void> generateAndEventDocument(Map<String, Object?> params, bool isSend) async {
     final ByteData templateData = await rootBundle.load('assets/cardboard.docx');
     final Uint8List templateBytes = templateData.buffer.asUint8List();
 
@@ -299,11 +403,17 @@ class _InformationFormState extends State<InformationForm> {
 
     final generatedDoc = await docx.generate(content);
 
+    DateTime now = DateTime.now();
+    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
     final directory = await getTemporaryDirectory();
-    final outputFilePath = '${directory.path}/cardboard.docx';
+    final outputFilePath = '${directory.path}/Белый картон от $formattedDate.docx';
     final outputFile = File(outputFilePath);
     await outputFile.writeAsBytes(generatedDoc!);
 
-    OpenFile.open(outputFile.path);
+    if (isSend) {
+      Share.shareFiles([outputFile.path], text: 'Белый картон от $formattedDate');
+    } else {
+      OpenFile.open(outputFile.path);
+    }
   }
 }
