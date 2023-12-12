@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 
 class TgChatScreen extends StatefulWidget {
   @override
@@ -96,7 +96,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: ElevatedButton(
                     onPressed: () {
-                      _launchURL(url);
+                      UrlLauncherHelper.launchURL(url);
                     },
                     child: Text(title),
                   ),
@@ -107,12 +107,5 @@ class _TgChatScreenState extends State<TgChatScreen> {
         ],
       ),
     );
-  }
-
-  Future<void> _launchURL(String urlKey) async {
-    final Uri url = Uri.parse(urlKey);
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
   }
 }

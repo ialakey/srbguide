@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 
 class AuthorScreen extends StatelessWidget {
 
@@ -76,45 +76,38 @@ class AuthorScreen extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('https://www.linkedin.com/in/ilya-alakov-14b979266');
+                  UrlLauncherHelper.launchURL('https://www.linkedin.com/in/ilya-alakov-14b979266');
                 },
                 child: Text('Linkedin'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('https://t.me/kino_narezo4ka');
+                  UrlLauncherHelper.launchURL('https://t.me/kino_narezo4ka');
                 },
                 child: Text('Telegram с фильмами'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('https://www.instagram.com/unnamed_junior');
+                  UrlLauncherHelper.launchURL('https://www.instagram.com/unnamed_junior');
                 },
                 child: Text('Instagram'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('mailto:prosoulk2017@gmail.com');
+                  UrlLauncherHelper.launchURL('mailto:prosoulk2017@gmail.com');
                 },
                 child: Text('Почта'),
               ),
               SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  _launchURL('https://github.com/ialakey');
+                  UrlLauncherHelper.launchURL('https://github.com/ialakey');
                 },
                 child: Text('GitHub'),
               ),
-              // SizedBox(height: 20),
-              // ElevatedButton(
-              //   onPressed: () {
-              //     _launchURL('https://www.paypal.com/your-paypal-url');
-              //   },
-              //   child: Text('Пожертвовать'),
-              // ),
             ],
           ),
         ),
@@ -122,10 +115,4 @@ class AuthorScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _launchURL(String urlKey) async {
-    final Uri url = Uri.parse(urlKey);
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
-  }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DrawerScreen extends StatelessWidget {
@@ -71,7 +72,7 @@ class DrawerScreen extends StatelessWidget {
                 leading: Icon(Icons.account_balance),
                 title: Text('Обменники'),
                 onTap: () {
-                  _launchURL('https://www.google.com/maps/search/exchange');
+                  UrlLauncherHelper.launchURL('https://www.google.com/maps/search/exchange');
                   Navigator.pop(context);
                 },
               ),
@@ -87,7 +88,7 @@ class DrawerScreen extends StatelessWidget {
                 leading: Icon(Icons.local_cafe),
                 title: Text('Русские заведения'),
                 onTap: () {
-                  _launchURL('https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=45.23992208501285%2C19.854860046985962&z=13');
+                  UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=45.23992208501285%2C19.854860046985962&z=13');
                   Navigator.pop(context);
                 },
               ),
@@ -134,12 +135,5 @@ class DrawerScreen extends StatelessWidget {
         ],
       ),
     );
-  }
-}
-
-Future<void> _launchURL(String urlKey) async {
-  final Uri url = Uri.parse(urlKey);
-  if (!await launchUrl(url)) {
-    throw Exception('Could not launch $url');
   }
 }
