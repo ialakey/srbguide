@@ -179,336 +179,216 @@ class _InformationFormState extends State<InformationForm> {
           key: _formKey,
           child: ListView(
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
+              _buildTextFormFieldContainer(
+                labelText: 'Презиме - Surname',
+                child: TextFormField(
+                  controller: _surnameController,
+                  decoration: InputDecoration(labelText: 'Фамилия'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Введите фамилию';
+                    }
+                    return null;
+                  },
                 ),
-                child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('Презиме - Surname'),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer(
+                labelText: 'Име - Name',
+                child: TextFormField(
+                  controller: _nameController,
+                  decoration: InputDecoration(labelText: 'Имя'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Введите имя';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer(
+                labelText: 'Датум рођења - Date of birth',
+                child:
+                ListTile(
+                  title: Text(
+                    'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
+                  ),
+                  trailing: Icon(Icons.calendar_today),
+                  onTap: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+                    if (pickedDate != null && pickedDate != _dateOfBirth) {
+                      setState(() {
+                        _dateOfBirth = pickedDate;
+                      });
+                    }
+                  },
+                ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer(
+                labelText: 'Пол - Sex',
+                child:
+                  DropdownButtonFormField<String>(
+                    value: _gender,
+                    items: _genderOptions.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (String? value) {
+                      if (value != null) {
+                        setState(() {
+                          _gender = value;
+                        });
+                      }
+                    },
+                    decoration: InputDecoration(labelText: 'Пол'),
+                  ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer2(
+                labelText: 'Место и држава рођења',
+                labelText2: 'Place and country of birth',
+                child:
+                TextFormField(
+                  controller: _placeOfBirthController,
+                  decoration: InputDecoration(labelText: 'Место рождения'),
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer(
+                labelText: 'Држављанство - Nationality',
+                child:
                   TextFormField(
-                    controller: _surnameController,
-                    decoration: InputDecoration(labelText: 'Фамилия'),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Введите фамилию';
+                    controller: _nationalityController,
+                    decoration: InputDecoration(labelText: 'Национальность'),
+                  ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer2(
+                labelText: 'Врста и број путне или друге исправе о идентитету',
+                labelText2: 'Type and number of travel document or other ID',
+                child:
+                  TextFormField(
+                    keyboardType: TextInputType.number,
+                    controller: _documentNumberController,
+                    decoration: InputDecoration(labelText: 'Номер документа'),
+                  ),
+              ),
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer3(
+                labelText1: 'Врста и број визе и место издавања',
+                labelText2: 'Type and number of visa and place of issuance',
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _placeArrivalController,
+                            decoration: InputDecoration(labelText: 'Место прибытия'),
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                          ),
+                        ),
+                        SizedBox(width: 10),
+                        DropdownButton<String>(
+                          value: _selectedValue,
+                          onChanged: (String? newValue) {
+                            if (newValue != null && newValue != 'Выбрать') {
+                              setState(() {
+                                _selectedValue = newValue;
+                                _placeArrivalController.text = newValue;
+                              });
+                            }
+                          },
+                          items: locations.map<DropdownMenuItem<String>>((String value) {
+                            return DropdownMenuItem<String>(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      ],
+                    ),
+                    ListTile(
+                      title: Text(
+                        'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                      ),
+                      trailing: Icon(Icons.calendar_today),
+                      onTap: () async {
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                        );
+                        if (pickedDate != null && pickedDate != _arrivalDate) {
+                          setState(() {
+                            _arrivalDate = pickedDate;
+                          });
                         }
-                        return null;
                       },
                     ),
-                  ]
+                  ],
                 ),
               ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer2(
+                labelText: 'Адреса боравишта у Републици Србији',
+                labelText2: 'Аddress of place of stay in the Republic of Serbia',
+                child:
+                  TextFormField(
+                    controller: _addressController,
+                    decoration: InputDecoration(labelText: 'Адрес регистрации'),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                   ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Име - Name'),
-                      TextFormField(
-                        controller: _nameController,
-                        decoration: InputDecoration(labelText: 'Имя'),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Введите имя';
-                          }
-                          return null;
-                        },
-                      ),
-                    ]
-                ),
               ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer2(
+                labelText: 'Податак о станодавцу (презиме и име и ЈМБГ, односно назив правног лица или предузетника и ПИБ)',
+                labelText2: 'Surname, given name and personal identification number of the landlord/host ie, name of legal entity or entrepreneur and tax ID number).',
+                child:
+                  TextFormField(
+                    controller: _ownerInfoController,
+                    decoration: InputDecoration(labelText: 'Информация о владельце'),
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
                   ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Датум рођења - Date of birth'),
-                      ListTile(
-                        title: Text(
-                          'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
-                        ),
-                        trailing: Icon(Icons.calendar_today),
-                        onTap: () async {
-                          final DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1900),
-                            lastDate: DateTime.now(),
-                          );
-                          if (pickedDate != null && pickedDate != _dateOfBirth) {
-                            setState(() {
-                              _dateOfBirth = pickedDate;
-                            });
-                          }
-                        },
-                      ),
-                    ]
-                ),
               ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
+              SizedBox(height: 3),
+              _buildTextFormFieldContainer2(
+                labelText: 'Датум пријаве',
+                labelText2: 'Date of registration',
+                child:                       ListTile(
+                  title: Text(
+                    'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Пол - Sex'),
-                      DropdownButtonFormField<String>(
-                        value: _gender,
-                        items: _genderOptions.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (String? value) {
-                          if (value != null) {
-                            setState(() {
-                              _gender = value;
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(labelText: 'Пол'),
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Место и држава рођења'),
-                      Text('Place and country of birth'),
-                      TextFormField(
-                        controller: _placeOfBirthController,
-                        decoration: InputDecoration(labelText: 'Место рождения'),
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Држављанство - Nationality'),
-                      TextFormField(
-                        controller: _nationalityController,
-                        decoration: InputDecoration(labelText: 'Национальность'),
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Врста и број путне или друге исправе о идентитету'),
-                      Text('Type and number of travel document or other ID'),
-                      TextFormField(
-                        keyboardType: TextInputType.number,
-                        controller: _documentNumberController,
-                        decoration: InputDecoration(labelText: 'Номер документа'),
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Врста и број визе и место издавања'),
-                      Text('Type and number of visa and place of issuance'),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _placeArrivalController,
-                              decoration: InputDecoration(labelText: 'Место прибытия'),
-                              maxLines: null,
-                              keyboardType: TextInputType.multiline,
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          DropdownButton<String>(
-                            value: _selectedValue,
-                            onChanged: (String? newValue) {
-                              if (newValue != null && newValue != 'Выбрать') {
-                                setState(() {
-                                  _selectedValue = newValue;
-                                  _placeArrivalController.text = newValue;
-                                });
-                              }
-                            },
-                            items: locations.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ],
-                      ),
-                      ListTile(
-                        title: Text(
-                          'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
-                        ),
-                        trailing: Icon(Icons.calendar_today),
-                        onTap: () async {
-                          final DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          );
-                          if (pickedDate != null && pickedDate != _arrivalDate) {
-                            setState(() {
-                              _arrivalDate = pickedDate;
-                            });
-                          }
-                        },
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Адреса боравишта у Републици Србији'),
-                      Text('Аddress of place of stay in the Republic of Serbia'),
-                      TextFormField(
-                        controller: _addressController,
-                        decoration: InputDecoration(labelText: 'Адрес регистрации'),
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Податак о станодавцу (презиме и име и ЈМБГ, односно назив правног лица или предузетника и ПИБ)'),
-                      Text('Surname, given name and personal identification number of the landlord/host ie, name of legal entity or entrepreneur and tax ID number).'),
-                      TextFormField(
-                        controller: _ownerInfoController,
-                        decoration: InputDecoration(labelText: 'Информация о владельце'),
-                        maxLines: null,
-                        keyboardType: TextInputType.multiline,
-                      ),
-                    ]
-                ),
-              ),
-              SizedBox(height: 2),
-              Container(
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    color: Colors.grey,
-                    width: 1.0,
-                  ),
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Датум пријаве'),
-                      Text('Date of registration'),
-                      ListTile(
-                        title: Text(
-                          'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
-                        ),
-                        trailing: Icon(Icons.calendar_today),
-                        onTap: () async {
-                          final DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime.now(),
-                          );
-                          if (pickedDate != null && pickedDate != _registrationDate) {
-                            setState(() {
-                              _registrationDate = pickedDate;
-                            });
-                          }
-                        },
-                      ),
-                    ]
+                  trailing: Icon(Icons.calendar_today),
+                  onTap: () async {
+                    final DateTime? pickedDate = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now(),
+                    );
+                    if (pickedDate != null && pickedDate != _registrationDate) {
+                      setState(() {
+                        _registrationDate = pickedDate;
+                      });
+                    }
+                  },
                 ),
               ),
               SizedBox(height: 20),
@@ -529,6 +409,102 @@ class _InformationFormState extends State<InformationForm> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildTextFormFieldContainer({
+    required String labelText,
+    required Widget child,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            labelText,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextFormFieldContainer2({
+    required String labelText,
+    required String labelText2,
+    required Widget child,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            labelText,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 2),
+          Text(
+            labelText2,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextFormFieldContainer3({
+    required String labelText1,
+    required String labelText2,
+    required Widget child,
+  }) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 4.0),
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: Colors.grey,
+          width: 1.0,
+        ),
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            labelText1,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 2),
+          Text(
+            labelText2,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 5),
+          child,
+        ],
       ),
     );
   }

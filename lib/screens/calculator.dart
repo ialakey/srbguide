@@ -134,14 +134,25 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
             ListTile(
               title: Text(
                 'Выберите день въезда в Сербию:',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               trailing: Icon(Icons.calendar_today),
               onTap: () async {
                 _selectEntryDate(context);
               },
             ),
-            Text('Осталось дней: $remainingDays\n'
-                'Вы должны покинуть Сербию до: ${exitDate != null ? exitDate!.toString().split(' ')[0] : 'Выберите дату'}'),
+            SizedBox(height: 10),
+            Text(
+              'Осталось дней: $remainingDays\n'
+                  'Вы должны покинуть Сербию до: ${exitDate != null ? exitDate!.toString().split(' ')[0] : 'Выберите дату'}',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ],
         ),
       ),
