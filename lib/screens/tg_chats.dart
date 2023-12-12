@@ -58,26 +58,33 @@ class _TgChatScreenState extends State<TgChatScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                labelText: 'Поиск',
-                prefixIcon: Icon(Icons.search),
-                suffixIcon: searchController.text.isNotEmpty
-                    ? IconButton(
-                  icon: Icon(Icons.clear),
-                  onPressed: () {
-                    setState(() {
-                      searchController.clear();
-                      filteredButtons = List.from(buttonUrls);
-                    });
-                  },
-                )
-                    : null,
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(20.0),
+            padding: EdgeInsets.all(16.0),
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20.0),
+                color: Colors.grey[200],
+              ),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                child: TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    hintText: 'Поиск',
+                    hintStyle: TextStyle(color: Colors.grey),
+                    prefixIcon: Icon(Icons.search, color: Colors.grey),
+                    suffixIcon: searchController.text.isNotEmpty
+                        ? IconButton(
+                      icon: Icon(Icons.clear, color: Colors.grey),
+                      onPressed: () {
+                        setState(() {
+                          searchController.clear();
+                          filteredButtons = List.from(buttonUrls);
+                        });
+                      },
+                    )
+                        : null,
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
             ),
@@ -90,12 +97,18 @@ class _TgChatScreenState extends State<TgChatScreen> {
                 String url = filteredButtons[index]['url']!;
 
                 return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ElevatedButton(
-                    onPressed: () {
-                      UrlLauncherHelper.launchURL(url);
-                    },
-                    child: Text(title),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  child: Card(
+                    elevation: 4,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                    child: ListTile(
+                      title: Text(title),
+                      onTap: () {
+                        UrlLauncherHelper.launchURL(url);
+                      },
+                    ),
                   ),
                 );
               },
