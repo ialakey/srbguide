@@ -396,7 +396,7 @@ class _InformationFormState extends State<InformationForm> {
                       QuickAlert.show(
                         context: context,
                         type: QuickAlertType.success,
-                        text: 'Сохранено!',
+                        title: 'Сохранено!',
                       );
                     },
                     icon: Icon(Icons.check),
@@ -435,6 +435,7 @@ class _InformationFormState extends State<InformationForm> {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
+            title: 'Ошибка',
             text: 'Заполните все поля!',
           );
         }

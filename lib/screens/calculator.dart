@@ -2,6 +2,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class VisaFreeCalculator extends StatefulWidget {
@@ -74,37 +75,54 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
       calculateRemainingDays();
       if (exitDate != null) {
         final String exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
-        showDialog(
+        QuickAlert.show(
           context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Column(
-                children: [
-                  Text('Осталось дней: $remainingDays'),
-                  SizedBox(height: 10),
-                  Text('Вы должны покинуть Сербию до:'),
-                  Text(exitDateString, style: TextStyle(fontWeight: FontWeight.bold)),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton.icon(
-                  onPressed: () {
-                    _showDateTimePickerDialog(context, exitDate);
-                  },
-                  icon: Icon(Icons.notifications),
-                  label: Text('Создать напоминание в календаре'),
-                ),
-                TextButton(
-                  onPressed: () {
-                    _saveDate();
-                    Navigator.of(context).pop();
-                  },
-                  child: Text('OK'),
-                ),
-              ],
-            );
+          type: QuickAlertType.confirm,
+          title: 'Осталось дней: $remainingDays',
+          text: 'Вы должны покинуть Сербию до: $exitDateString' + '\nСоздать событие в календаре?',
+          showConfirmBtn: true,
+          confirmBtnText: 'Да',
+          cancelBtnText: 'Нет',
+          onConfirmBtnTap: () {
+            _showDateTimePickerDialog(context, exitDate);
           },
+          onCancelBtnTap: () {
+            _saveDate();
+            Navigator.of(context).pop();
+          },
+          showCancelBtn: false,
         );
+        // showDialog(
+        //   context: context,
+        //   builder: (BuildContext context) {
+        //     return AlertDialog(
+        //       title: Column(
+        //         children: [
+        //           Text('Осталось дней: $remainingDays'),
+        //           SizedBox(height: 10),
+        //           Text('Вы должны покинуть Сербию до:'),
+        //           Text(exitDateString, style: TextStyle(fontWeight: FontWeight.bold)),
+        //         ],
+        //       ),
+        //       actions: <Widget>[
+        //         TextButton.icon(
+        //           onPressed: () {
+        //             _showDateTimePickerDialog(context, exitDate);
+        //           },
+        //           icon: Icon(Icons.notifications),
+        //           label: Text('Создать напоминание в календаре'),
+        //         ),
+        //         TextButton(
+        //           onPressed: () {
+        //             _saveDate();
+        //             Navigator.of(context).pop();
+        //           },
+        //           child: Text('OK'),
+        //         ),
+        //       ],
+        //     );
+        //   },
+        // );
       }
     }
     });
