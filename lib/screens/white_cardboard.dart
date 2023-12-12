@@ -9,6 +9,8 @@ import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
 import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/utils/snackbar_utils.dart';
+import 'package:srbguide/widget/text_form_field.dart';
+import 'package:srbguide/widget/text_form_field2.dart';
 
 class InformationForm extends StatefulWidget {
   @override
@@ -179,7 +181,7 @@ class _InformationFormState extends State<InformationForm> {
           key: _formKey,
           child: ListView(
             children: [
-              _buildTextFormFieldContainer(
+              TextFormFieldContainer(
                 labelText: 'Презиме - Surname',
                 child: TextFormField(
                   controller: _surnameController,
@@ -192,8 +194,8 @@ class _InformationFormState extends State<InformationForm> {
                   },
                 ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer(
+              SizedBox(height: 2),
+              TextFormFieldContainer(
                 labelText: 'Име - Name',
                 child: TextFormField(
                   controller: _nameController,
@@ -206,8 +208,8 @@ class _InformationFormState extends State<InformationForm> {
                   },
                 ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer(
+              SizedBox(height: 2),
+              TextFormFieldContainer(
                 labelText: 'Датум рођења - Date of birth',
                 child:
                 ListTile(
@@ -230,8 +232,8 @@ class _InformationFormState extends State<InformationForm> {
                   },
                 ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer(
+              SizedBox(height: 2),
+              TextFormFieldContainer(
                 labelText: 'Пол - Sex',
                 child:
                   DropdownButtonFormField<String>(
@@ -252,8 +254,8 @@ class _InformationFormState extends State<InformationForm> {
                     decoration: InputDecoration(labelText: 'Пол'),
                   ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer2(
+              SizedBox(height: 2),
+              TextFormFieldContainer2(
                 labelText: 'Место и држава рођења',
                 labelText2: 'Place and country of birth',
                 child:
@@ -264,8 +266,8 @@ class _InformationFormState extends State<InformationForm> {
                   keyboardType: TextInputType.multiline,
                 ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer(
+              SizedBox(height: 2),
+              TextFormFieldContainer(
                 labelText: 'Држављанство - Nationality',
                 child:
                   TextFormField(
@@ -274,7 +276,7 @@ class _InformationFormState extends State<InformationForm> {
                   ),
               ),
               SizedBox(height: 3),
-              _buildTextFormFieldContainer2(
+              TextFormFieldContainer2(
                 labelText: 'Врста и број путне или друге исправе о идентитету',
                 labelText2: 'Type and number of travel document or other ID',
                 child:
@@ -284,9 +286,9 @@ class _InformationFormState extends State<InformationForm> {
                     decoration: InputDecoration(labelText: 'Номер документа'),
                   ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer3(
-                labelText1: 'Врста и број визе и место издавања',
+              SizedBox(height: 2),
+              TextFormFieldContainer2(
+                labelText: 'Врста и број визе и место издавања',
                 labelText2: 'Type and number of visa and place of issuance',
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -343,8 +345,8 @@ class _InformationFormState extends State<InformationForm> {
                   ],
                 ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer2(
+              SizedBox(height: 2),
+              TextFormFieldContainer2(
                 labelText: 'Адреса боравишта у Републици Србији',
                 labelText2: 'Аddress of place of stay in the Republic of Serbia',
                 child:
@@ -355,8 +357,8 @@ class _InformationFormState extends State<InformationForm> {
                     keyboardType: TextInputType.multiline,
                   ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer2(
+              SizedBox(height: 2),
+              TextFormFieldContainer2(
                 labelText: 'Податак о станодавцу (презиме и име и ЈМБГ, односно назив правног лица или предузетника и ПИБ)',
                 labelText2: 'Surname, given name and personal identification number of the landlord/host ie, name of legal entity or entrepreneur and tax ID number).',
                 child:
@@ -367,11 +369,12 @@ class _InformationFormState extends State<InformationForm> {
                     keyboardType: TextInputType.multiline,
                   ),
               ),
-              SizedBox(height: 3),
-              _buildTextFormFieldContainer2(
+              SizedBox(height: 2),
+              TextFormFieldContainer2(
                 labelText: 'Датум пријаве',
                 labelText2: 'Date of registration',
-                child:                       ListTile(
+                child:
+                ListTile(
                   title: Text(
                     'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
@@ -409,102 +412,6 @@ class _InformationFormState extends State<InformationForm> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildTextFormFieldContainer({
-    required String labelText,
-    required Widget child,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4.0),
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            labelText,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          child,
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextFormFieldContainer2({
-    required String labelText,
-    required String labelText2,
-    required Widget child,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4.0),
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            labelText,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 2),
-          Text(
-            labelText2,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          child,
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTextFormFieldContainer3({
-    required String labelText1,
-    required String labelText2,
-    required Widget child,
-  }) {
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 4.0),
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.grey,
-          width: 1.0,
-        ),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            labelText1,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 2),
-          Text(
-            labelText2,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 5),
-          child,
-        ],
       ),
     );
   }
