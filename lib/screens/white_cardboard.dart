@@ -435,8 +435,8 @@ class _InformationFormState extends State<InformationForm> {
           QuickAlert.show(
             context: context,
             type: QuickAlertType.error,
-            title: 'Ошибка',
-            text: 'Заполните все поля!',
+            title: 'Ошибка!',
+            text: 'Заполните все поля',
           );
         }
       },
