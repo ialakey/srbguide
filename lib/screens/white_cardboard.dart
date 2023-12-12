@@ -1,13 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:docx_template/docx_template.dart';
-import 'package:flutter/services.dart' show ByteData, Uint8List, rootBundle;
-import 'package:share/share.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/service/document_generate.dart';
 import 'package:srbguide/utils/snackbar_utils.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
@@ -433,38 +426,11 @@ class _InformationFormState extends State<InformationForm> {
             'landlordInformation': _ownerInfoController.text,
             'dateOfRegistration': _registrationDate.toString().split(' ')[0],
           };
-          generateAndEventDocument(params, isSending);
+          DocumentGenerator.generateAndEventDocument(params, isSending);
         }
       },
       icon: Icon(icon),
       label: Text(label),
     );
-  }
-
-  Future<void> generateAndEventDocument(Map<String, Object?> params, bool isSend) async {
-    final ByteData templateData = await rootBundle.load('assets/cardboard.docx');
-    final Uint8List templateBytes = templateData.buffer.asUint8List();
-
-    final docx = await DocxTemplate.fromBytes(templateBytes);
-
-    final content = Content();
-    params.forEach((key, value) {
-      content.add(TextContent(key, value));
-    });
-
-    final generatedDoc = await docx.generate(content);
-
-    DateTime now = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(now);
-    final directory = await getTemporaryDirectory();
-    final outputFilePath = '${directory.path}/Белый картон от $formattedDate.docx';
-    final outputFile = File(outputFilePath);
-    await outputFile.writeAsBytes(generatedDoc!);
-
-    if (isSend) {
-      Share.shareFiles([outputFile.path], text: 'Белый картон от $formattedDate');
-    } else {
-      OpenFile.open(outputFile.path);
-    }
   }
 }

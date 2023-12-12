@@ -19,12 +19,12 @@ class DrawerScreen extends StatelessWidget {
               children: [
                 CircleAvatar(
                   radius: 40.0,
-                  backgroundColor: Colors.transparent, // Убедитесь, что фон прозрачный
+                  backgroundColor: Colors.transparent,
                   child: ClipOval(
                     child: Image.asset(
                       'assets/serbia.png',
-                      fit: BoxFit.cover, // Заполнение круга изображением
-                      width: 80.0, // Установка размера изображения
+                      fit: BoxFit.cover,
+                      width: 80.0,
                       height: 80.0,
                     ),
                   ),

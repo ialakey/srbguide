@@ -73,35 +73,35 @@ class AuthorScreen extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   UrlLauncherHelper.launchURL('https://www.linkedin.com/in/ilya-alakov-14b979266');
                 },
                 child: Text('Linkedin'),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   UrlLauncherHelper.launchURL('https://t.me/kino_narezo4ka');
                 },
                 child: Text('Telegram с фильмами'),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   UrlLauncherHelper.launchURL('https://www.instagram.com/unnamed_junior');
                 },
                 child: Text('Instagram'),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   UrlLauncherHelper.launchURL('mailto:prosoulk2017@gmail.com');
                 },
                 child: Text('Почта'),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: 15),
               ElevatedButton(
                 onPressed: () {
                   UrlLauncherHelper.launchURL('https://github.com/ialakey');
