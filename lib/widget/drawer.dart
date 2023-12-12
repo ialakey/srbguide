@@ -27,7 +27,7 @@ class DrawerScreen extends StatelessWidget {
                   ),
                 ),
                   SizedBox(height: 10.0),
-                  Center(child: Text("Serbia guide"))
+                  Center(child: Text("Serbia Guide"))
                 ],
               ),
             ),
