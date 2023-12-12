@@ -1,4 +1,4 @@
-package com.example.srbguide;
+package com.alakey.serbiaguide;
 
 import io.flutter.embedding.android.FlutterActivity;
 
