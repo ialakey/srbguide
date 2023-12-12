@@ -204,6 +204,7 @@ class _InformationFormState extends State<InformationForm> {
                   ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -229,6 +230,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -263,6 +265,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -295,6 +298,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -317,6 +321,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -336,6 +341,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -357,6 +363,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -422,6 +429,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -444,6 +452,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(
@@ -466,6 +475,7 @@ class _InformationFormState extends State<InformationForm> {
                     ]
                 ),
               ),
+              SizedBox(height: 2),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(

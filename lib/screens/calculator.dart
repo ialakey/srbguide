@@ -25,21 +25,26 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
 
   _loadDate() async {
     _prefs = await SharedPreferences.getInstance();
-    final savedDate = _prefs.getString('savedDate');
+    final savedDate = _prefs.getString('exitDate');
+    final savedRemainingDays = _prefs.getInt('remainingDays');
     if (savedDate != null && savedDate.isNotEmpty) {
       setState(() {
         exitDate = DateTime.parse(savedDate);
-        _entryDateController.text =
-            DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
-        calculateRemainingDays();
+        remainingDays = savedRemainingDays ?? 29;
+        if (exitDate != null) {
+          _entryDateController.text =
+              DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+          calculateRemainingDays();
+        }
       });
     }
   }
 
   _saveDate() async {
     if (exitDate != null) {
-      await _prefs.setString('savedDate', exitDate!.toIso8601String());
+      await _prefs.setString('exitDate', exitDate!.toIso8601String());
     }
+    await _prefs.setInt('remainingDays', remainingDays);
   }
 
   Future<void> _selectEntryDate(BuildContext context) async {
@@ -120,13 +125,15 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
           children: <Widget>[
             ListTile(
               title: Text(
-                'Выберите день въезда в Сербию: ${exitDate != null ? exitDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                'Выберите день въезда в Сербию:',
               ),
               trailing: Icon(Icons.calendar_today),
               onTap: () async {
                 _selectEntryDate(context);
               },
             ),
+            Text('Осталось дней: $remainingDays\n'
+                'Вы должны покинуть Сербию до: ${exitDate != null ? exitDate!.toString().split(' ')[0] : 'Выберите дату'}'),
           ],
         ),
       ),

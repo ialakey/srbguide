@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class DrawerScreen extends StatelessWidget {
   final Function(int) onNavItemTapped;

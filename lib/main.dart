@@ -6,7 +6,6 @@ import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/settings.dart';
-import 'screens/smokers_lounge.dart';
 import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/drawer.dart';
@@ -44,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
     'Калькулятор визарана',
     'Создание белого картона',
     'Калькулятор паушального налога',
-    'Serbia Guide',
+    'SRB.GUIDE',
     'Телеграм чаты',
     'Настройки',
     'Автор',
@@ -67,7 +66,9 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData.light(),
+      theme: ThemeData(
+        primaryColor: Colors.lightBlue,
+      ),
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       home: Scaffold(
