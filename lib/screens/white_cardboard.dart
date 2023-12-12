@@ -391,21 +391,21 @@ class _InformationFormState extends State<InformationForm> {
                   },
                 ),
               ),
-              SizedBox(height: 20),
-                Column(
-                  children: [
-                    TextButton.icon(
-                      onPressed: () {
-                        _saveData();
-                        SnackbarUtils.showSnackbar(context, 'Данные сохранены!');
-                      },
-                      icon: Icon(Icons.check),
-                      label: Text('Сохранить'),
-                    ),
-                    buildButton(Icons.telegram, 'Отправить', true),
-                    buildButton(Icons.download, 'Скачать', false),
-                  ],
-                ),
+              SizedBox(height: 18),
+              Column(
+                children: [
+                  TextButton.icon(
+                    onPressed: () {
+                      _saveData();
+                      SnackbarUtils.showSnackbar(context, 'Данные сохранены!');
+                    },
+                    icon: Icon(Icons.check),
+                    label: Text('Сохранить'),
+                  ),
+                  buildButton(Icons.telegram, 'Отправить', true),
+                  buildButton(Icons.download, 'Скачать', false),
+                ],
+              ),
             ],
           ),
         ),
