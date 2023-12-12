@@ -46,6 +46,9 @@ class _InformationFormState extends State<InformationForm> {
     String? documentNumber = prefs.getString('documentNumber');
     String? address = prefs.getString('address');
     String? ownerInfo = prefs.getString('ownerInfo');
+    String? dateOfBirthString = prefs.getString('dateOfBirth');
+    String? arrivalDateString = prefs.getString('arrivalDate');
+    String? registrationDateString = prefs.getString('registrationDate');
 
     if (surname != null) {
       setState(() {
@@ -82,6 +85,21 @@ class _InformationFormState extends State<InformationForm> {
         _ownerInfoController.text = ownerInfo;
       });
     }
+    if (dateOfBirthString != null) {
+      setState(() {
+        _dateOfBirth = DateTime.parse(dateOfBirthString);
+      });
+    }
+    if (arrivalDateString != null) {
+      setState(() {
+        _arrivalDate = DateTime.parse(arrivalDateString);
+      });
+    }
+    if (registrationDateString != null) {
+      setState(() {
+        _registrationDate = DateTime.parse(registrationDateString);
+      });
+    }
   }
 
   _saveData() async {
@@ -93,6 +111,15 @@ class _InformationFormState extends State<InformationForm> {
     await prefs.setString('documentNumber', _documentNumberController.text);
     await prefs.setString('address', _addressController.text);
     await prefs.setString('ownerInfo', _ownerInfoController.text);
+    if (_dateOfBirth != null) {
+      await prefs.setString('dateOfBirth', _dateOfBirth!.toIso8601String());
+    }
+    if (_arrivalDate != null) {
+      await prefs.setString('arrivalDate', _arrivalDate!.toIso8601String());
+    }
+    if (_registrationDate != null) {
+      await prefs.setString('registrationDate', _registrationDate!.toIso8601String());
+    }
   }
 
   @override

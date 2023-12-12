@@ -14,7 +14,7 @@ class DrawerScreen extends StatelessWidget {
         children: <Widget>[
           DrawerHeader(
             decoration: BoxDecoration(
-              color: Colors.blue,
+              // color: Colors.blue,
             ),
             child: SingleChildScrollView(
               child: Column(
@@ -27,7 +27,7 @@ class DrawerScreen extends StatelessWidget {
                   ),
                 ),
                   SizedBox(height: 10.0),
-                  Text("Serbia guide")
+                  Center(child: Text("Serbia guide"))
                 ],
               ),
             ),
