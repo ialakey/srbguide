@@ -55,7 +55,7 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
     }
   }
 
-  Future<void> _selectEntryDate(BuildContext context) async {
+  _selectEntryDate(BuildContext context) {
 
     initializeDateFormatting('ru').then((_) async {
 
@@ -73,14 +73,19 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
 
       calculateRemainingDays();
       if (exitDate != null) {
-        final String exitDateString =
-        DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+        final String exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Осталось дней: $remainingDays\n'
-                  'Вы должны покинуть Сербию до: $exitDateString'),
+              title: Column(
+                children: [
+                  Text('Осталось дней: $remainingDays'),
+                  SizedBox(height: 10),
+                  Text('Вы должны покинуть Сербию до:'),
+                  Text(exitDateString, style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
               actions: <Widget>[
                 TextButton.icon(
                   onPressed: () {
@@ -89,7 +94,6 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                   icon: Icon(Icons.notifications),
                   label: Text('Создать напоминание в календаре'),
                 ),
-                SizedBox(height: 20),
                 TextButton(
                   onPressed: () {
                     _saveDate();

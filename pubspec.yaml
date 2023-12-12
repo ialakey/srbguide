@@ -22,7 +22,7 @@ dependencies:
   shared_preferences: ^2.0.8
   add_2_calendar: ^3.0.1
   share: ^2.0.4
-  another_flushbar: ^1.12.30
+  quickalert: ^1.0.2
 
 dev_dependencies:
   flutter_test:

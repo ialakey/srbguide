@@ -9,14 +9,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  another_flushbar:
-    dependency: "direct main"
-    description:
-      name: another_flushbar
-      sha256: "19bf9520230ec40b300aaf9dd2a8fefcb277b25ecd1c4838f530566965befc2a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.12.30"
   archive:
     dependency: transitive
     description:
@@ -320,6 +312,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.7.3"
+  quickalert:
+    dependency: "direct main"
+    description:
+      name: quickalert
+      sha256: "0c21c9be68b9ae76082e1ad56db9f51202a38e617e08376f05375238277cfb5a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.2"
   share:
     dependency: "direct main"
     description:

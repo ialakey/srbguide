@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/service/document_generate.dart';
-import 'package:srbguide/utils/snackbar_utils.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
 
@@ -393,7 +393,11 @@ class _InformationFormState extends State<InformationForm> {
                   TextButton.icon(
                     onPressed: () {
                       _saveData();
-                      SnackbarUtils.showSnackbar(context, 'Данные сохранены!');
+                      QuickAlert.show(
+                        context: context,
+                        type: QuickAlertType.success,
+                        text: 'Сохранено!',
+                      );
                     },
                     icon: Icon(Icons.check),
                     label: Text('Сохранить'),
@@ -412,7 +416,7 @@ class _InformationFormState extends State<InformationForm> {
   Widget buildButton(IconData icon, String label, bool isSending) {
     return TextButton.icon(
       onPressed: () {
-        if (_formKey.currentState!.validate()) {
+        if (_formKey.currentState!.validate() && isFormValid()) {
           final params = {
             'surname': _surnameController.text,
             'name': _nameController.text,
@@ -428,11 +432,30 @@ class _InformationFormState extends State<InformationForm> {
           };
           DocumentGenerator.generateAndEventDocument(params, isSending);
         } else {
-          SnackbarUtils.showSnackbar(context, 'Заполните все поля!');
+          QuickAlert.show(
+            context: context,
+            type: QuickAlertType.error,
+            text: 'Заполните все поля!',
+          );
         }
       },
       icon: Icon(icon),
       label: Text(label),
     );
+  }
+
+  bool isFormValid() {
+    return _surnameController.text.isNotEmpty &&
+        _nameController.text.isNotEmpty &&
+        _dateOfBirth != null &&
+        _gender != null &&
+        _placeOfBirthController.text.isNotEmpty &&
+        _nationalityController.text.isNotEmpty &&
+        _documentNumberController.text.isNotEmpty &&
+        _arrivalDate != null &&
+        _placeArrivalController.text.isNotEmpty &&
+        _addressController.text.isNotEmpty &&
+        _ownerInfoController.text.isNotEmpty &&
+        _registrationDate != null;
   }
 }
