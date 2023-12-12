@@ -416,17 +416,19 @@ class _InformationFormState extends State<InformationForm> {
           final params = {
             'surname': _surnameController.text,
             'name': _nameController.text,
-            'dateOfBirth': _dateOfBirth!.toString().split(' ')[0],
+            'dateOfBirth': _dateOfBirth.toString().split(' ')[0],
             'sex': _gender,
             'placeOfBirth': _placeOfBirthController.text,
             'nationality': _nationalityController.text,
             'documentNumber': _documentNumberController.text,
-            'dateOfEntry': _arrivalDate.toString().split(' ')[0] + ' ' + _placeArrivalController.text,
+            'dateOfEntry': '${_arrivalDate.toString().split(' ')[0]} ${_placeArrivalController.text}',
             'addressOfPlace': _addressController.text,
             'landlordInformation': _ownerInfoController.text,
             'dateOfRegistration': _registrationDate.toString().split(' ')[0],
           };
           DocumentGenerator.generateAndEventDocument(params, isSending);
+        } else {
+          SnackbarUtils.showSnackbar(context, 'Заполните все поля!');
         }
       },
       icon: Icon(icon),
