@@ -66,25 +66,30 @@ class _TgChatScreenState extends State<TgChatScreen> {
               ),
               child: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: TextField(
-                  controller: searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Поиск',
-                    hintStyle: TextStyle(color: Colors.grey),
-                    prefixIcon: Icon(Icons.search, color: Colors.grey),
-                    suffixIcon: searchController.text.isNotEmpty
-                        ? IconButton(
-                      icon: Icon(Icons.clear, color: Colors.grey),
-                      onPressed: () {
-                        setState(() {
-                          searchController.clear();
-                          filteredButtons = List.from(buttonUrls);
-                        });
-                      },
-                    )
-                        : null,
-                    border: InputBorder.none,
-                  ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: searchController,
+                        decoration: InputDecoration(
+                          hintText: 'Поиск',
+                          hintStyle: TextStyle(color: Colors.grey),
+                          prefixIcon: Icon(Icons.search, color: Colors.grey),
+                          border: InputBorder.none,
+                        ),
+                      ),
+                    ),
+                    if (searchController.text.isNotEmpty)
+                      IconButton(
+                        icon: Icon(Icons.clear, color: Colors.grey),
+                        onPressed: () {
+                          setState(() {
+                            searchController.clear();
+                            filteredButtons = List.from(buttonUrls);
+                          });
+                        },
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -95,7 +100,6 @@ class _TgChatScreenState extends State<TgChatScreen> {
               itemBuilder: (context, index) {
                 String title = filteredButtons[index]['name']!;
                 String url = filteredButtons[index]['url']!;
-
                 return Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                   child: Card(
