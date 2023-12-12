@@ -38,6 +38,17 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
 
   late ThemeMode _themeMode;
+  int _selectedNavItem = 0;
+
+  final List<String> _appBarTitles = [
+    'Калькулятор визарана',
+    'Создание белого картона',
+    'Калькулятор паушального налога',
+    'Serbia Guide',
+    'Телеграм чаты',
+    'Настройки',
+    'Автор',
+  ];
 
   @override
   void initState() {
@@ -53,8 +64,6 @@ class _MainScreenState extends State<MainScreen> {
     await prefs.setBool('isDarkMode', themeMode == ThemeMode.dark);
   }
 
-  int _selectedNavItem = 0;
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -63,7 +72,7 @@ class _MainScreenState extends State<MainScreen> {
       themeMode: _themeMode,
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Serbia guide"),
+          title: Text(_appBarTitles[_selectedNavItem]),
         ),
         drawer: DrawerScreen(
           onNavItemTapped: (index) {
@@ -87,14 +96,12 @@ class _MainScreenState extends State<MainScreen> {
         return CalculatorTaxScreen();
       case 3:
         return SerbiaGuideScreen();
-      case 5:
+      case 4:
         return TgChatScreen();
+      case 5:
+        return SettingsScreen();
       case 6:
         return AuthorScreen();
-      case 7:
-        return SmokersLoungeScreen();
-      case 9:
-        return SettingsScreen();
       default:
         return InformationForm();
     }

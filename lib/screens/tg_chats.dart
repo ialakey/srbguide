@@ -55,9 +55,6 @@ class _TgChatScreenState extends State<TgChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Список телеграм каналов'),
-      ),
       body: Column(
         children: [
           Padding(

@@ -111,7 +111,7 @@ class DrawerScreen extends StatelessWidget {
                 leading: Icon(Icons.telegram_outlined),
                 title: Text('Телеграм чаты'),
                 onTap: () {
-                  onNavItemTapped(5);
+                  onNavItemTapped(4);
                   Navigator.pop(context);
                 },
               ),
@@ -121,7 +121,7 @@ class DrawerScreen extends StatelessWidget {
             leading: Icon(Icons.settings),
             title: Text('Настройки'),
             onTap: () {
-              onNavItemTapped(9);
+              onNavItemTapped(5);
               Navigator.pop(context);
             },
           ),
