@@ -16,11 +16,7 @@
 
 С 'Serbia Guide' ваше путешествие станет удобным и незабываемым! Установите приложение прямо сейчас и начните свои приключения в Сербии!
 
-![1-portrait](https://github.com/ialakey/srbguide/assets/56916175/2aee3197-a408-4907-a6ca-00eef0826350)
-
-![2-portrait](https://github.com/ialakey/srbguide/assets/56916175/449a76d0-b44c-4c55-9076-7d620a60be67)
-
-![3-portrait](https://github.com/ialakey/srbguide/assets/56916175/cd18313e-de30-4a13-a04e-aa1c9d8ae182)
-
-
-![4-portrait](https://github.com/ialakey/srbguide/assets/56916175/a19ad8a2-0af9-4b3d-b5e6-4dd1faba9c44)
+<img src="https://github.com/ialakey/srbguide/assets/56916175/2aee3197-a408-4907-a6ca-00eef0826350" width="300" height="500" alt="Screenshot1">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/449a76d0-b44c-4c55-9076-7d620a60be67" width="300" height="500" alt="Screenshot2">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/cd18313e-de30-4a13-a04e-aa1c9d8ae182" width="300" height="500" alt="Screenshot3">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/a19ad8a2-0af9-4b3d-b5e6-4dd1faba9c44" width="300" height="500" alt="Screenshot4">
