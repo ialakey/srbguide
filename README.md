@@ -1,16 +1,22 @@
-# srbguide
+# Serbia Guide
 
-A new Flutter project.
+## Приложение 'Serbia Guide': ваш надежный помощник в путешествиях по Сербии!
 
-## Getting Started
+Особенности:
 
-This project is a starting point for a Flutter application.
+1) Удобный расчёт визарана и напоминания в календаре: Организуйте свои визиты с лёгкостью и получайте своевременные напоминания о предстоящих важных событиях.
 
-A few resources to get you started if this is your first Flutter project:
+2) Создание белого картона: Больше не нужно вручную заполнять белый картон, просто нажмите кнопку сохранить и данные будут хранится на вашем смартфоне. Всегда можно скачать документ формата docx или отправить в Telegram, WhatsApp и т.д.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+3) Удобный список телеграм каналов и чатов: Быстрый доступ к интересным и актуальным сообществам и каналам для обмена информацией и опытом.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+4) Интерактивные карты: Найдите обменники, уютные заведения, как для курящих, так и для некурящих, а также русские заведения в любой точке Сербии.
+
+5) Полноценный гайд по Сербии.
+
+С 'Serbia Guide' ваше путешествие станет удобным и незабываемым! Установите приложение прямо сейчас и начните свои приключения в Сербии!
+
+<img src="https://github.com/ialakey/srbguide/assets/56916175/2aee3197-a408-4907-a6ca-00eef0826350" width="300" height="500" alt="Screenshot1">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/449a76d0-b44c-4c55-9076-7d620a60be67" width="300" height="500" alt="Screenshot2">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/cd18313e-de30-4a13-a04e-aa1c9d8ae182" width="300" height="500" alt="Screenshot3">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/a19ad8a2-0af9-4b3d-b5e6-4dd1faba9c44" width="300" height="500" alt="Screenshot4">
