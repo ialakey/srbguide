@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/service/document_generate.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 
 class InformationForm extends StatefulWidget {
   @override
@@ -173,7 +174,12 @@ class _InformationFormState extends State<InformationForm> {
         title: Text('Образац 1.'),
         actions: [
           PopupMenuButton<String>(
-            icon: Image.asset('assets/icons_24x24/circle-ellipsis-vertical.png'),
+            icon:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              darkIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              size: 24.0,
+            ),
             onSelected: (value) {
               if (value == 'save') {
                 _saveData();
@@ -192,21 +198,36 @@ class _InformationFormState extends State<InformationForm> {
               PopupMenuItem<String>(
                 value: 'save',
                 child: ListTile(
-                  leading: Image.asset('assets/icons_24x24/assept-document.png'),
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/assept-document.png',
+                    darkIcon: 'assets/icons_24x24/assept-document.png',
+                    size: 24.0,
+                  ),
                   title: Text('Сохранить'),
                 ),
               ),
               PopupMenuItem<String>(
                 value: 'send',
                 child: ListTile(
-                  leading: Image.asset('assets/icons_24x24/paper-plane.png'),
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/paper-plane.png',
+                    darkIcon: 'assets/icons_24x24/paper-plane.png',
+                    size: 24.0,
+                  ),
                   title: Text('Поделиться'),
                 ),
               ),
               PopupMenuItem<String>(
                 value: 'download',
                 child: ListTile(
-                  leading: Image.asset('assets/icons_24x24/download.png'),
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/download.png',
+                    darkIcon: 'assets/icons_24x24/download.png',
+                    size: 24.0,
+                  ),
                   title: Text('Скачать'),
                 ),
               ),
@@ -255,7 +276,12 @@ class _InformationFormState extends State<InformationForm> {
                   title: Text(
                     'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
-                  trailing: Image.asset('assets/icons_24x24/calendar.png'),
+                  trailing:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/calendar.png',
+                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    size: 24.0,
+                  ),
                   onTap: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -276,7 +302,12 @@ class _InformationFormState extends State<InformationForm> {
                 labelText: 'Пол - Sex',
                 child:
                   DropdownButtonFormField<String>(
-                    icon: Image.asset('assets/icons_24x24/caret-down.png'),
+                    icon:
+                    ThemedIcon(
+                      lightIcon: 'assets/icons_24x24/caret-down.png',
+                      darkIcon: 'assets/icons_24x24/caret-down.png',
+                      size: 24.0,
+                    ),
                     value: _gender,
                     items: _genderOptions.map((String value) {
                       return DropdownMenuItem<String>(
@@ -345,7 +376,12 @@ class _InformationFormState extends State<InformationForm> {
                         ),
                         SizedBox(width: 10),
                         DropdownButton<String>(
-                          icon: Image.asset('assets/icons_24x24/caret-down.png'),
+                          icon:
+                          ThemedIcon(
+                            lightIcon: 'assets/icons_24x24/caret-down.png',
+                            darkIcon: 'assets/icons_24x24/caret-down.png',
+                            size: 24.0,
+                          ),
                           value: _selectedValue,
                           onChanged: (String? newValue) {
                             if (newValue != null && newValue != 'Выбрать') {
@@ -368,7 +404,12 @@ class _InformationFormState extends State<InformationForm> {
                       title: Text(
                         'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
                       ),
-                      trailing: Image.asset('assets/icons_24x24/calendar.png'),
+                      trailing:
+                      ThemedIcon(
+                        lightIcon: 'assets/icons_24x24/calendar.png',
+                        darkIcon: 'assets/icons_24x24/calendar.png',
+                        size: 24.0,
+                      ),
                       onTap: () async {
                         final DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -419,7 +460,12 @@ class _InformationFormState extends State<InformationForm> {
                   title: Text(
                     'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
-                  trailing: Image.asset('assets/icons_24x24/calendar.png'),
+                  trailing:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/calendar.png',
+                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    size: 24.0,
+                  ),
                   onTap: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,

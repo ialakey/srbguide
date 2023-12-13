@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 
 class VisaFreeCalculator extends StatefulWidget {
   @override
@@ -135,7 +136,12 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              trailing: Image.asset('assets/icons_24x24/calendar.png'),
+              trailing:
+              ThemedIcon(
+                lightIcon: 'assets/icons_24x24/calendar.png',
+                darkIcon: 'assets/icons_24x24/calendar.png',
+                size: 24.0,
+              ),
               onTap: () async {
                 _selectEntryDate(context);
               },
@@ -144,7 +150,11 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/icons_24x24/clock-three.png'),
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/clock-three.png',
+                  darkIcon: 'assets/icons_24x24/clock-three.png',
+                  size: 24.0,
+                ),
                 SizedBox(height: 8),
                 Text(
                   'Осталось дней: $remainingDays\n'

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -25,11 +26,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     }
   }
 
-  void _toggleTheme(bool isDarkMode) {
+  void _toggleTheme() {
     setState(() {
-      _isDarkMode = isDarkMode;
-      _prefs!.setBool('isDarkMode', isDarkMode);
-      _updateThemeMode(isDarkMode);
+      _isDarkMode = !_isDarkMode;
+      _prefs!.setBool('isDarkMode', _isDarkMode);
+      _updateThemeMode(_isDarkMode);
     });
   }
 
@@ -50,10 +51,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            SwitchListTile(
-              title: Text('Темная тема'),
-              value: _isDarkMode,
-              onChanged: (value) => _toggleTheme(value),
+            InkWell(
+              onTap: _toggleTheme,
+              child: Row(
+                children: [
+                  SizedBox(width: 15),
+                  Text(
+                    _isDarkMode ? 'Светлая тема' : 'Темная тема',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(width: 15),
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/moon-stars.png',
+                    darkIcon: 'assets/icons_24x24/sun.png',
+                    size: 24.0,
+                  ),
+                ],
+              ),
             ),
           ],
         ),

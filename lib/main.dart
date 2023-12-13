@@ -10,6 +10,7 @@ import 'screens/settings.dart';
 import 'screens/tg_chats.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/drawer.dart';
+import 'widget/themed_icon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -79,7 +80,12 @@ class _MainScreenState extends State<MainScreen> {
         appBar: AppBar(
           title: Text(_appBarTitles[_selectedNavItem]),
           leading: IconButton(
-            icon: Image.asset('assets/icons_24x24/burger-menu.png'),
+            icon:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/burger-menu.png',
+              darkIcon: 'assets/icons_24x24/burger-menu.png',
+              size: 24.0,
+            ),
             onPressed: () =>  _scaffoldKey.currentState?.openDrawer(),
           ),
         ),

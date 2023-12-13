@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
+import 'themed_icon.dart';
+
 class DrawerScreen extends StatelessWidget {
   final Function(int) onNavItemTapped;
 
@@ -35,7 +37,12 @@ class DrawerScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Image.asset('assets/icons_24x24/time-check.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/time-check.png',
+              darkIcon: 'assets/icons_24x24/time-check.png',
+              size: 24.0,
+            ),
             title: Text('Калькулятор визарана'),
             onTap: () {
               onNavItemTapped(0);
@@ -43,7 +50,12 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Image.asset('assets/icons_24x24/edit.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/edit.png',
+              darkIcon: 'assets/icons_24x24/edit.png',
+              size: 24.0,
+            ),
             title: Text('Создание белого картона'),
             onTap: () {
               onNavItemTapped(1);
@@ -51,7 +63,12 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Image.asset('assets/icons_24x24/coins.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/coins.png',
+              darkIcon: 'assets/icons_24x24/coins.png',
+              size: 24.0,
+            ),
             title: Text('Калькулятор паушального налога'),
             onTap: () {
               onNavItemTapped(2);
@@ -59,11 +76,21 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ExpansionTile(
-            leading: Image.asset('assets/icons_24x24/map-marker.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/map-marker.png',
+              darkIcon: 'assets/icons_24x24/map-marker.png',
+              size: 24.0,
+            ),
             title: Text('Карты'),
             children: [
               ListTile(
-                leading: Image.asset('assets/icons_24x24/usd.png'),
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/usd.png',
+                  darkIcon: 'assets/icons_24x24/usd.png',
+                  size: 24.0,
+                ),
                 title: Text('Обменники'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://www.google.com/maps/search/exchange');
@@ -71,7 +98,12 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Image.asset('assets/icons_24x24/do-not-enter.png'),
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/do-not-enter.png',
+                  darkIcon: 'assets/icons_24x24/do-not-enter.png',
+                  size: 24.0,
+                ),
                 title: Text('Не курящие/Курящие'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://lokalibezdima.rs');
@@ -79,7 +111,12 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Image.asset('assets/icons_24x24/tea.png'),
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/tea.png',
+                  darkIcon: 'assets/icons_24x24/tea.png',
+                  size: 24.0,
+                ),
                 title: Text('Русские заведения'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=45.23992208501285%2C19.854860046985962&z=13');
@@ -90,10 +127,20 @@ class DrawerScreen extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text("База знаний"),
-            leading: Image.asset('assets/icons_24x24/graduation-cap.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/graduation-cap.png',
+              darkIcon: 'assets/icons_24x24/graduation-cap.png',
+              size: 24.0,
+            ),
             children: [
               ListTile(
-                leading: Image.asset('assets/icons_24x24/spreadsheet.png'),
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/spreadsheet.png',
+                  darkIcon: 'assets/icons_24x24/spreadsheet.png',
+                  size: 24.0,
+                ),
                 title: Text('SRB.GUIDE'),
                 onTap: () {
                   onNavItemTapped(3);
@@ -101,7 +148,12 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Image.asset('assets/icons_24x24/users.png'),
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/users.png',
+                  darkIcon: 'assets/icons_24x24/users.png',
+                  size: 24.0,
+                ),
                 title: Text('Телеграм чаты'),
                 onTap: () {
                   onNavItemTapped(4);
@@ -111,7 +163,12 @@ class DrawerScreen extends StatelessWidget {
             ],
           ),
           ListTile(
-            leading: Image.asset('assets/icons_24x24/settings.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/settings.png',
+              darkIcon: 'assets/icons_24x24/settings.png',
+              size: 24.0,
+            ),
             title: Text('Настройки'),
             onTap: () {
               onNavItemTapped(5);
@@ -119,7 +176,12 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Image.asset('assets/icons_24x24/diamond.png'),
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/diamond.png',
+              darkIcon: 'assets/icons_24x24/diamond.png',
+              size: 24.0,
+            ),
             title: Text('Автор'),
             onTap: () {
               onNavItemTapped(6);
