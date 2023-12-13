@@ -173,6 +173,7 @@ class _InformationFormState extends State<InformationForm> {
         title: Text('Образац 1.'),
         actions: [
           PopupMenuButton<String>(
+            icon: Image.asset('assets/icons_24x24/circle-ellipsis-vertical.png'),
             onSelected: (value) {
               if (value == 'save') {
                 _saveData();
@@ -188,24 +189,24 @@ class _InformationFormState extends State<InformationForm> {
               }
             },
             itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'save',
                 child: ListTile(
-                  leading: Icon(Icons.check),
+                  leading: Image.asset('assets/icons_24x24/assept-document.png'),
                   title: Text('Сохранить'),
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'send',
                 child: ListTile(
-                  leading: Icon(Icons.telegram),
-                  title: Text('Отправить'),
+                  leading: Image.asset('assets/icons_24x24/paper-plane.png'),
+                  title: Text('Поделиться'),
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'download',
                 child: ListTile(
-                  leading: Icon(Icons.download),
+                  leading: Image.asset('assets/icons_24x24/download.png'),
                   title: Text('Скачать'),
                 ),
               ),
@@ -254,7 +255,7 @@ class _InformationFormState extends State<InformationForm> {
                   title: Text(
                     'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
-                  trailing: Icon(Icons.calendar_today),
+                  trailing: Image.asset('assets/icons_24x24/calendar.png'),
                   onTap: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -275,6 +276,7 @@ class _InformationFormState extends State<InformationForm> {
                 labelText: 'Пол - Sex',
                 child:
                   DropdownButtonFormField<String>(
+                    icon: Image.asset('assets/icons_24x24/caret-down.png'),
                     value: _gender,
                     items: _genderOptions.map((String value) {
                       return DropdownMenuItem<String>(
@@ -343,6 +345,7 @@ class _InformationFormState extends State<InformationForm> {
                         ),
                         SizedBox(width: 10),
                         DropdownButton<String>(
+                          icon: Image.asset('assets/icons_24x24/caret-down.png'),
                           value: _selectedValue,
                           onChanged: (String? newValue) {
                             if (newValue != null && newValue != 'Выбрать') {
@@ -365,7 +368,7 @@ class _InformationFormState extends State<InformationForm> {
                       title: Text(
                         'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
                       ),
-                      trailing: Icon(Icons.calendar_today),
+                      trailing: Image.asset('assets/icons_24x24/calendar.png'),
                       onTap: () async {
                         final DateTime? pickedDate = await showDatePicker(
                           context: context,
@@ -416,7 +419,7 @@ class _InformationFormState extends State<InformationForm> {
                   title: Text(
                     'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
                   ),
-                  trailing: Icon(Icons.calendar_today),
+                  trailing: Image.asset('assets/icons_24x24/calendar.png'),
                   onTap: () async {
                     final DateTime? pickedDate = await showDatePicker(
                       context: context,

@@ -74,7 +74,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
                         decoration: InputDecoration(
                           hintText: 'Поиск',
                           hintStyle: TextStyle(color: Colors.grey),
-                          prefixIcon: Icon(Icons.search, color: Colors.grey),
+                          prefixIcon: Image.asset('assets/icons_24x24/search.png'),
                           border: InputBorder.none,
                         ),
                       ),

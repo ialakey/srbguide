@@ -38,6 +38,7 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeMode _themeMode;
   int _selectedNavItem = 0;
 
@@ -74,8 +75,13 @@ class _MainScreenState extends State<MainScreen> {
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       home: Scaffold(
+        key: _scaffoldKey,
         appBar: AppBar(
           title: Text(_appBarTitles[_selectedNavItem]),
+          leading: IconButton(
+            icon: Image.asset('assets/icons_24x24/burger-menu.png'),
+            onPressed: () =>  _scaffoldKey.currentState?.openDrawer(),
+          ),
         ),
         drawer: DrawerScreen(
           onNavItemTapped: (index) {

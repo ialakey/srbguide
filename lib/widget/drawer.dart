@@ -35,7 +35,7 @@ class DrawerScreen extends StatelessWidget {
             ),
           ),
           ListTile(
-            leading: Icon(Icons.access_alarm),
+            leading: Image.asset('assets/icons_24x24/time-check.png'),
             title: Text('Калькулятор визарана'),
             onTap: () {
               onNavItemTapped(0);
@@ -43,7 +43,7 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.create),
+            leading: Image.asset('assets/icons_24x24/edit.png'),
             title: Text('Создание белого картона'),
             onTap: () {
               onNavItemTapped(1);
@@ -51,7 +51,7 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.calculate),
+            leading: Image.asset('assets/icons_24x24/coins.png'),
             title: Text('Калькулятор паушального налога'),
             onTap: () {
               onNavItemTapped(2);
@@ -59,11 +59,11 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ExpansionTile(
-            leading: Icon(Icons.map),
+            leading: Image.asset('assets/icons_24x24/map-marker.png'),
             title: Text('Карты'),
             children: [
               ListTile(
-                leading: Icon(Icons.account_balance),
+                leading: Image.asset('assets/icons_24x24/usd.png'),
                 title: Text('Обменники'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://www.google.com/maps/search/exchange');
@@ -71,7 +71,7 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.smoke_free),
+                leading: Image.asset('assets/icons_24x24/do-not-enter.png'),
                 title: Text('Не курящие/Курящие'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://lokalibezdima.rs');
@@ -79,7 +79,7 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.local_cafe),
+                leading: Image.asset('assets/icons_24x24/tea.png'),
                 title: Text('Русские заведения'),
                 onTap: () {
                   UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=45.23992208501285%2C19.854860046985962&z=13');
@@ -90,10 +90,10 @@ class DrawerScreen extends StatelessWidget {
           ),
           ExpansionTile(
             title: Text("База знаний"),
-            leading: Icon(Icons.library_books),
+            leading: Image.asset('assets/icons_24x24/graduation-cap.png'),
             children: [
               ListTile(
-                leading: Icon(Icons.note),
+                leading: Image.asset('assets/icons_24x24/spreadsheet.png'),
                 title: Text('SRB.GUIDE'),
                 onTap: () {
                   onNavItemTapped(3);
@@ -101,7 +101,7 @@ class DrawerScreen extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: Icon(Icons.telegram_outlined),
+                leading: Image.asset('assets/icons_24x24/users.png'),
                 title: Text('Телеграм чаты'),
                 onTap: () {
                   onNavItemTapped(4);
@@ -111,7 +111,7 @@ class DrawerScreen extends StatelessWidget {
             ],
           ),
           ListTile(
-            leading: Icon(Icons.settings),
+            leading: Image.asset('assets/icons_24x24/settings.png'),
             title: Text('Настройки'),
             onTap: () {
               onNavItemTapped(5);
@@ -119,7 +119,7 @@ class DrawerScreen extends StatelessWidget {
             },
           ),
           ListTile(
-            leading: Icon(Icons.account_circle),
+            leading: Image.asset('assets/icons_24x24/diamond.png'),
             title: Text('Автор'),
             onTap: () {
               onNavItemTapped(6);

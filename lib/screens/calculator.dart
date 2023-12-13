@@ -1,4 +1,5 @@
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -134,19 +135,27 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              trailing: Icon(Icons.calendar_today),
+              trailing: Image.asset('assets/icons_24x24/calendar.png'),
               onTap: () async {
                 _selectEntryDate(context);
               },
             ),
             SizedBox(height: 10),
-            Text('Осталось дней: $remainingDays\n'
-                'Вы должны покинуть Сербию до: ${exitDateString}',
-              style: TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.w500,
-              ),
-              textAlign: TextAlign.center,
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset('assets/icons_24x24/clock-three.png'),
+                SizedBox(height: 8),
+                Text(
+                  'Осталось дней: $remainingDays\n'
+                      'Вы должны покинуть Сербию до: \n${exitDateString}',
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ],
         ),
