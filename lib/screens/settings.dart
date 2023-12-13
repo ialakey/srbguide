@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -41,6 +42,38 @@ class _SettingsScreenState extends State<SettingsScreen> {
     mainScreen?.setThemeMode(newThemeMode);
   }
 
+  Future<void> _clearSharedPreferences() async {
+    await _prefs?.clear();
+    setState(() {
+      _isDarkMode = false;
+    });
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      title: 'Очищено!',
+    );
+  }
+
+  _showDialog() {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.confirm,
+      title: 'Подтверждение',
+      text: 'Вы уверены, что хотите очистить данные?',
+      showConfirmBtn: true,
+      confirmBtnText: 'Да',
+      cancelBtnText: 'Нет',
+      onConfirmBtnTap: () {
+        _clearSharedPreferences();
+        Navigator.of(context).pop();
+      },
+      onCancelBtnTap: () {
+        Navigator.of(context).pop();
+      },
+      showCancelBtn: false,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,6 +97,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ThemedIcon(
                     lightIcon: 'assets/icons_24x24/moon-stars.png',
                     darkIcon: 'assets/icons_24x24/sun.png',
+                    size: 24.0,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 20),
+            InkWell(
+              onTap: _showDialog,
+              child: Row(
+                children: [
+                  SizedBox(width: 15),
+                  Text(
+                    'Удалить данные',
+                    style: TextStyle(fontSize: 16),
+                  ),
+                  SizedBox(width: 15),
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/trash.png',
+                    darkIcon: 'assets/icons_24x24/trash.png',
                     size: 24.0,
                   ),
                 ],
