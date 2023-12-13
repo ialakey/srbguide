@@ -109,7 +109,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 children: [
                   SizedBox(width: 15),
                   Text(
-                    'Удалить данные',
+                    'Очистить данные',
                     style: TextStyle(fontSize: 16),
                   ),
                   SizedBox(width: 15),
