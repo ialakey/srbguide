@@ -100,13 +100,13 @@ class DrawerScreen extends StatelessWidget {
               ListTile(
                 leading:
                 ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/do-not-enter.png',
-                  darkIcon: 'assets/icons_24x24/do-not-enter.png',
+                  lightIcon: 'assets/icons_24x24/no-smoking.png',
+                  darkIcon: 'assets/icons_24x24/no-smoking.png',
                   size: 24.0,
                 ),
-                title: Text('Не курящие/Курящие'),
+                title: Text('Не курящие'),
                 onTap: () {
-                  UrlLauncherHelper.launchURL('https://lokalibezdima.rs');
+                  UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/embed?mid=1DhbU4mNbi0OVkoRSpKBqBmWqeRXU5vo&ehbc=2E312');
                   Navigator.pop(context);
                 },
               ),
