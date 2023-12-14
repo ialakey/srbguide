@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/map.dart';
 
 import 'themed_icon.dart';
 
@@ -84,44 +85,29 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Карты'),
             children: [
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/usd.png',
-                  darkIcon: 'assets/icons_24x24/usd.png',
-                  size: 24.0,
-                ),
-                title: Text('Обменники'),
-                onTap: () {
-                  UrlLauncherHelper.launchURL('https://www.google.com/maps/search/exchange');
-                  Navigator.pop(context);
-                },
+              MapWidgets.googleMapsListTile(
+                iconPath: 'assets/icons_24x24/usd.png',
+                url: 'https://www.google.com/maps/search/Мењачница',
+                title: 'Обменники',
+                context: context,
               ),
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/no-smoking.png',
-                  darkIcon: 'assets/icons_24x24/no-smoking.png',
-                  size: 24.0,
-                ),
-                title: Text('Не курящие'),
-                onTap: () {
-                  UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/embed?mid=1DhbU4mNbi0OVkoRSpKBqBmWqeRXU5vo&ehbc=2E312');
-                  Navigator.pop(context);
-                },
+              MapWidgets.googleMapsListTile(
+                iconPath: 'assets/icons_24x24/home-location.png',
+                url: 'https://t.ly/YAx6',
+                title: 'Черный список квартир',
+                context: context,
               ),
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/tea.png',
-                  darkIcon: 'assets/icons_24x24/tea.png',
-                  size: 24.0,
-                ),
-                title: Text('Русские заведения'),
-                onTap: () {
-                  UrlLauncherHelper.launchURL('https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=45.23992208501285%2C19.854860046985962&z=13');
-                  Navigator.pop(context);
-                },
+              MapWidgets.googleMapsListTile(
+                iconPath: 'assets/icons_24x24/no-smoking.png',
+                url: 'https://www.google.com/maps/d/viewer?mid=1DhbU4mNbi0OVkoRSpKBqBmWqeRXU5vo&usp=sharing',
+                title: 'Не курящие',
+                context: context,
+              ),
+              MapWidgets.googleMapsListTile(
+                iconPath: 'assets/icons_24x24/tea.png',
+                url: 'https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=sharing',
+                title: 'Русские заведения',
+                context: context,
               ),
             ],
           ),

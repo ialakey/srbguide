@@ -84,44 +84,50 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            InkWell(
-              onTap: _toggleTheme,
-              child: Row(
-                children: [
-                  SizedBox(width: 15),
-                  Text(
-                    _isDarkMode ? 'Светлая тема' : 'Темная тема',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(width: 15),
-                  ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/moon-stars.png',
-                    darkIcon: 'assets/icons_24x24/sun.png',
-                    size: 24.0,
-                  ),
-                ],
+            _buildCard(
+              'Светлая тема',
+              ThemedIcon(
+                lightIcon: 'assets/icons_24x24/moon-stars.png',
+                darkIcon: 'assets/icons_24x24/sun.png',
+                size: 24.0,
               ),
+              _toggleTheme,
             ),
             SizedBox(height: 20),
-            InkWell(
-              onTap: _showDialog,
-              child: Row(
-                children: [
-                  SizedBox(width: 15),
-                  Text(
-                    'Очистить данные',
-                    style: TextStyle(fontSize: 16),
-                  ),
-                  SizedBox(width: 15),
-                  ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/trash.png',
-                    darkIcon: 'assets/icons_24x24/trash.png',
-                    size: 24.0,
-                  ),
-                ],
+            _buildCard(
+              'Очистить данные',
+              ThemedIcon(
+                lightIcon: 'assets/icons_24x24/trash.png',
+                darkIcon: 'assets/icons_24x24/trash.png',
+                size: 24.0,
               ),
+              _showDialog,
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCard(String title, Widget icon, Function() onTap) {
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        onTap: onTap,
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              Text(
+                title,
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(width: 10),
+              icon,
+            ],
+          ),
         ),
       ),
     );

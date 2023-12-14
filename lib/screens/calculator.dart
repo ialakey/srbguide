@@ -128,42 +128,56 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            ListTile(
-              title: Text(
-                'Выберите день въезда в Сербию:',
-                style: TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
+            Card(
+              elevation: 2,
+              margin: EdgeInsets.symmetric(vertical: 8.0),
+              child: ListTile(
+                title: Text(
+                  'Выберите день въезда в Сербию:',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                trailing: ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/calendar.png',
+                  darkIcon: 'assets/icons_24x24/calendar.png',
+                  size: 24.0,
+                ),
+                onTap: () async {
+                  _selectEntryDate(context);
+                },
               ),
-              trailing:
-              ThemedIcon(
-                lightIcon: 'assets/icons_24x24/calendar.png',
-                darkIcon: 'assets/icons_24x24/calendar.png',
-                size: 24.0,
-              ),
-              onTap: () async {
-                _selectEntryDate(context);
-              },
             ),
             SizedBox(height: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/clock-three.png',
-                  darkIcon: 'assets/icons_24x24/clock-three.png',
-                  size: 24.0,
-                ),
-                SizedBox(height: 8),
-                Text(
-                  'Осталось дней: $remainingDays\n'
-                      'Вы должны покинуть Сербию до: \n${exitDateString}',
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.w500,
+                Card(
+                  elevation: 2,
+                  margin: EdgeInsets.symmetric(vertical: 8.0),
+                  child: Padding(
+                    padding: EdgeInsets.all(12.0),
+                    child: Column(
+                      children: [
+                        ThemedIcon(
+                          lightIcon: 'assets/icons_24x24/clock-three.png',
+                          darkIcon: 'assets/icons_24x24/clock-three.png',
+                          size: 24.0,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          'Осталось дней: $remainingDays\n'
+                              'Вы должны покинуть Сербию до: \n$exitDateString',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ],
+                    ),
                   ),
-                  textAlign: TextAlign.center,
                 ),
               ],
             ),

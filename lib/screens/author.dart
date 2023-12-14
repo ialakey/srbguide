@@ -22,6 +22,30 @@ class AuthorScreen extends StatelessWidget {
     },
   ];
 
+  final Map<String, String> links = {
+    'Linkedin': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
+    'Почта': 'mailto:prosoulk2017@gmail.com',
+    'GitHub': 'https://github.com/ialakey/srbguide',
+    'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
+  };
+
+  List<Widget> generateButtons(Map<String, String> links) {
+    return links.entries.map((entry) {
+      return Padding(
+        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
+        child: ElevatedButton(
+          onPressed: () {
+            UrlLauncherHelper.launchURL(entry.value);
+          },
+          child: SizedBox(
+            width: 150,
+            child: Center(child: Text(entry.key)),
+          ),
+        ),
+      );
+    }).toList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +56,13 @@ class AuthorScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("Приложение делается на чистом энтузиазме, если вам помогло это приложение и вы хотите поблагодарить автора, то это можно сделать следующим способам! 💫"),
+              Text(
+                "Это приложение разрабатывается исключительно на основе энтузиазма. Если оно оказало вам помощь и вы желаете выразить благодарность автору, есть несколько способов сделать это! 😎",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               SizedBox(height: 20),
               GestureDetector(
                 onTap: () {
@@ -43,12 +73,21 @@ class AuthorScreen extends StatelessWidget {
                     ),
                   );
                 },
-                child: Text(
+                child:
+                Text(
                   'По номеру телефона +7 952 633 49 42 СПБ Сбер, QIWI',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
               SizedBox(height: 20),
-              Text('Крипта'),
+              Text('Крипта',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: DataTable(
@@ -73,46 +112,11 @@ class AuthorScreen extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  UrlLauncherHelper.launchURL('https://www.linkedin.com/in/ilya-alakov-14b979266');
-                },
-                child: Text('Linkedin'),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  UrlLauncherHelper.launchURL('https://t.me/kino_narezo4ka');
-                },
-                child: Text('Telegram с фильмами'),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  UrlLauncherHelper.launchURL('https://www.instagram.com/unnamed_junior');
-                },
-                child: Text('Instagram'),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  UrlLauncherHelper.launchURL('mailto:prosoulk2017@gmail.com');
-                },
-                child: Text('Почта'),
-              ),
-              SizedBox(height: 15),
-              ElevatedButton(
-                onPressed: () {
-                  UrlLauncherHelper.launchURL('https://github.com/ialakey');
-                },
-                child: Text('GitHub'),
-              ),
+              ...generateButtons(links),
             ],
           ),
         ),
       ),
     );
   }
-
 }
