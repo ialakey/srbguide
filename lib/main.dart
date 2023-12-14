@@ -8,6 +8,7 @@ import 'screens/calculator_tax.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/settings.dart';
 import 'screens/tg_chats.dart';
+import 'screens/useful_links.dart';
 import 'screens/white_cardboard.dart';
 import 'widget/drawer.dart';
 import 'widget/themed_icon.dart';
@@ -51,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
     'Телеграм чаты',
     'Настройки',
     'Автор',
+    'Полезные ссылки',
   ];
 
   @override
@@ -117,6 +119,8 @@ class _MainScreenState extends State<MainScreen> {
         return SettingsScreen();
       case 6:
         return AuthorScreen();
+      case 7:
+        return UsefulLinksScreen();
       default:
         return VisaFreeCalculator();
     }

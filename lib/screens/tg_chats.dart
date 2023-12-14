@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 
 class TgChatScreen extends StatefulWidget {
   @override
@@ -58,39 +59,26 @@ class _TgChatScreenState extends State<TgChatScreen> {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20.0),
-                color: Colors.grey[200],
-              ),
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        controller: searchController,
-                        decoration: InputDecoration(
-                          hintText: 'Поиск',
-                          hintStyle: TextStyle(color: Colors.grey),
-                          prefixIcon: Image.asset('assets/icons_24x24/search.png'),
-                          border: InputBorder.none,
-                        ),
-                      ),
-                    ),
-                    if (searchController.text.isNotEmpty)
-                      IconButton(
-                        icon: Icon(Icons.clear, color: Colors.grey),
-                        onPressed: () {
-                          setState(() {
-                            searchController.clear();
-                            filteredButtons = List.from(buttonUrls);
-                          });
-                        },
-                      ),
-                  ],
+            padding: EdgeInsets.all(8.0),
+            child: TextField(
+              controller: searchController,
+              decoration: InputDecoration(
+                labelText: 'Поиск',
+                prefixIcon:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/search.png',
+                  darkIcon: 'assets/icons_24x24/search.png',
+                  size: 24.0,
                 ),
+                suffixIcon: searchController.text.isNotEmpty
+                    ? IconButton(
+                  icon: Icon(Icons.clear, color: Colors.grey),
+                  onPressed: () {
+                    searchController.clear();
+                    filteredButtons = List.from(buttonUrls);
+                  },
+                )
+                    : null,
               ),
             ),
           ),
