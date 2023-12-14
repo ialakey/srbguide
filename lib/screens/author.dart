@@ -26,7 +26,7 @@ class AuthorScreen extends StatelessWidget {
     'Linkedin': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
     'Почта': 'mailto:prosoulk2017@gmail.com',
     'GitHub': 'https://github.com/ialakey/srbguide',
-    'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
+    // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
   };
 
   List<Widget> generateButtons(Map<String, String> links) {

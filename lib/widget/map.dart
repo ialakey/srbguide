@@ -21,7 +21,6 @@ class MapWidgets {
             title: Text(title),
             onTap: () {
               UrlLauncherHelper.launchURL(url);
-              Navigator.pop(context);
             },
           ),
         ),
