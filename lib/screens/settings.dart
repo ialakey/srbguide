@@ -76,6 +76,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String buttonText = _isDarkMode ? 'Светлая тема' : 'Темная тема';
+
     return Scaffold(
       body: _prefs == null
           ? Center(child: CircularProgressIndicator())
@@ -85,7 +87,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildCard(
-              'Светлая тема',
+              buttonText,
               ThemedIcon(
                 lightIcon: 'assets/icons_24x24/moon-stars.png',
                 darkIcon: 'assets/icons_24x24/sun.png',

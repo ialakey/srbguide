@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
     'Телеграм чаты',
     'Настройки',
     'Автор',
-    'Полезные ссылки',
+    'Полезности',
   ];
 
   @override

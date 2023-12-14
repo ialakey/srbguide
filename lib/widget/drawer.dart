@@ -74,19 +74,6 @@ class DrawerScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/clip.png',
-              darkIcon: 'assets/icons_24x24/clip.png',
-              size: 24.0,
-            ),
-            title: Text('Полезные ссылки'),
-            onTap: () {
-              onNavItemTapped(7);
-              Navigator.pop(context);
-            },
-          ),
           ExpansionTile(
             title: Text("База знаний"),
             leading:
@@ -106,6 +93,19 @@ class DrawerScreen extends StatelessWidget {
                 title: Text('SRB.GUIDE'),
                 onTap: () {
                   onNavItemTapped(3);
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/physics.png',
+                  darkIcon: 'assets/icons_24x24/physics.png',
+                  size: 24.0,
+                ),
+                title: Text('Полезности'),
+                onTap: () {
+                  onNavItemTapped(7);
                   Navigator.pop(context);
                 },
               ),
