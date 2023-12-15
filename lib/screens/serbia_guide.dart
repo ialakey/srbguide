@@ -9,8 +9,7 @@ class SerbiaGuideScreen extends StatefulWidget {
 }
 
 class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
-  final Completer<WebViewController> _controller =
-  Completer<WebViewController>();
+  final Completer<WebViewController> _controller = Completer<WebViewController>();
 
   bool _isLoading = true;
 
@@ -25,7 +24,9 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
             },
-            onPageFinished: (String url) {
+            onPageFinished: (String url) async {
+              final webViewController = await _controller.future;
+              webViewController.evaluateJavascript('document.cookie = "cookies_enabled=true";');
               setState(() {
                 _isLoading = false;
               });

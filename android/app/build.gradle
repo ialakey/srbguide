@@ -36,7 +36,7 @@ android {
 
     defaultConfig {
         applicationId "com.alakey.serbiaguide"
-        minSdkVersion flutter.minSdkVersion
+        minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
         versionCode 3
         versionName flutterVersionName
