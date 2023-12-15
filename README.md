@@ -10,13 +10,14 @@
 
 3) Удобный список телеграм каналов и чатов: Быстрый доступ к интересным и актуальным сообществам и каналам для обмена информацией и опытом.
 
-4) Интерактивные карты: Найдите обменники, уютные заведения, как для курящих, так и для некурящих, а также русские заведения в любой точке Сербии.
+4) Интерактивные карты: Найдите обменники, уютные заведения для некурящих, а также русские заведения в любой точке Сербии.
 
 5) Полноценный гайд по Сербии.
 
 С 'Serbia Guide' ваше путешествие станет удобным и незабываемым! Установите приложение прямо сейчас и начните свои приключения в Сербии!
 
-<img src="https://github.com/ialakey/srbguide/assets/56916175/2aee3197-a408-4907-a6ca-00eef0826350" width="300" height="500" alt="Screenshot1">
-<img src="https://github.com/ialakey/srbguide/assets/56916175/449a76d0-b44c-4c55-9076-7d620a60be67" width="300" height="500" alt="Screenshot2">
-<img src="https://github.com/ialakey/srbguide/assets/56916175/cd18313e-de30-4a13-a04e-aa1c9d8ae182" width="300" height="500" alt="Screenshot3">
-<img src="https://github.com/ialakey/srbguide/assets/56916175/a19ad8a2-0af9-4b3d-b5e6-4dd1faba9c44" width="300" height="500" alt="Screenshot4">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/173e0790-545d-4c99-80ce-71c86e9e4c03" width="300" height="500" alt="Screenshot1">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/7a44f9b1-1534-4529-85a2-a0fbf1da2917" width="300" height="500" alt="Screenshot2">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/0f332dc6-6e49-43f3-b541-078b85e106d5" width="300" height="500" alt="Screenshot3">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/e1592c64-7af0-4519-84a2-31af2e87f4c8" width="300" height="500" alt="Screenshot4">
+<img src="https://github.com/ialakey/srbguide/assets/56916175/e809222b-4277-4c8a-9cd1-9f7190d64ba0" width="300" height="500" alt="Screenshot5">
