@@ -120,7 +120,7 @@ class _DocumentScannerScreenState extends State<DocumentScannerScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Сканирование'),
+        title: Text('Сканирование test'),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -155,7 +155,7 @@ class _DocumentScannerScreenState extends State<DocumentScannerScreen> {
         onPressed: _processImage,
         child: Icon(Icons.camera),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 

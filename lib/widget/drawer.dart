@@ -74,6 +74,32 @@ class DrawerScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          ListTile(
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/map-marker.png',
+              darkIcon: 'assets/icons_24x24/map-marker.png',
+              size: 24.0,
+            ),
+            title: Text('Карты'),
+            onTap: () {
+              onNavItemTapped(8);
+              Navigator.pop(context);
+            },
+          ),
+          ListTile(
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/map-marker.png',
+              darkIcon: 'assets/icons_24x24/map-marker.png',
+              size: 24.0,
+            ),
+            title: Text('Гайд'),
+            onTap: () {
+              onNavItemTapped(9);
+              Navigator.pop(context);
+            },
+          ),
           ExpansionTile(
             title: Text("База знаний"),
             leading:

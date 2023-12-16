@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:srbguide/screens/map.dart';
 
 import 'screens/author.dart';
 import 'screens/calculator.dart';
 import 'screens/calculator_tax.dart';
+import 'screens/markdown.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/settings.dart';
 import 'screens/tg_chats.dart';
@@ -53,6 +55,8 @@ class _MainScreenState extends State<MainScreen> {
     'Настройки',
     'Автор',
     'Полезности',
+    'Карты',
+    'Гайд'
   ];
 
   @override
@@ -121,6 +125,10 @@ class _MainScreenState extends State<MainScreen> {
         return AuthorScreen();
       case 7:
         return UsefulLinksScreen();
+      case 8:
+        return MapScreen();
+      case 9:
+        return MyMarkdownScreen();
       default:
         return VisaFreeCalculator();
     }
