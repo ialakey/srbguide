@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 
 import 'themed_icon.dart';
 
@@ -61,7 +62,6 @@ class DrawerScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          //TODO Убрать webwidget
           ListTile(
             leading:
             ThemedIcon(
@@ -71,7 +71,7 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Калькулятор паушального налога'),
             onTap: () {
-              onNavItemTapped(2);
+              UrlLauncherHelper.launchURL('https://eporezi.purs.gov.rs/kalkulator-pausalnog-poreza-i-doprinosa.html');
               Navigator.pop(context);
             },
           ),
@@ -93,7 +93,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 title: Text('Карты'),
                 onTap: () {
-                  onNavItemTapped(8);
+                  onNavItemTapped(2);
                   Navigator.pop(context);
                 },
               ),
@@ -106,23 +106,10 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 title: Text('Гайд'),
                 onTap: () {
-                  onNavItemTapped(9);
+                  onNavItemTapped(3);
                   Navigator.pop(context);
                 },
               ),
-              // ListTile(
-              //   leading:
-              //   ThemedIcon(
-              //     lightIcon: 'assets/icons_24x24/spreadsheet.png',
-              //     darkIcon: 'assets/icons_24x24/spreadsheet.png',
-              //     size: 24.0,
-              //   ),
-              //   title: Text('SRB.GUIDE'),
-              //   onTap: () {
-              //     onNavItemTapped(3);
-              //     Navigator.pop(context);
-              //   },
-              // ),
               ListTile(
                 leading:
                 ThemedIcon(
@@ -132,7 +119,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 title: Text('Полезности'),
                 onTap: () {
-                  onNavItemTapped(7);
+                  onNavItemTapped(4);
                   Navigator.pop(context);
                 },
               ),
@@ -145,7 +132,7 @@ class DrawerScreen extends StatelessWidget {
                 ),
                 title: Text('Телеграм чаты'),
                 onTap: () {
-                  onNavItemTapped(4);
+                  onNavItemTapped(5);
                   Navigator.pop(context);
                 },
               ),
@@ -160,7 +147,7 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Настройки'),
             onTap: () {
-              onNavItemTapped(5);
+              onNavItemTapped(6);
               Navigator.pop(context);
             },
           ),
@@ -173,7 +160,7 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Автор'),
             onTap: () {
-              onNavItemTapped(6);
+              onNavItemTapped(7);
               Navigator.pop(context);
             },
           ),

@@ -5,8 +5,6 @@ import 'package:srbguide/screens/map.dart';
 
 import 'screens/author.dart';
 import 'screens/calculator.dart';
-import 'screens/calculator_tax.dart';
-import 'screens/markdown.dart';
 import 'screens/serbia_guide.dart';
 import 'screens/settings.dart';
 import 'screens/tg_chats.dart';
@@ -49,14 +47,12 @@ class _MainScreenState extends State<MainScreen> {
   final List<String> _appBarTitles = [
     'Калькулятор визарана',
     'Создание белого картона',
-    'Калькулятор паушального налога',
-    'SRB.GUIDE',
+    'Карты',
+    'Гайд',
+    'Полезности',
     'Телеграм чаты',
     'Настройки',
     'Автор',
-    'Полезности',
-    'Карты',
-    'Гайд'
   ];
 
   @override
@@ -112,23 +108,19 @@ class _MainScreenState extends State<MainScreen> {
       case 0:
         return VisaFreeCalculator();
       case 1:
-        return InformationForm();
+        return CreateWhiteCardboard();
       case 2:
-        return CalculatorTaxScreen();
+        return MapScreen();
       case 3:
         return SerbiaGuideScreen();
       case 4:
-        return TgChatScreen();
-      case 5:
-        return SettingsScreen();
-      case 6:
-        return AuthorScreen();
-      case 7:
         return UsefulLinksScreen();
-      case 8:
-        return MapScreen();
-      case 9:
-        return MyMarkdownScreen();
+      case 5:
+        return TgChatScreen();
+      case 6:
+        return SettingsScreen();
+      case 7:
+        return AuthorScreen();
       default:
         return VisaFreeCalculator();
     }

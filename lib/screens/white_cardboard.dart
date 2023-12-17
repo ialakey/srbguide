@@ -6,12 +6,12 @@ import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
-class InformationForm extends StatefulWidget {
+class CreateWhiteCardboard extends StatefulWidget {
   @override
-  _InformationFormState createState() => _InformationFormState();
+  _CreateWhiteCardboardState createState() => _CreateWhiteCardboardState();
 }
 
-class _InformationFormState extends State<InformationForm> {
+class _CreateWhiteCardboardState extends State<CreateWhiteCardboard> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
