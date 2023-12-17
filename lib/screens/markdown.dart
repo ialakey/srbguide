@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 typedef ScrollToTextFunction = void Function(String text);
-
 
 class MyMarkdownScreen extends StatefulWidget {
   @override
@@ -120,8 +120,33 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
     } else {
       final contentWithoutATags = _removeATags(_markdownContent);
       return MarkdownBody(
+        selectable: true,
         key: GlobalKey(),
         data: contentWithoutATags,
+        imageBuilder: (uri, title, alt) {
+          if (uri.toString().startsWith('https://github.com/')) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (BuildContext context) {
+                      return Scaffold(
+                        appBar: AppBar(),
+                        body: Center(
+                          child: PhotoView(
+                            imageProvider: NetworkImage(uri.toString()),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+              child: Image.network(uri.toString()),
+            );
+          }
+          return const SizedBox();
+        },
         onTapLink: (text, href, title) {
           if (href != null && href.startsWith('#')) {
             final anchor = Uri.decodeComponent(href.substring(1));

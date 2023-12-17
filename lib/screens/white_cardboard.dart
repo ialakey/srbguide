@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/screens/document_scanner.dart';
 import 'package:srbguide/service/document_generate.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
@@ -174,19 +173,6 @@ class _InformationFormState extends State<InformationForm> {
         centerTitle: true,
         title: Text('Образац 1.'),
         actions: [
-          // IconButton(
-          //   icon: ThemedIcon(
-          //     lightIcon: 'assets/icons_24x24/expand.png',
-          //     darkIcon: 'assets/icons_24x24/expand.png',
-          //     size: 24.0,
-          //   ),
-          //   onPressed: () {
-          //     Navigator.push(
-          //       context,
-          //       MaterialPageRoute(builder: (context) => DocumentScannerScreen()),
-          //     );
-          //   },
-          // ),
           PopupMenuButton<String>(
             icon:
             ThemedIcon(
