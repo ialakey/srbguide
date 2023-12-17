@@ -12,6 +12,7 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
   late String _markdownContent;
   late ScrollController _scrollController;
   late TextEditingController _searchController;
+  bool _isLoading = true;
 
   @override
   void initState() {
@@ -22,9 +23,10 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
   }
 
   Future<void> _loadMarkdownFile() async {
-    String data = await rootBundle.loadString('assets/test.md');
+    String data = await rootBundle.loadString('assets/Serbia-guide.md');
     setState(() {
       _markdownContent = data;
+      _isLoading = false;
     });
   }
 
@@ -84,7 +86,9 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
         controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.all(8.0),
-          child: _markdownContent != null
+          child: _isLoading
+              ? Center(child: CircularProgressIndicator())
+              : _markdownContent != null
               ? MarkdownBody(
             key: GlobalKey(),
             data: _markdownContent,
@@ -92,7 +96,7 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
               _onTapLink(text, href, title);
             },
           )
-              : Center(child: CircularProgressIndicator()),
+              : Text('No data'),
         ),
       ),
     );
