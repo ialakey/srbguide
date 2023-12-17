@@ -33,7 +33,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeMode _themeMode;
 
   @override
@@ -56,8 +55,15 @@ class _MainScreenState extends State<MainScreen> {
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       home: Scaffold(
-        body: VisaFreeCalculatorScreen(),
+        body: AppContent(),
       ),
     );
+  }
+}
+
+class AppContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return VisaFreeCalculatorScreen();
   }
 }
