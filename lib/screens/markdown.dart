@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:url_launcher/url_launcher.dart';
+typedef ScrollToTextFunction = void Function(String text);
+
 
 class MyMarkdownScreen extends StatefulWidget {
   @override
@@ -30,21 +32,16 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
     });
   }
 
-  void _scrollToText(String text) {
-    final index = _markdownContent.indexOf(text);
-    if (index != -1) {
-      final key = GlobalKey(debugLabel: index.toString());
-      WidgetsBinding.instance?.addPostFrameCallback((_) {
-        final RenderBox renderBox =
-        key.currentContext?.findRenderObject() as RenderBox;
-        _scrollController.animateTo(
-          renderBox
-              .localToGlobal(Offset.zero)
-              .dy,
-          duration: Duration(milliseconds: 500),
-          curve: Curves.easeInOut,
-        );
-      });
+  void _scrollToText(String anchor) {
+    final anchorPattern = anchor;
+    final anchorIndex = _markdownContent.indexOf(anchorPattern);
+    if (anchorIndex != -1) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent *
+            (anchorIndex / _markdownContent.length),
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
     }
   }
 
@@ -85,14 +82,17 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Сербия начало'),
+        title: Text('🚜 Гайд по Сербии'),
         actions: [
           IconButton(
             icon: Icon(Icons.search),
             onPressed: () async {
               String? searchValue = await showSearch<String>(
                 context: context,
-                delegate: _CustomSearchDelegate(),
+                delegate: _CustomSearchDelegate(
+                  _removeATags(_markdownContent),
+                  _scrollToText,
+                ),
               );
               if (searchValue != null && searchValue.isNotEmpty) {
                 _searchController.text = searchValue;
@@ -136,6 +136,12 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
 }
 
 class _CustomSearchDelegate extends SearchDelegate<String> {
+
+  final String contentWithoutATags;
+  final ScrollToTextFunction scrollToText;
+
+  _CustomSearchDelegate(this.contentWithoutATags, this.scrollToText);
+
   @override
   List<Widget> buildActions(BuildContext context) {
     return [
@@ -160,7 +166,24 @@ class _CustomSearchDelegate extends SearchDelegate<String> {
 
   @override
   Widget buildResults(BuildContext context) {
-    return Container();
+    final List<String> searchResults = contentWithoutATags
+        .split('\n')
+        .where((line) => line.toLowerCase().contains(query.toLowerCase()))
+        .toList();
+
+    return ListView.builder(
+      itemCount: searchResults.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(searchResults[index]),
+          onTap: () {
+            final selectedText = searchResults[index];
+            close(context, selectedText);
+            scrollToText(selectedText);
+          },
+        );
+      },
+    );
   }
 
   @override
