@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/map.dart';
-import 'package:srbguide/screens/serbia_guide.dart';
 import 'package:srbguide/screens/settings.dart';
 import 'package:srbguide/screens/tg_chats.dart';
 import 'package:srbguide/screens/white_cardboard.dart';
@@ -98,34 +97,6 @@ class AppDrawer extends StatelessWidget {
               );
             },
           ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/search-alt.png',
-              darkIcon: 'assets/icons_24x24/search-alt.png',
-              size: 24.0,
-            ),
-            title: Text('Гайд'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SerbiaGuideScreen()),
-              );
-            },
-          ),
-          // ListTile(
-          //   leading:
-          //   ThemedIcon(
-          //     lightIcon: 'assets/icons_24x24/physics.png',
-          //     darkIcon: 'assets/icons_24x24/physics.png',
-          //     size: 24.0,
-          //   ),
-          //   title: Text('Полезности'),
-          //   onTap: () {
-          //     onNavItemTapped(4);
-          //     Navigator.pop(context);
-          //   },
-          // ),
           ListTile(
             leading:
             ThemedIcon(

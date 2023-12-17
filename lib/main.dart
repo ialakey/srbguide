@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:srbguide/widget/app_bar.dart';
 
 import 'screens/calculator.dart';
-import 'widget/drawer.dart';
-import 'widget/themed_icon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -55,15 +52,8 @@ class _MainScreenState extends State<MainScreen> {
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
       home: Scaffold(
-        body: AppContent(),
+        body: VisaFreeCalculatorScreen(),
       ),
     );
-  }
-}
-
-class AppContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return VisaFreeCalculatorScreen();
   }
 }
