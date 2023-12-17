@@ -56,4 +56,24 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   Widget buildSuggestions(BuildContext context) {
     return Container();
   }
+
+  @override
+  String get searchFieldLabel => 'Введите текст для поиска';
+
+  @override
+  Widget buildSearchField(BuildContext context) {
+    return TextField(
+      autofocus: true,
+      decoration: InputDecoration(
+        hintText: searchFieldLabel,
+        border: InputBorder.none,
+        hintStyle: TextStyle(color: Colors.grey),
+      ),
+      style: TextStyle(color: Colors.black),
+      onChanged: (value) {
+        query = value;
+      },
+    );
+  }
+
 }
