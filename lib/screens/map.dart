@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MapScreen extends StatefulWidget {
@@ -39,6 +40,7 @@ class _MapScreenState extends State<MapScreen> {
   late Map<String, String> selectedLocation;
   late Key webViewKey;
   late String selectedUrl;
+  late String selectedIconPath;
 
   @override
   void initState() {
@@ -69,17 +71,27 @@ class _MapScreenState extends State<MapScreen> {
                     (location) {
                   return DropdownMenuItem<Map<String, String>>(
                     value: location,
-                    child: Text(location['title'] ?? ''),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          'assets/icons_24x24/${location['iconPath']}', // Путь к иконке
+                          width: 24,
+                          height: 24,
+                        ),
+                        SizedBox(width: 8), // Добавим небольшое расстояние между иконкой и текстом
+                        Text(location['title'] ?? ''),
+                      ],
+                    ),
                   );
                 },
               ).toList(),
               style: TextStyle(
-                color: Colors.blue, // Example text color
+                color: Colors.blue, // Пример цвета текста
                 fontSize: 16.0,
               ),
               icon: Icon(
                 Icons.arrow_drop_down,
-                color: Colors.blue, // Example icon color
+                color: Colors.blue, // Пример цвета иконки
               ),
               dropdownColor: Colors.white,
             ),
@@ -90,9 +102,7 @@ class _MapScreenState extends State<MapScreen> {
                 key: webViewKey,
                 initialUrl: selectedUrl,
                 javascriptMode: JavascriptMode.unrestricted,
-                onPageFinished: (url) {
-                  // Add your custom logic when the page finishes loading
-                },
+                onPageFinished: (url) {},
               )
                   : Center(
                 child: Text('No URL selected'),
