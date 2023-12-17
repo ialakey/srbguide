@@ -61,6 +61,7 @@ class DrawerScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
+          //TODO Убрать webwidget
           ListTile(
             leading:
             ThemedIcon(
@@ -71,32 +72,6 @@ class DrawerScreen extends StatelessWidget {
             title: Text('Калькулятор паушального налога'),
             onTap: () {
               onNavItemTapped(2);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/map-marker.png',
-              darkIcon: 'assets/icons_24x24/map-marker.png',
-              size: 24.0,
-            ),
-            title: Text('Карты'),
-            onTap: () {
-              onNavItemTapped(8);
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/map-marker.png',
-              darkIcon: 'assets/icons_24x24/map-marker.png',
-              size: 24.0,
-            ),
-            title: Text('Гайд'),
-            onTap: () {
-              onNavItemTapped(9);
               Navigator.pop(context);
             },
           ),
@@ -112,16 +87,42 @@ class DrawerScreen extends StatelessWidget {
               ListTile(
                 leading:
                 ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/spreadsheet.png',
-                  darkIcon: 'assets/icons_24x24/spreadsheet.png',
+                  lightIcon: 'assets/icons_24x24/map-marker.png',
+                  darkIcon: 'assets/icons_24x24/map-marker.png',
                   size: 24.0,
                 ),
-                title: Text('SRB.GUIDE'),
+                title: Text('Карты'),
                 onTap: () {
-                  onNavItemTapped(3);
+                  onNavItemTapped(8);
                   Navigator.pop(context);
                 },
               ),
+              ListTile(
+                leading:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/search-alt.png',
+                  darkIcon: 'assets/icons_24x24/search-alt.png',
+                  size: 24.0,
+                ),
+                title: Text('Гайд'),
+                onTap: () {
+                  onNavItemTapped(9);
+                  Navigator.pop(context);
+                },
+              ),
+              // ListTile(
+              //   leading:
+              //   ThemedIcon(
+              //     lightIcon: 'assets/icons_24x24/spreadsheet.png',
+              //     darkIcon: 'assets/icons_24x24/spreadsheet.png',
+              //     size: 24.0,
+              //   ),
+              //   title: Text('SRB.GUIDE'),
+              //   onTap: () {
+              //     onNavItemTapped(3);
+              //     Navigator.pop(context);
+              //   },
+              // ),
               ListTile(
                 leading:
                 ThemedIcon(

@@ -38,7 +38,9 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
         final RenderBox renderBox =
         key.currentContext?.findRenderObject() as RenderBox;
         _scrollController.animateTo(
-          renderBox.localToGlobal(Offset.zero).dy,
+          renderBox
+              .localToGlobal(Offset.zero)
+              .dy,
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
@@ -59,6 +61,24 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
         ),
       );
     }
+  }
+
+  void _scrollToAnchor(String anchor) {
+    final anchorPattern = '<a name="$anchor"></a>';
+    final anchorIndex = _markdownContent.indexOf(anchorPattern);
+    if (anchorIndex != -1) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent *
+            (anchorIndex / _markdownContent.length),
+        duration: Duration(milliseconds: 500),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  String _removeATags(String htmlString) {
+    final pattern = RegExp(r'<a\b[^>]*>(.*?)<\/a>');
+    return htmlString.replaceAll(pattern, '');
   }
 
   @override
@@ -86,20 +106,32 @@ class _MyMarkdownScreenState extends State<MyMarkdownScreen> {
         controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.all(8.0),
-          child: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : _markdownContent != null
-              ? MarkdownBody(
-            key: GlobalKey(),
-            data: _markdownContent,
-            onTapLink: (text, href, title) {
-              _onTapLink(text, href, title);
-            },
-          )
-              : Text('No data'),
+          child: _buildMarkdownBody(),
         ),
       ),
     );
+  }
+
+  Widget _buildMarkdownBody() {
+    if (_isLoading) {
+      return Center(child: CircularProgressIndicator());
+    } else if (_markdownContent == null) {
+      return Center(child: Text('No data'));
+    } else {
+      final contentWithoutATags = _removeATags(_markdownContent);
+      return MarkdownBody(
+        key: GlobalKey(),
+        data: contentWithoutATags,
+        onTapLink: (text, href, title) {
+          if (href != null && href.startsWith('#')) {
+            final anchor = Uri.decodeComponent(href.substring(1));
+            _scrollToAnchor(anchor);
+          } else {
+            _onTapLink(text, href, title);
+          }
+        },
+      );
+    }
   }
 }
 
