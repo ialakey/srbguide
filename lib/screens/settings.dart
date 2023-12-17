@@ -76,6 +76,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  //TODO почему то загружаются по всей видимости все экраны когда меняю тему (слишком медленно)
   @override
   Widget build(BuildContext context) {
     String buttonText = _isDarkMode ? 'Светлая тема' : 'Темная тема';

@@ -3,6 +3,7 @@ import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/service/document_generate.dart';
 import 'package:srbguide/widget/drawer.dart';
+import 'package:srbguide/widget/searchable_dropdown.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -29,9 +30,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
 
   String _gender = 'M';
   List<String> _genderOptions = ['M', 'Ž'];
-  String _selectedValue = 'Выбрать';
   List<String> locations = [
-    'Выбрать',
     'Badovinci',
     'Banatski Brestovac',
     'Bačka Palanka',
@@ -377,28 +376,24 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                           ),
                         ),
                         SizedBox(width: 10),
-                        DropdownButton<String>(
+                        IconButton(
                           icon:
                           ThemedIcon(
-                            lightIcon: 'assets/icons_24x24/caret-down.png',
-                            darkIcon: 'assets/icons_24x24/caret-down.png',
+                            lightIcon: 'assets/icons_24x24/search.png',
+                            darkIcon: 'assets/icons_24x24/search.png',
                             size: 24.0,
                           ),
-                          value: _selectedValue,
-                          onChanged: (String? newValue) {
-                            if (newValue != null && newValue != 'Выбрать') {
+                          onPressed: () async {
+                            String? searchValue = await showSearch<String>(
+                              context: context,
+                              delegate: SearchableDropdownDelegate(locations),
+                            );
+                            if (searchValue != null && searchValue.isNotEmpty) {
                               setState(() {
-                                _selectedValue = newValue;
-                                _placeArrivalController.text = newValue;
+                                _placeArrivalController.text = searchValue;
                               });
                             }
                           },
-                          items: locations.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
                         ),
                       ],
                     ),
