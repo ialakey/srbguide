@@ -4,6 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/drawer.dart';
+import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
@@ -87,7 +88,12 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
         title: Text('🚜 Гайд по Сербии'),
         actions: [
           IconButton(
-            icon: Icon(Icons.search),
+            icon:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/search.png',
+              darkIcon: 'assets/icons_24x24/search.png',
+              size: 24.0,
+            ),
             onPressed: () async {
               String? searchValue = await showSearch<String>(
                 context: context,
