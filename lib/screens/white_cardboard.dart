@@ -174,19 +174,19 @@ class _InformationFormState extends State<InformationForm> {
         centerTitle: true,
         title: Text('Образац 1.'),
         actions: [
-          IconButton(
-            icon: ThemedIcon(
-              lightIcon: 'assets/icons_24x24/expand.png',
-              darkIcon: 'assets/icons_24x24/expand.png',
-              size: 24.0,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DocumentScannerScreen()),
-              );
-            },
-          ),
+          // IconButton(
+          //   icon: ThemedIcon(
+          //     lightIcon: 'assets/icons_24x24/expand.png',
+          //     darkIcon: 'assets/icons_24x24/expand.png',
+          //     size: 24.0,
+          //   ),
+          //   onPressed: () {
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => DocumentScannerScreen()),
+          //     );
+          //   },
+          // ),
           PopupMenuButton<String>(
             icon:
             ThemedIcon(
