@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/screens/author.dart';
+import 'package:srbguide/screens/calculator.dart';
+import 'package:srbguide/screens/map.dart';
+import 'package:srbguide/screens/serbia_guide.dart';
+import 'package:srbguide/screens/settings.dart';
+import 'package:srbguide/screens/tg_chats.dart';
+import 'package:srbguide/screens/white_cardboard.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
 import 'themed_icon.dart';
 
-class DrawerScreen extends StatelessWidget {
-  final Function(int) onNavItemTapped;
-
-  DrawerScreen({required this.onNavItemTapped});
+class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +49,10 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Калькулятор визарана'),
             onTap: () {
-              onNavItemTapped(0);
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
+              );
             },
           ),
           ListTile(
@@ -58,8 +64,10 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Создание белого картона'),
             onTap: () {
-              onNavItemTapped(1);
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => CreateWhiteCardboardScreen()),
+              );
             },
           ),
           ListTile(
@@ -75,68 +83,63 @@ class DrawerScreen extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          ExpansionTile(
-            title: Text("База знаний"),
+          ListTile(
             leading:
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/graduation-cap.png',
-              darkIcon: 'assets/icons_24x24/graduation-cap.png',
+              lightIcon: 'assets/icons_24x24/map-marker.png',
+              darkIcon: 'assets/icons_24x24/map-marker.png',
               size: 24.0,
             ),
-            children: [
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/map-marker.png',
-                  darkIcon: 'assets/icons_24x24/map-marker.png',
-                  size: 24.0,
-                ),
-                title: Text('Карты'),
-                onTap: () {
-                  onNavItemTapped(2);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/search-alt.png',
-                  darkIcon: 'assets/icons_24x24/search-alt.png',
-                  size: 24.0,
-                ),
-                title: Text('Гайд'),
-                onTap: () {
-                  onNavItemTapped(3);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/physics.png',
-                  darkIcon: 'assets/icons_24x24/physics.png',
-                  size: 24.0,
-                ),
-                title: Text('Полезности'),
-                onTap: () {
-                  onNavItemTapped(4);
-                  Navigator.pop(context);
-                },
-              ),
-              ListTile(
-                leading:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/users.png',
-                  darkIcon: 'assets/icons_24x24/users.png',
-                  size: 24.0,
-                ),
-                title: Text('Телеграм чаты'),
-                onTap: () {
-                  onNavItemTapped(5);
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+            title: Text('Карты'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MapScreen()),
+              );
+            },
+          ),
+          ListTile(
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/search-alt.png',
+              darkIcon: 'assets/icons_24x24/search-alt.png',
+              size: 24.0,
+            ),
+            title: Text('Гайд'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SerbiaGuideScreen()),
+              );
+            },
+          ),
+          // ListTile(
+          //   leading:
+          //   ThemedIcon(
+          //     lightIcon: 'assets/icons_24x24/physics.png',
+          //     darkIcon: 'assets/icons_24x24/physics.png',
+          //     size: 24.0,
+          //   ),
+          //   title: Text('Полезности'),
+          //   onTap: () {
+          //     onNavItemTapped(4);
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          ListTile(
+            leading:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/users.png',
+              darkIcon: 'assets/icons_24x24/users.png',
+              size: 24.0,
+            ),
+            title: Text('Телеграм чаты'),
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => TgChatScreen()),
+              );
+            },
           ),
           ListTile(
             leading:
@@ -147,8 +150,10 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Настройки'),
             onTap: () {
-              onNavItemTapped(6);
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SettingsScreen()),
+              );
             },
           ),
           ListTile(
@@ -160,8 +165,10 @@ class DrawerScreen extends StatelessWidget {
             ),
             title: Text('Автор'),
             onTap: () {
-              onNavItemTapped(7);
-              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => AuthorScreen()),
+              );
             },
           ),
         ],

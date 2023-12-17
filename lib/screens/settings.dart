@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -79,6 +81,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     String buttonText = _isDarkMode ? 'Светлая тема' : 'Темная тема';
 
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: 'Настройки',
+      ),
+      drawer: AppDrawer(),
       body: _prefs == null
           ? Center(child: CircularProgressIndicator())
           : Padding(

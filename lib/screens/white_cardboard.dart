@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/service/document_generate.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
-class CreateWhiteCardboard extends StatefulWidget {
+class CreateWhiteCardboardScreen extends StatefulWidget {
   @override
-  _CreateWhiteCardboardState createState() => _CreateWhiteCardboardState();
+  _CreateWhiteCardboardScreenState createState() => _CreateWhiteCardboardScreenState();
 }
 
-class _CreateWhiteCardboardState extends State<CreateWhiteCardboard> {
+class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -171,7 +172,7 @@ class _CreateWhiteCardboardState extends State<CreateWhiteCardboard> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Образац 1.'),
+        title: Text('Создание белого картона'),
         actions: [
           PopupMenuButton<String>(
             icon:
@@ -235,6 +236,7 @@ class _CreateWhiteCardboardState extends State<CreateWhiteCardboard> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(

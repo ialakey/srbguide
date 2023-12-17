@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -17,7 +19,7 @@ class _MapScreenState extends State<MapScreen> {
     },
     {
       'iconPath': 'angry.png',
-      'url': 'https://www.google.com/maps/d/viewer?mid=1yZgQ4K-QdicajdZ3OGIxzpUjoMWJkcg&usp=sharing',
+      'url': 'https://t.ly/YAx6',
       'title': 'Черный список квартир',
       'section': 'Карты',
     },
@@ -31,7 +33,7 @@ class _MapScreenState extends State<MapScreen> {
     {
       'iconPath': 'tea.png',
       'url':
-      'https://www.google.com/maps/d/viewer?mid=17hd5rO7Sw0y9URWFQOt6L1EerZ74Buc&usp=sharing',
+      'https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=sharing',
       'title': 'Русские заведения',
       'section': 'Карты',
     },
@@ -53,49 +55,54 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: 'Карты',
+      ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            DropdownButton<Map<String, String>>(
-              value: selectedLocation,
-              onChanged: (newValue) {
-                setState(() {
-                  selectedLocation = newValue!;
-                  selectedUrl = newValue['url'] ?? '';
-                  webViewKey = UniqueKey();
-                });
-              },
-              items: locations.map<DropdownMenuItem<Map<String, String>>>(
-                    (location) {
-                  return DropdownMenuItem<Map<String, String>>(
-                    value: location,
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          'assets/icons_24x24/${location['iconPath']}', // Путь к иконке
-                          width: 24,
-                          height: 24,
-                        ),
-                        SizedBox(width: 8), // Добавим небольшое расстояние между иконкой и текстом
-                        Text(location['title'] ?? ''),
-                      ],
-                    ),
-                  );
+            Container(
+              width: double.infinity,
+              child: DropdownButton<Map<String, String>>(
+                value: selectedLocation,
+                onChanged: (newValue) {
+                  setState(() {
+                    selectedLocation = newValue!;
+                    selectedUrl = newValue['url'] ?? '';
+                    webViewKey = UniqueKey();
+                  });
                 },
-              ).toList(),
-              style: TextStyle(
-                color: Colors.blue, // Пример цвета текста
-                fontSize: 16.0,
+                items: locations.map<DropdownMenuItem<Map<String, String>>>(
+                      (location) {
+                    return DropdownMenuItem<Map<String, String>>(
+                      value: location,
+                      child: Row(
+                        children: [
+                          ThemedIcon(
+                            lightIcon: 'assets/icons_24x24/${location['iconPath']}',
+                            darkIcon: 'assets/icons_24x24/${location['iconPath']}',
+                            size: 24.0,
+                          ),
+                          SizedBox(width: 8),
+                          Text(location['title'] ?? ''),
+                        ],
+                      ),
+                    );
+                  },
+                ).toList(),
+                icon:
+                ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/caret-down.png',
+                  darkIcon: 'assets/icons_24x24/caret-down.png',
+                  size: 24.0,
+                ),
               ),
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.blue, // Пример цвета иконки
-              ),
-              dropdownColor: Colors.white,
             ),
-            SizedBox(height: 20.0),
+            SizedBox(height: 10.0),
             Expanded(
               child: selectedUrl.isNotEmpty
                   ? WebView(

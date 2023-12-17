@@ -3,6 +3,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:srbguide/widget/custom_search.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:url_launcher/url_launcher.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
@@ -26,7 +27,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
   }
 
   Future<void> _loadMarkdownFile() async {
-    String data = await rootBundle.loadString('assets/serbia-guide.md');
+    String data = await rootBundle.loadString('assets/serbia-guide-ru.md');
     setState(() {
       _markdownContent = data;
       _isLoading = false;
@@ -103,6 +104,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(

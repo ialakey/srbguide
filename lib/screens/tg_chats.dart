@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class TgChatScreen extends StatefulWidget {
@@ -56,6 +58,11 @@ class _TgChatScreenState extends State<TgChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: 'Телеграм чаты',
+      ),
+      drawer: AppDrawer(),
       body: Column(
         children: [
           Padding(

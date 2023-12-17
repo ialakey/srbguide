@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer.dart';
 
 class AuthorScreen extends StatelessWidget {
 
@@ -49,6 +51,11 @@ class AuthorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: 'Автор',
+      ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),

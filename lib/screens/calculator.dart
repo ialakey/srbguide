@@ -5,14 +5,16 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
-class VisaFreeCalculator extends StatefulWidget {
+class VisaFreeCalculatorScreen extends StatefulWidget {
   @override
-  _VisaFreeCalculatorState createState() => _VisaFreeCalculatorState();
+  _VisaFreeCalculatorScreenState createState() => _VisaFreeCalculatorScreenState();
 }
 
-class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
+class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   final TextEditingController _entryDateController = TextEditingController();
   final int visaFreeDays = 29;
   int remainingDays = 29;
@@ -122,6 +124,11 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
       exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
     }
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: 'Калькулятор визарана',
+      ),
+      drawer: AppDrawer(),
       key: _scaffoldKey,
       body: Padding(
         padding: EdgeInsets.all(16.0),
