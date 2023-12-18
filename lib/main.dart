@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:srbguide/widget/app_bar.dart';
 
 import 'screens/calculator.dart';
-import 'widget/drawer.dart';
-import 'widget/themed_icon.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
