@@ -184,7 +184,12 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
             onPressed: () {
               _showTextSizeDialog();
             },
-            icon: Icon(Icons.format_size),
+            icon:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/letter-case.png',
+              darkIcon: 'assets/icons_24x24/letter-case.png',
+              size: 24.0,
+            ),
           ),
           IconButton(
             icon:
