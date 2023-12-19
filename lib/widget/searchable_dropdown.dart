@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/app_localizations.dart';
 
 class SearchableDropdownDelegate extends SearchDelegate<String> {
   final List<String> locations;
@@ -66,14 +67,11 @@ class SearchableDropdownDelegate extends SearchDelegate<String> {
   }
 
   @override
-  String get searchFieldLabel => 'Введите текст для поиска';
-
-  @override
   Widget buildSearchField(BuildContext context) {
     return TextField(
       autofocus: true,
       decoration: InputDecoration(
-        hintText: searchFieldLabel,
+        hintText: AppLocalizations.of(context)!.translate('search_placeholder'),
         border: InputBorder.none,
         hintStyle: TextStyle(color: Colors.grey),
       ),

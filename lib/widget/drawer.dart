@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/map.dart';
@@ -36,7 +37,10 @@ class AppDrawer extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10.0),
-                Text("Serbia Guide", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Text(
+                    AppLocalizations.of(context)!.translate('app_name'),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                ),
               ],
             ),
           ),
@@ -47,7 +51,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/time-check.png',
               size: 24.0,
             ),
-            title: Text('Калькулятор визарана'),
+            title: Text(AppLocalizations.of(context)!.translate('calculator_visarun')),
             onTap: () {
               Navigator.push(
                 context,
@@ -62,7 +66,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/edit.png',
               size: 24.0,
             ),
-            title: Text('Создание белого картона'),
+            title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
             onTap: () {
               Navigator.push(
                 context,
@@ -77,7 +81,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/coins.png',
               size: 24.0,
             ),
-            title: Text('Калькулятор паушального налога'),
+            title: Text(AppLocalizations.of(context)!.translate('flat_tax_calculator')),
             onTap: () {
               UrlLauncherHelper.launchURL('https://eporezi.purs.gov.rs/kalkulator-pausalnog-poreza-i-doprinosa.html');
               Navigator.pop(context);
@@ -90,7 +94,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/map-marker.png',
               size: 24.0,
             ),
-            title: Text('Карты'),
+            title: Text(AppLocalizations.of(context)!.translate('maps')),
             onTap: () {
               Navigator.push(
                 context,
@@ -105,7 +109,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/search-alt.png',
               size: 24.0,
             ),
-            title: Text('Гайд'),
+            title: Text(AppLocalizations.of(context)!.translate('guide')),
             onTap: () {
               Navigator.push(
                 context,
@@ -133,7 +137,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/users.png',
               size: 24.0,
             ),
-            title: Text('Телеграм чаты'),
+            title: Text(AppLocalizations.of(context)!.translate('tg_chats')),
             onTap: () {
               Navigator.push(
                 context,
@@ -148,7 +152,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/settings.png',
               size: 24.0,
             ),
-            title: Text('Настройки'),
+            title: Text(AppLocalizations.of(context)!.translate('settings')),
             onTap: () {
               Navigator.push(
                 context,
@@ -163,7 +167,7 @@ class AppDrawer extends StatelessWidget {
               darkIcon: 'assets/icons_24x24/diamond.png',
               size: 24.0,
             ),
-            title: Text('Автор'),
+            title: Text(AppLocalizations.of(context)!.translate('author')),
             onTap: () {
               Navigator.push(
                 context,

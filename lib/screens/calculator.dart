@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -82,11 +83,12 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
         QuickAlert.show(
           context: context,
           type: QuickAlertType.confirm,
-          title: 'Осталось дней: $remainingDays',
-          text: 'Вы должны покинуть Сербию до: $exitDateString' + '\nСоздать событие в календаре?',
+          title: '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays',
+          text: '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: $exitDateString'
+              + '\n${AppLocalizations.of(context)!.translate('create_calendar_event')}',
           showConfirmBtn: true,
-          confirmBtnText: 'Да',
-          cancelBtnText: 'Нет',
+          confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
+          cancelBtnText: AppLocalizations.of(context)!.translate('no'),
           onConfirmBtnTap: () {
             _showDateTimePickerDialog(context, exitDate);
           },
@@ -126,7 +128,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
     return Scaffold(
       appBar:
       CustomAppBar(
-        title: 'Калькулятор визарана',
+        title: AppLocalizations.of(context)!.translate('calculator_visarun'),
       ),
       drawer: AppDrawer(),
       key: _scaffoldKey,
@@ -140,7 +142,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
               margin: EdgeInsets.symmetric(vertical: 8.0),
               child: ListTile(
                 title: Text(
-                  'Выберите день въезда в Сербию:',
+                  '${AppLocalizations.of(context)!.translate('select_entry_date_serbia')}:',
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -174,8 +176,8 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          'Осталось дней: $remainingDays\n'
-                              'Вы должны покинуть Сербию до: \n$exitDateString',
+                          '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays\n'
+                              '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: \n$exitDateString',
                           style: TextStyle(
                             fontSize: 16.0,
                             fontWeight: FontWeight.w500,
@@ -210,10 +212,10 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
               children: [
                 ListTile(
                   leading: Icon(Icons.calendar_today),
-                  title: Text('Выбрать дату'),
+                  title: Text(AppLocalizations.of(context)!.translate('select_date')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.yMMMd().format(selectedDateTime!)
-                      : 'Выберите дату'),
+                      : AppLocalizations.of(context)!.translate('choose_date')),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -237,10 +239,10 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                 ),
                 ListTile(
                   leading: Icon(Icons.access_time),
-                  title: Text('Выбрать время'),
+                  title: Text(AppLocalizations.of(context)!.translate('select_time')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.Hm().format(selectedDateTime!)
-                      : 'Выберите время'),
+                      : AppLocalizations.of(context)!.translate('choose_time')),
                   onTap: () async {
                     TimeOfDay? pickedTime = await showTimePicker(
                       context: context,
@@ -268,7 +270,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                       Navigator.pop(context);
                     }
                   },
-                  label: Text('Создать'),
+                  label: Text(AppLocalizations.of(context)!.translate('create')),
                 ),
               ],
             );
@@ -280,8 +282,8 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
 
   Event createCalendarEvent(DateTime noticeDate) {
     return Event(
-      title: 'Визаран',
-      description: 'Нужно сделать визаран до $exitDate',
+      title: AppLocalizations.of(context)!.translate('visarun'),
+      description: '${AppLocalizations.of(context)!.translate('need_make_visa_run_by')} $exitDate',
       startDate: noticeDate,
       endDate: noticeDate.add(const Duration(hours: 1)),
       allDay: false,

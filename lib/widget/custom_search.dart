@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/app_localizations.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
 class CustomSearchDelegate extends SearchDelegate<String> {
@@ -58,14 +59,11 @@ class CustomSearchDelegate extends SearchDelegate<String> {
   }
 
   @override
-  String get searchFieldLabel => 'Введите текст для поиска';
-
-  @override
   Widget buildSearchField(BuildContext context) {
     return TextField(
       autofocus: true,
       decoration: InputDecoration(
-        hintText: searchFieldLabel,
+        hintText: AppLocalizations.of(context)!.translate('search_placeholder'),
         border: InputBorder.none,
         hintStyle: TextStyle(color: Colors.grey),
       ),

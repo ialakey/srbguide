@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
@@ -53,7 +54,7 @@ class AuthorScreen extends StatelessWidget {
     return Scaffold(
       appBar:
       CustomAppBar(
-        title: 'Автор',
+        title: AppLocalizations.of(context)!.translate('author'),
       ),
       drawer: AppDrawer(),
       body: SingleChildScrollView(

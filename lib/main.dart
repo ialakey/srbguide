@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/language_provider.dart';
 
 import 'screens/calculator.dart';
 
@@ -12,9 +16,14 @@ void main() async {
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
-  runApp(MainScreen(
-    initialThemeMode: initialThemeMode,
-  ));
+  runApp(
+    ChangeNotifierProvider<LanguageProvider>(
+      create: (_) => LanguageProvider(),
+      child: MainScreen(
+        initialThemeMode: initialThemeMode,
+      ),
+    ),
+  );
 }
 
 class MainScreen extends StatefulWidget {
@@ -48,9 +57,20 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
+
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        AppLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('ru'),
+      ],
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
+      locale: languageProvider.selectedLocale,
       home: Scaffold(
         body: AppContent(),
       ),

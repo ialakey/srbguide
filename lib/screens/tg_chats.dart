@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
@@ -60,7 +61,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
     return Scaffold(
       appBar:
       CustomAppBar(
-        title: 'Телеграм чаты',
+        title: AppLocalizations.of(context)!.translate('tg_chats'),
       ),
       drawer: AppDrawer(),
       body: Column(
@@ -70,7 +71,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
             child: TextField(
               controller: searchController,
               decoration: InputDecoration(
-                labelText: 'Поиск',
+                labelText: AppLocalizations.of(context)!.translate('search'),
                 prefixIcon:
                 ThemedIcon(
                   lightIcon: 'assets/icons_24x24/search.png',

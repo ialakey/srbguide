@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -57,7 +58,7 @@ class _MapScreenState extends State<MapScreen> {
     return Scaffold(
       appBar:
       CustomAppBar(
-        title: 'Карты',
+        title: AppLocalizations.of(context)!.translate('maps'),
       ),
       drawer: AppDrawer(),
       body: Padding(

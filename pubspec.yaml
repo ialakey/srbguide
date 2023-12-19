@@ -24,10 +24,14 @@ dependencies:
   share: ^2.0.4
   quickalert: ^1.0.2
   group_button: ^5.3.3
+  provider: ^5.0.0
 
   flutter_markdown: ^0.6.18+2
   photo_view: ^0.14.0
   flutter_xlider: ^3.5.0
+
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -43,3 +47,4 @@ flutter:
   assets:
     - assets/
     - assets/icons_24x24/
+    - lib/l10n/

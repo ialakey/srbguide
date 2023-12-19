@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/document_generate.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/searchable_dropdown.dart';
@@ -171,7 +172,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Создание белого картона'),
+        title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
         actions: [
           PopupMenuButton<String>(
             icon:
@@ -186,7 +187,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 QuickAlert.show(
                   context: context,
                   type: QuickAlertType.success,
-                  title: 'Сохранено!',
+                  title: '${AppLocalizations.of(context)!.translate('saved')}!',
                 );
               } else if (value == 'send') {
                 _onButtonPressed(true);
@@ -204,7 +205,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                     darkIcon: 'assets/icons_24x24/assept-document.png',
                     size: 24.0,
                   ),
-                  title: Text('Сохранить'),
+                  title: Text(AppLocalizations.of(context)!.translate('save')),
                 ),
               ),
               PopupMenuItem<String>(
@@ -216,7 +217,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                     darkIcon: 'assets/icons_24x24/paper-plane.png',
                     size: 24.0,
                   ),
-                  title: Text('Поделиться'),
+                  title: Text(AppLocalizations.of(context)!.translate('share')),
                 ),
               ),
               PopupMenuItem<String>(
@@ -228,7 +229,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                     darkIcon: 'assets/icons_24x24/download.png',
                     size: 24.0,
                   ),
-                  title: Text('Скачать'),
+                  title: Text(AppLocalizations.of(context)!.translate('download')),
                 ),
               ),
             ],

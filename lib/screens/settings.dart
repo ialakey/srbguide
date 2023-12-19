@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
@@ -52,7 +53,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
-      title: 'Очищено!',
+      title: '${AppLocalizations.of(context)!.translate('cleared')}!',
     );
   }
 
@@ -60,11 +61,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.confirm,
-      title: 'Подтверждение',
-      text: 'Вы уверены, что хотите очистить данные?',
+      title: AppLocalizations.of(context)!.translate('confirmation'),
+      text: AppLocalizations.of(context)!.translate('confirm_clear_data'),
       showConfirmBtn: true,
-      confirmBtnText: 'Да',
-      cancelBtnText: 'Нет',
+      confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
+      cancelBtnText: AppLocalizations.of(context)!.translate('no'),
       onConfirmBtnTap: () {
         _clearSharedPreferences();
         Navigator.of(context).pop();
@@ -79,12 +80,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   //TODO почему то загружаются по всей видимости все экраны когда меняю тему (слишком медленно)
   @override
   Widget build(BuildContext context) {
-    String buttonText = _isDarkMode ? 'Светлая тема' : 'Темная тема';
+    String buttonText = _isDarkMode ? AppLocalizations.of(context)!.translate('light_theme') : AppLocalizations.of(context)!.translate('dark_theme');
 
     return Scaffold(
       appBar:
       CustomAppBar(
-        title: 'Настройки',
+        title: AppLocalizations.of(context)!.translate('settings'),
       ),
       drawer: AppDrawer(),
       body: _prefs == null
@@ -105,7 +106,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
             SizedBox(height: 20),
             _buildCard(
-              'Очистить данные',
+              AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(
                 lightIcon: 'assets/icons_24x24/trash.png',
                 darkIcon: 'assets/icons_24x24/trash.png',

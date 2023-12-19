@@ -245,9 +245,10 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     } else {
       final contentWithoutATags = _removeATags(_markdownContent);
       List<String> lines = contentWithoutATags.split('\n');
-      List<Widget> widgets = [];
+      final widgets = <Widget>[];
 
       bool isInCard = false;
+      bool isInFavouriteCard = false;
       List<String> cardContent = [];
 
       for (String line in lines) {
@@ -261,9 +262,19 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
             cardContent.clear();
           }
           continue;
+        } else if (line.trim() == "<card-favourite>") {
+          isInFavouriteCard = true;
+          continue;
+        } else if (line.trim() == "</card-favourite>") {
+          isInFavouriteCard = false;
+          if (cardContent.isNotEmpty) {
+            widgets.add(_buildFavouriteCard(cardContent.join('\n'), textSize));
+            cardContent.clear();
+          }
+          continue;
         }
 
-        if (isInCard) {
+        if (isInCard || isInFavouriteCard) {
           cardContent.add(line);
         } else {
           widgets.add(_buildMarkdown(line, textSize));
@@ -271,7 +282,11 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
       }
 
       if (cardContent.isNotEmpty) {
-        widgets.add(_buildCard(cardContent.join('\n'), textSize));
+        if (isInCard) {
+          widgets.add(_buildCard(cardContent.join('\n'), textSize));
+        } else if (isInFavouriteCard) {
+          widgets.add(_buildFavouriteCard(cardContent.join('\n'), textSize));
+        }
       }
 
       return SingleChildScrollView(
@@ -332,7 +347,41 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     );
   }
 
-  Widget _buildCard(String content, double textSize) {
+  //Добавить в избранное
+  Widget _buildFavouriteCard(String content, double textSize) {
+
+    bool isBookmarked = false;
+
+    return Card(
+      elevation: 4.0,
+      margin: EdgeInsets.all(8.0),
+      child: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(8.0),
+            child: _buildMarkdown(content, textSize),
+          ),
+          Positioned(
+            top: 8.0,
+            right: 8.0,
+            child: InkWell(
+              onTap: () {
+                setState(() {
+                  isBookmarked = !isBookmarked;
+                });
+              },
+              child: Icon(
+                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
+                color: isBookmarked ? Colors.yellowAccent : Colors.grey,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+Widget _buildCard(String content, double textSize) {
     return Card(
       elevation: 4.0,
       margin: EdgeInsets.all(8.0),
