@@ -65,7 +65,7 @@ class AuthorScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Это приложение разрабатывается исключительно на основе энтузиазма. Если оно оказало вам помощь и вы желаете выразить благодарность автору, есть несколько способов сделать это! 😎",
+                AppLocalizations.of(context)!.translate('info_by_author'),
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -83,7 +83,7 @@ class AuthorScreen extends StatelessWidget {
                 },
                 child:
                 Text(
-                  'По номеру телефона +7 952 633 49 42 СПБ Сбер, QIWI',
+                  AppLocalizations.of(context)!.translate('donate'),
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -91,7 +91,8 @@ class AuthorScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Крипта',
+              Text(
+                AppLocalizations.of(context)!.translate('crypto'),
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,

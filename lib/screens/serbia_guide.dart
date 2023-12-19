@@ -4,6 +4,7 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -112,7 +113,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     QuickAlert.show(
       context: context,
       type: QuickAlertType.custom,
-      confirmBtnText: 'Сохранить',
+      confirmBtnText: AppLocalizations.of(context)!.translate('save'),
       widget: StatefulBuilder(
         builder: (BuildContext context, StateSetter setState) {
           return Column(

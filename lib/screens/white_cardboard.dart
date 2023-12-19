@@ -247,10 +247,12 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 labelText: 'Презиме - Surname',
                 child: TextFormField(
                   controller: _surnameController,
-                  decoration: InputDecoration(labelText: 'Фамилия'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('surname')
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите фамилию';
+                      return AppLocalizations.of(context)!.translate('input_surname');
                     }
                     return null;
                   },
@@ -261,10 +263,12 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 labelText: 'Име - Name',
                 child: TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Имя'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('name')
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите имя';
+                      return AppLocalizations.of(context)!.translate('input_name');
                     }
                     return null;
                   },
@@ -276,7 +280,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                 ListTile(
                   title: Text(
-                    'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
+                    '${AppLocalizations.of(context)!.translate('date_of_birth')}: ${_dateOfBirth != null ?
+                    _dateOfBirth!.toString().split(' ')[0] :
+                    AppLocalizations.of(context)!.translate('choose_date')}',
                   ),
                   trailing:
                   ThemedIcon(
@@ -324,7 +330,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                         });
                       }
                     },
-                    decoration: InputDecoration(labelText: 'Пол'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('sex')
+                    ),
                   ),
               ),
               SizedBox(height: 2),
@@ -334,7 +342,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                 TextFormField(
                   controller: _placeOfBirthController,
-                  decoration: InputDecoration(labelText: 'Место рождения'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('place_of_birth')
+                  ),
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                 ),
@@ -345,7 +355,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                   TextFormField(
                     controller: _nationalityController,
-                    decoration: InputDecoration(labelText: 'Национальность'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('nationality')
+                    ),
                   ),
               ),
               SizedBox(height: 3),
@@ -356,7 +368,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                   TextFormField(
                     keyboardType: TextInputType.number,
                     controller: _documentNumberController,
-                    decoration: InputDecoration(labelText: 'Номер документа'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('number_document')
+                    ),
                   ),
               ),
               SizedBox(height: 2),
@@ -371,7 +385,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                         Expanded(
                           child: TextFormField(
                             controller: _placeArrivalController,
-                            decoration: InputDecoration(labelText: 'Место прибытия'),
+                            decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.translate('place_arrival')
+                            ),
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
                           ),
@@ -400,7 +416,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                     ),
                     ListTile(
                       title: Text(
-                        'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                        '${AppLocalizations.of(context)!.translate('arrival_date')}: ${_arrivalDate != null ?
+                        _arrivalDate!.toString().split(' ')[0] :
+                        AppLocalizations.of(context)!.translate('choose_date')}',
                       ),
                       trailing:
                       ThemedIcon(
@@ -432,7 +450,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                   TextFormField(
                     controller: _addressController,
-                    decoration: InputDecoration(labelText: 'Адрес регистрации'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('registration_address')
+                    ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
@@ -444,7 +464,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                   TextFormField(
                     controller: _ownerInfoController,
-                    decoration: InputDecoration(labelText: 'Информация о владельце'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('owner_info')
+                    ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
@@ -456,7 +478,9 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child:
                 ListTile(
                   title: Text(
-                    'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                    '${AppLocalizations.of(context)!.translate('registration_date')}: ${_registrationDate != null ?
+                    _registrationDate!.toString().split(' ')[0] :
+                    AppLocalizations.of(context)!.translate('choose_date')}',
                   ),
                   trailing:
                   ThemedIcon(
@@ -506,8 +530,8 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
         QuickAlert.show(
           context: context,
           type: QuickAlertType.error,
-          title: 'Ошибка!',
-          text: 'Заполните все поля',
+          title: '${AppLocalizations.of(context)!.translate('error')}!',
+          text: AppLocalizations.of(context)!.translate('fill_all_fields'),
         );
       }
     }
