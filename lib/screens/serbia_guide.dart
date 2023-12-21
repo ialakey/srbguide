@@ -154,7 +154,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
                   });
                 },
               ),
-              Text('Текущий размер: ${_currentTextSize.toStringAsFixed(0)}'),
+              Text('${AppLocalizations.of(context)!.translate('current_size')}: ${_currentTextSize.toStringAsFixed(0)}'),
             ],
           );
         },
@@ -163,7 +163,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
         _setTextSize(_currentTextSize);
         Navigator.of(context).pop();
       },
-      title: 'Размер текста',
+      title: AppLocalizations.of(context)!.translate('text_size'),
     );
   }
 

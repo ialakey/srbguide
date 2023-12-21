@@ -53,7 +53,9 @@
   "donate": "Via phone number +7 952 633 49 42 SPB Sber, QIWI",
   "crypto": "Crypto",
   "change_language": "Change language",
-  "select_language": "Выбрать язык",
+  "select_language": "Select language",
   "russian": "Russian",
-  "english": "English"
+  "english": "English",
+  "text_size": "Text size",
+  "current_size": "Current size"
 }

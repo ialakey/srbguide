@@ -55,5 +55,7 @@
   "change_language": "Сменить язык",
   "select_language": "Выбрать язык",
   "russian": "Русский",
-  "english": "Английский"
+  "english": "Английский",
+  "text_size": "Размер текста",
+  "current_size": "Текущий размер"
 }
