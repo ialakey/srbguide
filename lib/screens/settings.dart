@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/language_provider.dart';
 import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
@@ -20,6 +22,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     _loadSettings();
+    Provider.of<LanguageProvider>(context, listen: false).init();
   }
 
   Future<void> _loadSettings() async {
@@ -105,6 +108,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _toggleTheme,
             ),
             SizedBox(height: 20),
+            _buildLanguageCard(context),
+            SizedBox(height: 20),
             _buildCard(
               AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(
@@ -141,6 +146,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageCard(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
+
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        onTap: () => _showLanguageDialog(context, languageProvider),
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              SizedBox(width: 10),
+              Text(
+                AppLocalizations.of(context)!.translate('change_language'),
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(width: 10),
+              ThemedIcon(
+                lightIcon: 'assets/icons_24x24/globe.png',
+                darkIcon: 'assets/icons_24x24/globe.png',
+                size: 24.0,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('select_language'),),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('english'), Locale('en', '')),
+                _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('russian'), Locale('ru', '')),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageOption(BuildContext context, LanguageProvider languageProvider, String languageName, Locale locale) {
+    return ListTile(
+      title: Text(languageName),
+      onTap: () {
+        languageProvider.updateLocale(locale);
+        Navigator.of(context).pop();
+      },
     );
   }
 }

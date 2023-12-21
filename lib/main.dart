@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,9 +17,12 @@ void main() async {
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
 
+  LanguageProvider languageProvider = LanguageProvider();
+  await languageProvider.init();
+
   runApp(
     ChangeNotifierProvider<LanguageProvider>(
-      create: (_) => LanguageProvider(),
+      create: (_) => languageProvider,
       child: MainScreen(
         initialThemeMode: initialThemeMode,
       ),
@@ -61,12 +65,13 @@ class _MainScreenState extends State<MainScreen> {
 
     return MaterialApp(
       localizationsDelegates: [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        AppLocalizations.delegate,
       ],
       supportedLocales: [
-        Locale('ru'),
+        Locale('en', ''),
+        Locale('ru', ''),
       ],
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
