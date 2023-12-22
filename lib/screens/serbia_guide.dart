@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:quickalert/quickalert.dart';
@@ -13,9 +12,14 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
 class SerbiaGuideScreen extends StatefulWidget {
+  final String content;
+
+  SerbiaGuideScreen({required this.content});
+
   @override
   _SerbiaGuideScreenState createState() => _SerbiaGuideScreenState();
 }
+
 
 class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
   late String _markdownContent;
@@ -26,18 +30,11 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
   @override
   void initState() {
     super.initState();
-    _loadMarkdownFile();
     _loadSavedTextSize();
     _scrollController = ScrollController();
     _searchController = TextEditingController();
-  }
-
-  Future<void> _loadMarkdownFile() async {
-    String data = await rootBundle.loadString('assets/serbia-guide-ru.md');
-    setState(() {
-      _markdownContent = data;
-      _isLoading = false;
-    });
+    _markdownContent = widget.content;
+    _isLoading = false;
   }
 
   _scrollToText(String anchor) {
@@ -180,21 +177,25 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('🚜 Гайд по Сербии'),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {
               _showTextSizeDialog();
             },
-            icon:
-            ThemedIcon(
+            icon: ThemedIcon(
               lightIcon: 'assets/icons_24x24/letter-case.png',
               darkIcon: 'assets/icons_24x24/letter-case.png',
               size: 24.0,
             ),
           ),
           IconButton(
-            icon:
-            ThemedIcon(
+            icon: ThemedIcon(
               lightIcon: 'assets/icons_24x24/search.png',
               darkIcon: 'assets/icons_24x24/search.png',
               size: 24.0,
@@ -215,7 +216,6 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
           ),
         ],
       ),
-      drawer: AppDrawer(),
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(

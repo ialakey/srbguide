@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
+import 'package:srbguide/screens/guide.dart';
 import 'package:srbguide/screens/map.dart';
 import 'package:srbguide/screens/serbia_guide.dart';
 import 'package:srbguide/screens/settings.dart';
@@ -113,7 +114,7 @@ class AppDrawer extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SerbiaGuideScreen()),
+                MaterialPageRoute(builder: (context) => GuideScreen()),
               );
             },
           ),
