@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:srbguide/screens/serbia_guide.dart';
+import 'package:srbguide/screens/markdown_reader.dart';
 
-class MapWidgets {
-  static Widget googleMapsCard({
-    required String url,
+class CardWidgets {
+  static Widget cardWidgets({
+    required String smile,
     required String title,
     required String content,
     required BuildContext context,
@@ -12,18 +12,18 @@ class MapWidgets {
       children: [
         Card(
           child: ListTile(
-            title: Text(title),
+            title: Text('$smile $title'),
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => SerbiaGuideScreen(content: content),
+                  builder: (context) => MarkdownReaderScreen(title: title, content: content),
                 ),
               );
             },
           ),
         ),
-        SizedBox(height: 8),
+        SizedBox(height: 7),
       ],
     );
   }

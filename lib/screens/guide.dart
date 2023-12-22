@@ -2,8 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/drawer.dart';
-import 'package:srbguide/widget/map.dart';
+import 'package:srbguide/widget/card_guide.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class GuideScreen extends StatefulWidget {
@@ -12,9 +13,9 @@ class GuideScreen extends StatefulWidget {
 }
 
 class _GuideScreenState extends State<GuideScreen> {
-  Map<String, List<Map<String, String>>> locations = {};
+  Map<String, List<Map<String, dynamic>>> locations = {};
 
-  List<Map<String, String>> filteredLocations = [];
+  List<Map<String, dynamic>> filteredLocations = [];
 
   TextEditingController searchController = TextEditingController();
 
@@ -24,18 +25,32 @@ class _GuideScreenState extends State<GuideScreen> {
     super.initState();
   }
 
+  /*TODO разобраться с поиском, при удаление данные не возвращаются
+    вынести все классы и виджеты
+  */
   Future<void> _loadLocations() async {
     try {
       String jsonData = await rootBundle.loadString('assets/guide.json');
       Map<String, dynamic> decodedJson = json.decode(jsonData);
 
       if (decodedJson.containsKey('ru') && decodedJson['ru'] is List<dynamic>) {
-        List<Map<String, String>> locationsList = (decodedJson['ru'] as List<dynamic>)
-            .map((item) => Map<String, String>.from(item))
-            .toList();
+        List<Map<String, dynamic>> locationsList = (decodedJson['ru'] as List<dynamic>).expand<Map<String, dynamic>>((item) {
+          String section = item['group'] ?? '';
+          String icon = item['icon'] ?? '';
+          List<Map<String, dynamic>> items = (item['items'] as List<dynamic>).cast<Map<String, dynamic>>();
+
+          List<Map<String, dynamic>> itemsWithGroup = items.map<Map<String, dynamic>>((item) {
+            return {
+              ...item,
+              'group': section,
+              'icon': icon,
+            };
+          }).toList();
+
+          return itemsWithGroup;
+        }).toList();
 
         setState(() {
-          locations['ru'] = locationsList;
           filteredLocations = locationsList;
         });
       }
@@ -44,9 +59,35 @@ class _GuideScreenState extends State<GuideScreen> {
     }
   }
 
+  Map<String, LocationGroup> _groupLocations() {
+    Map<String, LocationGroup> grouped = {};
+
+    if (filteredLocations.isNotEmpty) {
+      for (var location in filteredLocations) {
+        String? section = location['group'];
+        String? icon = location['icon'];
+        if (section != null) {
+          if (!grouped.containsKey(section)) {
+            grouped[section] = LocationGroup(
+              group: section,
+              icon: icon ?? '',
+              items: [],
+            );
+          }
+          grouped[section]!.items.add({
+            'smile': location['smile'] ?? '',
+            'title': location['title'] ?? '',
+            'description': location['description'] ?? '',
+          });
+        }
+      }
+    }
+    return grouped;
+  }
+
   void filterLocations(String query) {
-    List<Map<String, String>> _filteredLocations = locations['ru']!.where((location) {
-      return location['title']!.toLowerCase().contains(query.toLowerCase());
+    List<Map<String, dynamic>> _filteredLocations = filteredLocations.where((location) {
+      return location['title']?.toLowerCase().contains(query.toLowerCase());
     }).toList();
 
     setState(() {
@@ -54,48 +95,39 @@ class _GuideScreenState extends State<GuideScreen> {
     });
   }
 
-  Map<String, List<Map<String, String>>> _groupLocations() {
-    Map<String, List<Map<String, String>>> grouped = {};
-
-    for (var location in filteredLocations) {
-      String section = location['group']!;
-      if (!grouped.containsKey(section)) {
-        grouped[section] = [];
-      }
-      grouped[section]!.add(location);
-    }
-    return grouped;
-  }
-
   Widget _buildSection(String sectionTitle, String icon, List<Map<String, String>> sectionItems) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          children: [
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-              child: Text(
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+          child: Row(
+            children: [
+              Text(
                 sectionTitle,
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-            ),
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/$icon',
-              darkIcon: 'assets/icons_24x24/$icon',
-              size: 24.0,
-            ),
-          ],
+              SizedBox(
+                width: 7,
+              ),
+              ThemedIcon(
+                lightIcon: 'assets/icons_24x24/$icon',
+                darkIcon: 'assets/icons_24x24/$icon',
+                size: 24.0,
+              ),
+            ],
+          ),
         ),
+        SizedBox(height: 8),
         Column(
           children: sectionItems.map((location) {
-            return MapWidgets.googleMapsCard(
-              url: "null",
-              title: location['smile']! + " " + location['title']!,
-              content: location['description']!, // Changed 'content' to 'description'
+            return CardWidgets.cardWidgets(
+              smile: location['smile'] ?? '',
+              title: location['title'] ?? '',
+              content: location['description'] ?? '',
               context: context,
             );
           }).toList(),
@@ -106,7 +138,7 @@ class _GuideScreenState extends State<GuideScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, List<Map<String, String>>> groupedLocations = _groupLocations();
+    Map<String, LocationGroup> groupedLocations = _groupLocations();
     return Scaffold(
       appBar: AppBar(
         title: Text('🚜 Гайд по Сербии'),
@@ -122,7 +154,7 @@ class _GuideScreenState extends State<GuideScreen> {
                 filterLocations(value);
               },
               decoration: InputDecoration(
-                labelText: 'Поиск',
+                labelText: AppLocalizations.of(context)!.translate('search'),
                 prefixIcon: ThemedIcon(
                   lightIcon: 'assets/icons_24x24/search.png',
                   darkIcon: 'assets/icons_24x24/search.png',
@@ -144,10 +176,8 @@ class _GuideScreenState extends State<GuideScreen> {
             child: ListView.builder(
               itemCount: groupedLocations.length,
               itemBuilder: (BuildContext context, int index) {
-                String sectionTitle = groupedLocations.keys.elementAt(index);
-                List<Map<String, String>> sectionItems = groupedLocations.values.elementAt(index);
-
-                return _buildSection(sectionTitle, "usd.png", sectionItems);
+                LocationGroup group = groupedLocations.values.elementAt(index);
+                return _buildSection(group.group, group.icon, group.items);
               },
             ),
           ),
@@ -155,4 +185,12 @@ class _GuideScreenState extends State<GuideScreen> {
       ),
     );
   }
+}
+
+class LocationGroup {
+  final String group;
+  final String icon;
+  final List<Map<String, String>> items;
+
+  LocationGroup({required this.group, required this.icon, required this.items});
 }

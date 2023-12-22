@@ -68,6 +68,7 @@ class _MainScreenState extends State<MainScreen> {
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
+        DefaultCupertinoLocalizations.delegate,
       ],
       supportedLocales: [
         Locale('en', ''),

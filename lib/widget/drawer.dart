@@ -4,7 +4,7 @@ import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/guide.dart';
 import 'package:srbguide/screens/map.dart';
-import 'package:srbguide/screens/serbia_guide.dart';
+import 'package:srbguide/screens/markdown_reader.dart';
 import 'package:srbguide/screens/settings.dart';
 import 'package:srbguide/screens/tg_chats.dart';
 import 'package:srbguide/screens/white_cardboard.dart';

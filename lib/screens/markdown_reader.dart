@@ -5,23 +5,24 @@ import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/custom_search.dart';
-import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
-class SerbiaGuideScreen extends StatefulWidget {
+class MarkdownReaderScreen extends StatefulWidget {
+  final String title;
   final String content;
 
-  SerbiaGuideScreen({required this.content});
+  MarkdownReaderScreen({required this.content, required this.title});
 
   @override
-  _SerbiaGuideScreenState createState() => _SerbiaGuideScreenState();
+  _MarkdownReaderScreenState createState() => _MarkdownReaderScreenState();
 }
 
 
-class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
+class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
+  late String _title;
   late String _markdownContent;
   late ScrollController _scrollController;
   late TextEditingController _searchController;
@@ -33,6 +34,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     _loadSavedTextSize();
     _scrollController = ScrollController();
     _searchController = TextEditingController();
+    _title = widget.title;
     _markdownContent = widget.content;
     _isLoading = false;
   }
@@ -176,7 +178,7 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
     final double textSize = _currentTextSize;
     return Scaffold(
       appBar: AppBar(
-        title: Text('🚜 Гайд по Сербии'),
+        title: Text(_title),
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
