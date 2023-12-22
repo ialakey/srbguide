@@ -228,12 +228,6 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
 
   Widget _buildMarkdownBody(double textSize) {
     if (_isLoading) {
-      // QuickAlert.show(
-      //   context: context,
-      //   type: QuickAlertType.loading,
-      //   title: 'Загружаем',
-      //   text: 'Гайд скоро загрузится',
-      // );
       return Center(child: CircularProgressIndicator());
     } else if (_markdownContent == null) {
       QuickAlert.show(
@@ -299,6 +293,9 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
   }
 
   Widget _buildMarkdown(String content, double textSize) {
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    Color textColor = isDarkMode ? Colors.white : Colors.black;
+
     return MarkdownBody(
       selectable: true,
       key: GlobalKey(),
@@ -306,11 +303,21 @@ class _SerbiaGuideScreenState extends State<SerbiaGuideScreen> {
       styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
       styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(
         textTheme: TextTheme(
-          subtitle1: TextStyle(fontSize: textSize + 2),
-          subtitle2: TextStyle(fontSize: textSize + 1),
-          headline1: TextStyle(fontSize: textSize + 2),
-          headline2: TextStyle(fontSize: textSize + 1),
-          bodyText2: TextStyle(fontSize: textSize),
+          headlineLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          headlineMedium: TextStyle(fontSize: textSize + 2, color: textColor),
+          headlineSmall: TextStyle(fontSize: textSize, color: textColor),
+
+          titleLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          titleMedium: TextStyle(fontSize: textSize + 2, color: textColor),
+          titleSmall: TextStyle(fontSize: textSize, color: textColor),
+
+          bodyLarge: TextStyle(fontSize: textSize, color: textColor),
+          bodyMedium: TextStyle(fontSize: textSize + 2, color: textColor),
+          bodySmall: TextStyle(fontSize: textSize, color: textColor),
+
+          displayLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          displayMedium: TextStyle(fontSize: textSize + 2, color: textColor),
+          displaySmall: TextStyle(fontSize: textSize, color: textColor),
         ),
       )),
       imageBuilder: (uri, title, alt) {
