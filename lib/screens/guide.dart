@@ -6,7 +6,6 @@ import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/data/guide_dto.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/section.dart';
-import 'package:srbguide/widget/themed_icon.dart';
 
 class GuideScreen extends StatefulWidget {
   @override
@@ -26,8 +25,6 @@ class _GuideScreenState extends State<GuideScreen> {
     super.initState();
   }
 
-  /*TODO разобраться с поиском, при удаление данные не возвращаются
-  */
   Future<void> _loadLocations() async {
     try {
       String jsonData = await rootBundle.loadString('assets/guide.json');
@@ -85,16 +82,6 @@ class _GuideScreenState extends State<GuideScreen> {
     return grouped;
   }
 
-  void filterLocations(String query) {
-    List<Map<String, dynamic>> _filteredLocations = filteredLocations.where((location) {
-      return location['title']?.toLowerCase().contains(query.toLowerCase());
-    }).toList();
-
-    setState(() {
-      filteredLocations = _filteredLocations;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     Map<String, Guide> groupedLocations = _guides();
@@ -105,32 +92,6 @@ class _GuideScreenState extends State<GuideScreen> {
       drawer: AppDrawer(),
       body: Column(
         children: [
-          // Padding(
-          //   padding: EdgeInsets.all(8.0),
-          //   child: TextField(
-          //     controller: searchController,
-          //     onChanged: (value) {
-          //       filterLocations(value);
-          //     },
-          //     decoration: InputDecoration(
-          //       labelText: AppLocalizations.of(context)!.translate('search'),
-          //       prefixIcon: ThemedIcon(
-          //         lightIcon: 'assets/icons_24x24/search.png',
-          //         darkIcon: 'assets/icons_24x24/search.png',
-          //         size: 24.0,
-          //       ),
-          //       suffixIcon: searchController.text.isNotEmpty
-          //           ? IconButton(
-          //         icon: Icon(Icons.clear, color: Colors.grey),
-          //         onPressed: () {
-          //           searchController.clear();
-          //           filterLocations('');
-          //         },
-          //       )
-          //           : null,
-          //     ),
-          //   ),
-          // ),
           Expanded(
             child: ListView(
               children: [
