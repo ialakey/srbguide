@@ -4,6 +4,7 @@ import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/utils/contents_util.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/markdown/markdown_body.dart';
+import 'package:srbguide/widget/markdown/popup_menu_item.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 typedef ScrollToTextFunction = void Function(String text);
@@ -117,70 +118,28 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
           },
         ),
         actions: [
-          PopupMenuButton(
-            itemBuilder: (BuildContext context) {
-              return [
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () {
-                      DialogHelper.showTextSizeDialog(
-                        context,
-                        _currentTextSize,
-                        _setTextSize,
-                      );
-                    },
-                    leading: ThemedIcon(
-                      lightIcon: 'assets/icons_24x24/letter-case.png',
-                      darkIcon: 'assets/icons_24x24/letter-case.png',
-                      size: 24.0,
-                    ),
-                    title: Text('Изменить размер текста'),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () async {
-                      String? searchValue = await showSearch<String>(
-                        context: context,
-                        delegate: CustomSearchDelegate(
-                          _contentUtil.removeATags(_markdownContent),
-                          _scrollToText,
-                        ),
-                      );
-                      if (searchValue != null && searchValue.isNotEmpty) {
-                        _searchController.text = searchValue;
-                        _scrollToText(searchValue);
-                      }
-                      Navigator.pop(context);
-                    },
-                    leading: ThemedIcon(
-                      lightIcon: 'assets/icons_24x24/search.png',
-                      darkIcon: 'assets/icons_24x24/search.png',
-                      size: 24.0,
-                    ),
-                    title: Text('Поиск'),
-                  ),
-                ),
-                PopupMenuItem(
-                  child: ListTile(
-                    onTap: () {
-                    },
-                    leading: ThemedIcon(
-                      lightIcon: 'assets/icons_24x24/bookmark.png',
-                      darkIcon: 'assets/icons_24x24/bookmark.png',
-                      size: 24.0,
-                    ),
-                    title: Text('Добавить в избранное'),
-                  ),
-                ),
-              ];
+          ActionMenuButton(
+            onTapChangeTextSize: () {
+              DialogHelper.showTextSizeDialog(
+                context,
+                _currentTextSize,
+                _setTextSize,
+              );
             },
-            icon:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
-              darkIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
-              size: 24.0,
-            ),
+            onTapSearch: () async {
+              String? searchValue = await showSearch<String>(
+                context: context,
+                delegate: CustomSearchDelegate(
+                  _contentUtil.removeATags(_markdownContent),
+                  _scrollToText,
+                ),
+              );
+              if (searchValue != null && searchValue.isNotEmpty) {
+                _searchController.text = searchValue;
+                _scrollToText(searchValue);
+              }
+              Navigator.pop(context);
+            },
           ),
         ],
       ),
