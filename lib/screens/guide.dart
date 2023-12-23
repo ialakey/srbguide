@@ -3,8 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/data/guide_dto.dart';
 import 'package:srbguide/widget/drawer.dart';
-import 'package:srbguide/widget/card_guide.dart';
+import 'package:srbguide/widget/section.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class GuideScreen extends StatefulWidget {
@@ -59,8 +60,8 @@ class _GuideScreenState extends State<GuideScreen> {
     }
   }
 
-  Map<String, LocationGroup> _groupLocations() {
-    Map<String, LocationGroup> grouped = {};
+  Map<String, Guide> _guides() {
+    Map<String, Guide> grouped = {};
 
     if (filteredLocations.isNotEmpty) {
       for (var location in filteredLocations) {
@@ -68,7 +69,7 @@ class _GuideScreenState extends State<GuideScreen> {
         String? icon = location['icon'];
         if (section != null) {
           if (!grouped.containsKey(section)) {
-            grouped[section] = LocationGroup(
+            grouped[section] = Guide(
               group: section,
               icon: icon ?? '',
               items: [],
@@ -95,50 +96,9 @@ class _GuideScreenState extends State<GuideScreen> {
     });
   }
 
-  Widget _buildSection(String sectionTitle, String icon, List<Map<String, String>> sectionItems) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-          child: Row(
-            children: [
-              Text(
-                sectionTitle,
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              SizedBox(
-                width: 7,
-              ),
-              ThemedIcon(
-                lightIcon: 'assets/icons_24x24/$icon',
-                darkIcon: 'assets/icons_24x24/$icon',
-                size: 24.0,
-              ),
-            ],
-          ),
-        ),
-        SizedBox(height: 8),
-        Column(
-          children: sectionItems.map((location) {
-            return CardWidgets.cardWidgets(
-              smile: location['smile'] ?? '',
-              title: location['title'] ?? '',
-              content: location['description'] ?? '',
-              context: context,
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    Map<String, LocationGroup> groupedLocations = _groupLocations();
+    Map<String, Guide> groupedLocations = _guides();
     return Scaffold(
       appBar: AppBar(
         title: Text('🚜 Гайд по Сербии'),
@@ -176,8 +136,8 @@ class _GuideScreenState extends State<GuideScreen> {
             child: ListView.builder(
               itemCount: groupedLocations.length,
               itemBuilder: (BuildContext context, int index) {
-                LocationGroup group = groupedLocations.values.elementAt(index);
-                return _buildSection(group.group, group.icon, group.items);
+                Guide guide = groupedLocations.values.elementAt(index);
+                return buildSection(context, guide.group, guide.icon, guide.items);
               },
             ),
           ),
@@ -185,12 +145,4 @@ class _GuideScreenState extends State<GuideScreen> {
       ),
     );
   }
-}
-
-class LocationGroup {
-  final String group;
-  final String icon;
-  final List<Map<String, String>> items;
-
-  LocationGroup({required this.group, required this.icon, required this.items});
 }
