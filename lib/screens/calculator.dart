@@ -6,6 +6,7 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/language_provider.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -22,11 +23,19 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   DateTime? exitDate;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late SharedPreferences _prefs;
+  late String languageCode;
 
   @override
   void initState() {
     super.initState();
+    _initLanguage();
     _initDate();
+  }
+
+  _initLanguage() async {
+    LanguageProvider languageProvider = LanguageProvider();
+    await languageProvider.init();
+    languageCode = languageProvider.selectedLocale.languageCode;
   }
 
   _initDate() async {
@@ -49,7 +58,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   _setupInitialValues() {
     if (exitDate != null) {
       _entryDateController.text =
-          DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+          DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
       calculateRemainingDays();
     }
   }
@@ -62,8 +71,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   }
 
   _selectEntryDate(BuildContext context) {
-
-    initializeDateFormatting('ru').then((_) async {
+    initializeDateFormatting(languageCode).then((_) async {
 
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -73,13 +81,13 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
     );
     if (picked != null) {
       setState(() {
-        _entryDateController.text = DateFormat('EEEE, d MMMM y г.', 'ru').format(picked);
+        _entryDateController.text = DateFormat('EEEE, d MMMM y г.', languageCode).format(picked);
         exitDate = picked.add(Duration(days: visaFreeDays));
       });
 
       calculateRemainingDays();
       if (exitDate != null) {
-        final String exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+        final String exitDateString = DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
         QuickAlert.show(
           context: context,
           type: QuickAlertType.confirm,
@@ -123,7 +131,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   Widget build(BuildContext context) {
     String exitDateString = '';
     if (exitDate != null) {
-      exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+      exitDateString = DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
     }
     return Scaffold(
       appBar:
