@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/helper/text_size_dialog.dart';
+import 'package:srbguide/utils/contents_util.dart';
 import 'package:srbguide/widget/custom_search.dart';
+import 'package:srbguide/widget/markdown/markdown_body.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_xlider/flutter_xlider.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
 class MarkdownReaderScreen extends StatefulWidget {
@@ -21,13 +18,15 @@ class MarkdownReaderScreen extends StatefulWidget {
   _MarkdownReaderScreenState createState() => _MarkdownReaderScreenState();
 }
 
-
 class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
   late String _title;
   late String _markdownContent;
   late ScrollController _scrollController;
   late TextEditingController _searchController;
   bool _isLoading = true;
+  double _currentTextSize = 18.0;
+  final MarkdownHelper _markdownHelper = MarkdownHelper();
+  final ContentUtil _contentUtil = ContentUtil();
 
   @override
   void initState() {
@@ -80,17 +79,6 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
       );
     }
   }
-
-  String _removeATags(String htmlString) {
-    String contentWithoutATags;
-    final patternTagA = RegExp(r'<a\b[^>]*>(.*?)<\/a>');
-    final patternTagCard = RegExp(r'<card>|<\/card>');
-    contentWithoutATags = htmlString.replaceAll(patternTagA, '');
-    contentWithoutATags.replaceAll(patternTagCard, '');
-    return contentWithoutATags;
-  }
-
-  double _currentTextSize = 18.0;
 
   Future<void> _saveTextSize(double textSize) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -155,7 +143,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
                       String? searchValue = await showSearch<String>(
                         context: context,
                         delegate: CustomSearchDelegate(
-                          _removeATags(_markdownContent),
+                          _contentUtil.removeATags(_markdownContent),
                           _scrollToText,
                         ),
                       );
@@ -200,133 +188,15 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
         controller: _scrollController,
         child: Padding(
           padding: EdgeInsets.all(8.0),
-          child: _buildMarkdownBody(textSize),
+          child: _markdownHelper.buildMarkdownBody(
+            context,
+            _isLoading,
+            _markdownContent,
+            textSize,
+            _onTapLink,
+            _scrollToAnchor,
+          ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildMarkdownBody(double textSize) {
-    if (_isLoading) {
-      return Center(child: CircularProgressIndicator());
-    } else if (_markdownContent == null) {
-      QuickAlert.show(
-        context: context,
-        type: QuickAlertType.error,
-        title: 'Упс...',
-        text: 'Данные не были загружены',
-      );
-      return Center(child: Text('No data'));
-    } else {
-      final contentWithoutATags = _removeATags(_markdownContent);
-      List<String> lines = contentWithoutATags.split('\n');
-      final widgets = <Widget>[];
-
-      bool isInCard = false;
-      List<String> cardContent = [];
-
-      for (String line in lines) {
-        if (line.trim() == "<card>") {
-          isInCard = true;
-          continue;
-        } else if (line.trim() == "</card>") {
-          isInCard = false;
-          if (cardContent.isNotEmpty) {
-            widgets.add(_buildCard(cardContent.join('\n'), textSize));
-            cardContent.clear();
-          }
-          continue;
-        }
-
-        if (isInCard) {
-          cardContent.add(line);
-        } else {
-          widgets.add(_buildMarkdown(line, textSize));
-        }
-      }
-
-      if (cardContent.isNotEmpty && isInCard) {
-        widgets.add(_buildCard(cardContent.join('\n'), textSize));
-      }
-
-      return SingleChildScrollView(
-        child: Column(
-          children: widgets,
-        ),
-      );
-    }
-  }
-
-  Widget _buildMarkdown(String content, double textSize) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    Color textColor = isDarkMode ? Colors.white : Colors.black;
-
-    return MarkdownBody(
-      selectable: true,
-      key: GlobalKey(),
-      data: content,
-      styleSheetTheme: MarkdownStyleSheetBaseTheme.material,
-      styleSheet: MarkdownStyleSheet.fromTheme(ThemeData(
-        textTheme: TextTheme(
-          headlineLarge: TextStyle(fontSize: textSize + 4, color: textColor),
-          headlineMedium: TextStyle(fontSize: textSize + 2, color: textColor),
-          headlineSmall: TextStyle(fontSize: textSize, color: textColor),
-
-          titleLarge: TextStyle(fontSize: textSize + 4, color: textColor),
-          titleMedium: TextStyle(fontSize: textSize + 2, color: textColor),
-          titleSmall: TextStyle(fontSize: textSize, color: textColor),
-
-          bodyLarge: TextStyle(fontSize: textSize, color: textColor),
-          bodyMedium: TextStyle(fontSize: textSize + 2, color: textColor),
-          bodySmall: TextStyle(fontSize: textSize, color: textColor),
-
-          displayLarge: TextStyle(fontSize: textSize + 4, color: textColor),
-          displayMedium: TextStyle(fontSize: textSize + 2, color: textColor),
-          displaySmall: TextStyle(fontSize: textSize, color: textColor),
-        ),
-      )),
-      imageBuilder: (uri, title, alt) {
-        if (uri.toString().startsWith('https://github.com/')) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute<void>(
-                  builder: (BuildContext context) {
-                    return Scaffold(
-                      appBar: AppBar(),
-                      body: Center(
-                        child: PhotoView(
-                          imageProvider: NetworkImage(uri.toString()),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
-            child: Image.network(uri.toString()),
-          );
-        }
-        return const SizedBox();
-      },
-      onTapLink: (text, href, title) {
-        if (href != null && href.startsWith('#')) {
-          final anchor = Uri.decodeComponent(href.substring(1));
-          _scrollToAnchor(anchor);
-        } else {
-          _onTapLink(text, href, title);
-        }
-      },
-    );
-  }
-
-Widget _buildCard(String content, double textSize) {
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.all(8.0),
-      child: Padding(
-        padding: EdgeInsets.all(8.0),
-        child: _buildMarkdown(content, textSize),
       ),
     );
   }
