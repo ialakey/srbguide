@@ -4,6 +4,7 @@ import 'package:photo_view/photo_view.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -108,64 +109,6 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
     });
   }
 
-  void _showTextSizeDialog() {
-    QuickAlert.show(
-      context: context,
-      type: QuickAlertType.custom,
-      confirmBtnText: AppLocalizations.of(context)!.translate('save'),
-      widget: StatefulBuilder(
-        builder: (BuildContext context, StateSetter setState) {
-          return Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              FlutterSlider(
-                values: [_currentTextSize],
-                min: 12,
-                max: 30,
-                step: FlutterSliderStep(step: 1),
-                axis: Axis.horizontal,
-                handler: FlutterSliderHandler(
-                  decoration: BoxDecoration(
-                    color: Colors.blue,
-                    shape: BoxShape.circle,
-                  ),
-                ),
-                trackBar: FlutterSliderTrackBar(
-                  activeTrackBar: BoxDecoration(
-                    color: Colors.blue.withOpacity(0.5),
-                  ),
-                  inactiveTrackBar: BoxDecoration(
-                    color: Colors.grey.withOpacity(0.3),
-                  ),
-                ),
-                tooltip: FlutterSliderTooltip(
-                  textStyle: TextStyle(fontSize: 16),
-                  boxStyle: FlutterSliderTooltipBox(
-                    decoration: BoxDecoration(
-                      color: Colors.blue,
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                onDragging: (handlerIndex, lowerValue, upperValue) {
-                  setState(() {
-                    _currentTextSize = lowerValue;
-                  });
-                },
-              ),
-              Text('${AppLocalizations.of(context)!.translate('current_size')}: ${_currentTextSize.toStringAsFixed(0)}'),
-            ],
-          );
-        },
-      ),
-      onConfirmBtnTap: () {
-        _setTextSize(_currentTextSize);
-        Navigator.of(context).pop();
-      },
-      title: AppLocalizations.of(context)!.translate('text_size'),
-    );
-  }
-
   void _setTextSize(double value) {
     setState(() {
       _currentTextSize = value;
@@ -192,7 +135,11 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
                 PopupMenuItem(
                   child: ListTile(
                     onTap: () {
-                      _showTextSizeDialog();
+                      DialogHelper.showTextSizeDialog(
+                        context,
+                        _currentTextSize,
+                        _setTextSize,
+                      );
                     },
                     leading: ThemedIcon(
                       lightIcon: 'assets/icons_24x24/letter-case.png',
@@ -276,7 +223,6 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
       final widgets = <Widget>[];
 
       bool isInCard = false;
-      bool isInFavouriteCard = false;
       List<String> cardContent = [];
 
       for (String line in lines) {
@@ -290,31 +236,17 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
             cardContent.clear();
           }
           continue;
-        } else if (line.trim() == "<card-favourite>") {
-          isInFavouriteCard = true;
-          continue;
-        } else if (line.trim() == "</card-favourite>") {
-          isInFavouriteCard = false;
-          if (cardContent.isNotEmpty) {
-            widgets.add(_buildFavouriteCard(cardContent.join('\n'), textSize));
-            cardContent.clear();
-          }
-          continue;
         }
 
-        if (isInCard || isInFavouriteCard) {
+        if (isInCard) {
           cardContent.add(line);
         } else {
           widgets.add(_buildMarkdown(line, textSize));
         }
       }
 
-      if (cardContent.isNotEmpty) {
-        if (isInCard) {
-          widgets.add(_buildCard(cardContent.join('\n'), textSize));
-        } else if (isInFavouriteCard) {
-          widgets.add(_buildFavouriteCard(cardContent.join('\n'), textSize));
-        }
+      if (cardContent.isNotEmpty && isInCard) {
+        widgets.add(_buildCard(cardContent.join('\n'), textSize));
       }
 
       return SingleChildScrollView(
@@ -385,40 +317,6 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
           _onTapLink(text, href, title);
         }
       },
-    );
-  }
-
-  //Добавить в избранное
-  Widget _buildFavouriteCard(String content, double textSize) {
-
-    bool isBookmarked = false;
-
-    return Card(
-      elevation: 4.0,
-      margin: EdgeInsets.all(8.0),
-      child: Stack(
-        children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: _buildMarkdown(content, textSize),
-          ),
-          Positioned(
-            top: 8.0,
-            right: 8.0,
-            child: InkWell(
-              onTap: () {
-                setState(() {
-                  isBookmarked = !isBookmarked;
-                });
-              },
-              child: Icon(
-                isBookmarked ? Icons.bookmark : Icons.bookmark_border,
-                color: isBookmarked ? Colors.yellowAccent : Colors.grey,
-              ),
-            ),
-          ),
-        ],
-      ),
     );
   }
 
