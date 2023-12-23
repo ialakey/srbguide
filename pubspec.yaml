@@ -48,3 +48,5 @@ flutter:
     - assets/
     - assets/icons_24x24/
     - lib/l10n/
+    - assets/data/
+    - assets/template/

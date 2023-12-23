@@ -27,7 +27,7 @@ class _GuideScreenState extends State<GuideScreen> {
 
   Future<void> _loadLocations() async {
     try {
-      String jsonData = await rootBundle.loadString('assets/guide.json');
+      String jsonData = await rootBundle.loadString('assets/data/guide.json');
       Map<String, dynamic> decodedJson = json.decode(jsonData);
 
       if (decodedJson.containsKey('ru') && decodedJson['ru'] is List<dynamic>) {

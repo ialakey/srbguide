@@ -9,7 +9,7 @@ import 'dart:io';
 
 class DocumentGenerator {
   static Future<void> generateAndEventDocument(Map<String, Object?> params, bool isSend) async {
-    final ByteData templateData = await rootBundle.load('assets/cardboard.docx');
+    final ByteData templateData = await rootBundle.load('assets/template/cardboard.docx');
     final Uint8List templateBytes = templateData.buffer.asUint8List();
 
     final docx = await DocxTemplate.fromBytes(templateBytes);

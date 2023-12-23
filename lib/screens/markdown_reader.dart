@@ -5,7 +5,6 @@ import 'package:srbguide/utils/contents_util.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/markdown/markdown_body.dart';
 import 'package:srbguide/widget/markdown/popup_menu_item.dart';
-import 'package:srbguide/widget/themed_icon.dart';
 import 'package:url_launcher/url_launcher.dart';
 typedef ScrollToTextFunction = void Function(String text);
 

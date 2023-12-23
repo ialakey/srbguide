@@ -33,7 +33,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
 
   Future<void> loadJsonData() async {
     try {
-      String jsonString = await rootBundle.loadString('assets/tg_chats.json');
+      String jsonString = await rootBundle.loadString('assets/data/tg_chats.json');
       List<dynamic> jsonData = json.decode(jsonString);
       buttonUrls = List<Map<String, dynamic>>.from(jsonData);
       filteredButtons = List.from(buttonUrls);
