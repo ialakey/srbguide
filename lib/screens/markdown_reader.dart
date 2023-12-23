@@ -186,35 +186,66 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
           },
         ),
         actions: [
-          IconButton(
-            onPressed: () {
-              _showTextSizeDialog();
-            },
-            icon: ThemedIcon(
-              lightIcon: 'assets/icons_24x24/letter-case.png',
-              darkIcon: 'assets/icons_24x24/letter-case.png',
-              size: 24.0,
-            ),
-          ),
-          IconButton(
-            icon: ThemedIcon(
-              lightIcon: 'assets/icons_24x24/search.png',
-              darkIcon: 'assets/icons_24x24/search.png',
-              size: 24.0,
-            ),
-            onPressed: () async {
-              String? searchValue = await showSearch<String>(
-                context: context,
-                delegate: CustomSearchDelegate(
-                  _removeATags(_markdownContent),
-                  _scrollToText,
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem(
+                  child: ListTile(
+                    onTap: () {
+                      _showTextSizeDialog();
+                    },
+                    leading: ThemedIcon(
+                      lightIcon: 'assets/icons_24x24/letter-case.png',
+                      darkIcon: 'assets/icons_24x24/letter-case.png',
+                      size: 24.0,
+                    ),
+                    title: Text('Изменить размер текста'),
+                  ),
                 ),
-              );
-              if (searchValue != null && searchValue.isNotEmpty) {
-                _searchController.text = searchValue;
-                _scrollToText(searchValue);
-              }
+                PopupMenuItem(
+                  child: ListTile(
+                    onTap: () async {
+                      String? searchValue = await showSearch<String>(
+                        context: context,
+                        delegate: CustomSearchDelegate(
+                          _removeATags(_markdownContent),
+                          _scrollToText,
+                        ),
+                      );
+                      if (searchValue != null && searchValue.isNotEmpty) {
+                        _searchController.text = searchValue;
+                        _scrollToText(searchValue);
+                      }
+                      Navigator.pop(context);
+                    },
+                    leading: ThemedIcon(
+                      lightIcon: 'assets/icons_24x24/search.png',
+                      darkIcon: 'assets/icons_24x24/search.png',
+                      size: 24.0,
+                    ),
+                    title: Text('Поиск'),
+                  ),
+                ),
+                PopupMenuItem(
+                  child: ListTile(
+                    onTap: () {
+                    },
+                    leading: ThemedIcon(
+                      lightIcon: 'assets/icons_24x24/bookmark.png',
+                      darkIcon: 'assets/icons_24x24/bookmark.png',
+                      size: 24.0,
+                    ),
+                    title: Text('Добавить в избранное'),
+                  ),
+                ),
+              ];
             },
+            icon:
+            ThemedIcon(
+              lightIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              darkIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              size: 24.0,
+            ),
           ),
         ],
       ),

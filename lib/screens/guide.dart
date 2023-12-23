@@ -27,7 +27,6 @@ class _GuideScreenState extends State<GuideScreen> {
   }
 
   /*TODO разобраться с поиском, при удаление данные не возвращаются
-    вынести все классы и виджеты
   */
   Future<void> _loadLocations() async {
     try {
@@ -101,7 +100,7 @@ class _GuideScreenState extends State<GuideScreen> {
     Map<String, Guide> groupedLocations = _guides();
     return Scaffold(
       appBar: AppBar(
-        title: Text('🚜 Гайд по Сербии'),
+        title: Text(AppLocalizations.of(context)!.translate('guide')),
       ),
       drawer: AppDrawer(),
       body: Column(
