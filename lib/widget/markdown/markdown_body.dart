@@ -106,19 +106,19 @@ class MarkdownHelper {
       styleSheet: MarkdownStyleSheet.fromTheme(
           ThemeData(
         textTheme: TextTheme(
-          headlineLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          headlineLarge: TextStyle(fontSize: textSize + 4, color: textColor, fontWeight: FontWeight.bold),
           headlineMedium: TextStyle(fontSize: textSize + 2, color: textColor),
           headlineSmall: TextStyle(fontSize: textSize, color: textColor),
 
-          titleLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          titleLarge: TextStyle(fontSize: textSize + 4, color: textColor, fontWeight: FontWeight.bold),
           titleMedium: TextStyle(fontSize: textSize + 2, color: textColor),
           titleSmall: TextStyle(fontSize: textSize, color: textColor),
 
-          bodyLarge: TextStyle(fontSize: textSize, color: textColor),
+          bodyLarge: TextStyle(fontSize: textSize + 4, color: textColor, fontWeight: FontWeight.bold),
           bodyMedium: TextStyle(fontSize: textSize + 2, color: textColor),
           bodySmall: TextStyle(fontSize: textSize, color: textColor),
 
-          displayLarge: TextStyle(fontSize: textSize + 4, color: textColor),
+          displayLarge: TextStyle(fontSize: textSize + 4, color: textColor, fontWeight: FontWeight.bold),
           displayMedium: TextStyle(fontSize: textSize + 2, color: textColor),
           displaySmall: TextStyle(fontSize: textSize, color: textColor),
         ),
