@@ -105,39 +105,76 @@ class _GuideScreenState extends State<GuideScreen> {
       drawer: AppDrawer(),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              onChanged: (value) {
-                filterLocations(value);
-              },
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.translate('search'),
-                prefixIcon: ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/search.png',
-                  darkIcon: 'assets/icons_24x24/search.png',
-                  size: 24.0,
-                ),
-                suffixIcon: searchController.text.isNotEmpty
-                    ? IconButton(
-                  icon: Icon(Icons.clear, color: Colors.grey),
-                  onPressed: () {
-                    searchController.clear();
-                    filterLocations('');
-                  },
-                )
-                    : null,
-              ),
-            ),
-          ),
+          // Padding(
+          //   padding: EdgeInsets.all(8.0),
+          //   child: TextField(
+          //     controller: searchController,
+          //     onChanged: (value) {
+          //       filterLocations(value);
+          //     },
+          //     decoration: InputDecoration(
+          //       labelText: AppLocalizations.of(context)!.translate('search'),
+          //       prefixIcon: ThemedIcon(
+          //         lightIcon: 'assets/icons_24x24/search.png',
+          //         darkIcon: 'assets/icons_24x24/search.png',
+          //         size: 24.0,
+          //       ),
+          //       suffixIcon: searchController.text.isNotEmpty
+          //           ? IconButton(
+          //         icon: Icon(Icons.clear, color: Colors.grey),
+          //         onPressed: () {
+          //           searchController.clear();
+          //           filterLocations('');
+          //         },
+          //       )
+          //           : null,
+          //     ),
+          //   ),
+          // ),
           Expanded(
-            child: ListView.builder(
-              itemCount: groupedLocations.length,
-              itemBuilder: (BuildContext context, int index) {
-                Guide guide = groupedLocations.values.elementAt(index);
-                return buildSection(context, guide.group, guide.icon, guide.items);
-              },
+            child: ListView(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SizedBox(height: 20),
+                    Text(
+                      'Описание каждой жизненной ситуации для экспатов из РФ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    InteractiveViewer(
+                      child: Image.network(
+                        'https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a',
+                        fit: BoxFit.contain,
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    Text(
+                      'Более детальную информацию по каждому пункту ищите в разделах ниже',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                  ],
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemCount: groupedLocations.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    Guide guide = groupedLocations.values.elementAt(index);
+                    return buildSection(context, guide.group, guide.icon, guide.items);
+                  },
+                ),
+              ],
             ),
           ),
         ],
