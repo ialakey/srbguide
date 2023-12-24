@@ -135,6 +135,7 @@ class MarkdownHelper {
                       body: Center(
                         child: PhotoView(
                           imageProvider: NetworkImage(uri.toString()),
+                          minScale: PhotoViewComputedScale.contained,
                         ),
                       ),
                     );
