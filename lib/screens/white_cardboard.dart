@@ -148,23 +148,17 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
 
   _saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('surname', _surnameController.text);
-    await prefs.setString('name', _nameController.text);
-    await prefs.setString('placeOfBirth', _placeOfBirthController.text);
-    await prefs.setString('nationality', _nationalityController.text);
-    await prefs.setString('documentNumber', _documentNumberController.text);
-    await prefs.setString('address', _addressController.text);
-    await prefs.setString('ownerInfo', _ownerInfoController.text);
-    await prefs.setString('placeArrival', _placeArrivalController.text);
-    if (_dateOfBirth != null) {
-      await prefs.setString('dateOfBirth', _dateOfBirth!.toIso8601String());
-    }
-    if (_arrivalDate != null) {
-      await prefs.setString('arrivalDate', _arrivalDate!.toIso8601String());
-    }
-    if (_registrationDate != null) {
-      await prefs.setString('registrationDate', _registrationDate!.toIso8601String());
-    }
+    await prefs.setString('surname', _surnameController.text.isEmpty ? "" : _surnameController.text);
+    await prefs.setString('name', _nameController.text.isEmpty ? "" : _nameController.text);
+    await prefs.setString('placeOfBirth', _placeOfBirthController.text.isEmpty ? "" : _placeOfBirthController.text);
+    await prefs.setString('nationality', _nationalityController.text.isEmpty ? "" : _nationalityController.text);
+    await prefs.setString('documentNumber', _documentNumberController.text.isEmpty ? "" : _documentNumberController.text);
+    await prefs.setString('address', _addressController.text.isEmpty ? "" : _addressController.text);
+    await prefs.setString('ownerInfo', _ownerInfoController.text.isEmpty ? "" : _ownerInfoController.text);
+    await prefs.setString('placeArrival', _placeArrivalController.text.isEmpty ? "" : _placeArrivalController.text);
+    await prefs.setString('dateOfBirth', _dateOfBirth != null ? _dateOfBirth!.toIso8601String() : "");
+    await prefs.setString('arrivalDate', _arrivalDate != null ? _arrivalDate!.toIso8601String() : "");
+    await prefs.setString('registrationDate', _registrationDate != null ? _registrationDate!.toIso8601String() : "");
   }
 
   @override
@@ -511,43 +505,19 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
   }
 
   void _onButtonPressed(bool isSending) {
-    if (_formKey.currentState!.validate() && isFormValid()) {
-      final params = {
-        'surname': _surnameController.text,
-        'name': _nameController.text,
-        'dateOfBirth': _dateOfBirth.toString().split(' ')[0],
-        'sex': _gender,
-        'placeOfBirth': _placeOfBirthController.text,
-        'nationality': _nationalityController.text,
-        'documentNumber': _documentNumberController.text,
-        'dateOfEntry': '${_arrivalDate.toString().split(' ')[0]} ${_placeArrivalController.text}',
-        'addressOfPlace': _addressController.text,
-        'landlordInformation': _ownerInfoController.text,
-        'dateOfRegistration': _registrationDate.toString().split(' ')[0],
-      };
-      DocumentGenerator.generateAndEventDocument(params, isSending);
-    } else {
-        QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: '${AppLocalizations.of(context)!.translate('error')}!',
-          text: AppLocalizations.of(context)!.translate('fill_all_fields'),
-        );
-      }
-    }
-
-  bool isFormValid() {
-    return _surnameController.text.isNotEmpty &&
-        _nameController.text.isNotEmpty &&
-        _dateOfBirth != null &&
-        _gender != null &&
-        _placeOfBirthController.text.isNotEmpty &&
-        _nationalityController.text.isNotEmpty &&
-        _documentNumberController.text.isNotEmpty &&
-        _arrivalDate != null &&
-        _placeArrivalController.text.isNotEmpty &&
-        _addressController.text.isNotEmpty &&
-        _ownerInfoController.text.isNotEmpty &&
-        _registrationDate != null;
+    final params = {
+      'surname': _surnameController.text.isEmpty ? "" : _surnameController.text,
+      'name': _nameController.text.isEmpty ? "" : _nameController.text,
+      'dateOfBirth': _dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : "",
+      'sex': _gender ?? "",
+      'placeOfBirth': _placeOfBirthController.text.isEmpty ? "" : _placeOfBirthController.text,
+      'nationality': _nationalityController.text.isEmpty ? "" : _nationalityController.text,
+      'documentNumber': _documentNumberController.text.isEmpty ? "" : _documentNumberController.text,
+      'dateOfEntry': '${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : ""} ${_placeArrivalController.text.isEmpty ? "" : _placeArrivalController.text}',
+      'addressOfPlace': _addressController.text.isEmpty ? "" : _addressController.text,
+      'landlordInformation': _ownerInfoController.text.isEmpty ? "" : _ownerInfoController.text,
+      'dateOfRegistration': _registrationDate != null ? _registrationDate!.toString().split(' ')[0] : "",
+    };
+    DocumentGenerator.generateAndEventDocument(params, isSending);
   }
 }
