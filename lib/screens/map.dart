@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
@@ -114,6 +115,27 @@ class _MapScreenState extends State<MapScreen> {
               )
                   : Center(
                 child: Text('No URL selected'),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                if (selectedUrl.isNotEmpty) {
+                  UrlLauncherHelper.launchURL(selectedUrl);
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('No URL selected')),
+                  );
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.translate('open_selected_map'),
+                style: TextStyle(fontSize: 16.0),
               ),
             ),
           ],

@@ -58,5 +58,6 @@
   "english": "Английский",
   "text_size": "Размер текста",
   "current_size": "Текущий размер",
-  "change_size_text": "Изменить размер текста"
+  "change_size_text": "Изменить размер текста",
+  "open_selected_map": "Открыть в Google Maps"
 }
