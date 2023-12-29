@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class ActionMenuButton extends StatelessWidget {
@@ -25,7 +26,7 @@ class ActionMenuButton extends StatelessWidget {
                 darkIcon: 'assets/icons_24x24/letter-case.png',
                 size: 24.0,
               ),
-              title: Text('Изменить размер текста'),
+              title: Text(AppLocalizations.of(context)!.translate('change_size_text')),
             ),
           ),
           PopupMenuItem(
@@ -36,20 +37,20 @@ class ActionMenuButton extends StatelessWidget {
                 darkIcon: 'assets/icons_24x24/search.png',
                 size: 24.0,
               ),
-              title: Text('Поиск'),
+              title: Text(AppLocalizations.of(context)!.translate('search')),
             ),
           ),
-          PopupMenuItem(
-            child: ListTile(
-              // onTap: onTapAddToFavorite,
-              leading: ThemedIcon(
-                lightIcon: 'assets/icons_24x24/bookmark.png',
-                darkIcon: 'assets/icons_24x24/bookmark.png',
-                size: 24.0,
-              ),
-              title: Text('Добавить в избранное'),
-            ),
-          ),
+          // PopupMenuItem(
+          //   child: ListTile(
+          //     // onTap: onTapAddToFavorite,
+          //     leading: ThemedIcon(
+          //       lightIcon: 'assets/icons_24x24/bookmark.png',
+          //       darkIcon: 'assets/icons_24x24/bookmark.png',
+          //       size: 24.0,
+          //     ),
+          //     title: Text('Добавить в избранное'),
+          //   ),
+          // ),
         ];
       },
       icon: ThemedIcon(

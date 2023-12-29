@@ -57,5 +57,6 @@
   "russian": "Russian",
   "english": "English",
   "text_size": "Text size",
-  "current_size": "Current size"
+  "current_size": "Current size",
+  "change_size_text": "Change size text"
 }
