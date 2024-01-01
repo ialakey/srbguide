@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
@@ -12,53 +14,42 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  final List<Map<String, String>> locations = [
-    {
-      'iconPath': 'usd.png',
-      'url': 'https://www.google.com/maps/search/Мењачница',
-      'title': 'Обменники',
-      'section': 'Карты',
-    },
-    {
-      'iconPath': 'angry.png',
-      'url': 'https://t.ly/YAx6',
-      'title': 'Черный список квартир',
-      'section': 'Карты',
-    },
-    {
-      'iconPath': 'no-smoking.png',
-      'url':
-      'https://www.google.com/maps/d/viewer?mid=1DhbU4mNbi0OVkoRSpKBqBmWqeRXU5vo&usp=sharing',
-      'title': 'Не курящие',
-      'section': 'Карты',
-    },
-    {
-      'iconPath': 'tea.png',
-      'url':
-      'https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=sharing',
-      'title': 'Русские заведения',
-      'section': 'Карты',
-    },
-  ];
-
-  late Map<String, String> selectedLocation;
+  List<Map<String, dynamic>> locations = [];
+  late Map<String, dynamic> selectedLocation = {};
   late Key webViewKey;
-  late String selectedUrl;
-  late String selectedIconPath;
+  late String selectedUrl = "";
 
   @override
   void initState() {
     super.initState();
-    selectedLocation = locations[0];
-    selectedUrl = selectedLocation['url'] ?? '';
-    webViewKey = UniqueKey();
+    loadLocations();
+  }
+
+  Future<void> loadLocations() async {
+    String data =
+    await DefaultAssetBundle.of(context).loadString('assets/data/locations.json');
+    setState(() {
+      locations = List<Map<String, dynamic>>.from(json.decode(data));
+      if (locations.isNotEmpty) {
+        selectedLocation = locations[0];
+        selectedUrl = selectedLocation['url'] ?? '';
+        webViewKey = UniqueKey();
+      }
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (locations.isEmpty) {
+      return Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     return Scaffold(
-      appBar:
-      CustomAppBar(
+      appBar: CustomAppBar(
         title: AppLocalizations.of(context)!.translate('maps'),
       ),
       drawer: AppDrawer(),
@@ -69,7 +60,7 @@ class _MapScreenState extends State<MapScreen> {
           children: [
             Container(
               width: double.infinity,
-              child: DropdownButton<Map<String, String>>(
+              child: DropdownButton<Map<String, dynamic>>(
                 value: selectedLocation,
                 onChanged: (newValue) {
                   setState(() {
@@ -78,15 +69,17 @@ class _MapScreenState extends State<MapScreen> {
                     webViewKey = UniqueKey();
                   });
                 },
-                items: locations.map<DropdownMenuItem<Map<String, String>>>(
+                items: locations.map<DropdownMenuItem<Map<String, dynamic>>>(
                       (location) {
-                    return DropdownMenuItem<Map<String, String>>(
+                    return DropdownMenuItem<Map<String, dynamic>>(
                       value: location,
                       child: Row(
                         children: [
                           ThemedIcon(
-                            lightIcon: 'assets/icons_24x24/${location['iconPath']}',
-                            darkIcon: 'assets/icons_24x24/${location['iconPath']}',
+                            lightIcon:
+                            'assets/icons_24x24/${location['iconPath']}',
+                            darkIcon:
+                            'assets/icons_24x24/${location['iconPath']}',
                             size: 24.0,
                           ),
                           SizedBox(width: 8),
@@ -96,8 +89,7 @@ class _MapScreenState extends State<MapScreen> {
                     );
                   },
                 ).toList(),
-                icon:
-                ThemedIcon(
+                icon: ThemedIcon(
                   lightIcon: 'assets/icons_24x24/caret-down.png',
                   darkIcon: 'assets/icons_24x24/caret-down.png',
                   size: 24.0,
