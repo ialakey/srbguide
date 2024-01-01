@@ -34,22 +34,25 @@ class AuthorScreen extends StatelessWidget {
 
   List<Widget> generateListTiles(Map<String, String> links) {
     return links.entries.map((entry) {
-      return ListTile(
-        contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-        title: Center(
-          child: Text(
-            entry.key,
-            style: TextStyle(
-              fontSize: 18.0,
-            ),
-            textAlign: TextAlign.center,
-          ),
-        ),
-        onTap: () {
-          UrlLauncherHelper.launchURL(entry.value);
-        },
-      );
-    }).toList();
+      return Card(
+          margin: EdgeInsets.all(8.0),
+          child:
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+              title: Center(
+                child: Text(
+                  entry.key,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              onTap: () {
+                UrlLauncherHelper.launchURL(entry.value);
+              },
+            ));
+        }).toList();
   }
 
   @override

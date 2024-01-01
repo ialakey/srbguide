@@ -152,7 +152,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                 title: Text(
                   '${AppLocalizations.of(context)!.translate('select_entry_date_serbia')}:',
                   style: TextStyle(
-                    fontSize: 18.0,
+                    fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -187,7 +187,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                           '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays\n'
                               '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: \n$exitDateString',
                           style: TextStyle(
-                            fontSize: 16.0,
+                            fontSize: 18.0,
                             fontWeight: FontWeight.w500,
                           ),
                           textAlign: TextAlign.center,

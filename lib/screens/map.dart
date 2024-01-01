@@ -109,26 +109,29 @@ class _MapScreenState extends State<MapScreen> {
                 child: Text('No URL selected'),
               ),
             ),
-            ListTile(
-              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
-              title: Center(
-                child: Text(
-                  AppLocalizations.of(context)!.translate('open_selected_map'),
-                  style: TextStyle(
-                    fontSize: 18.0,
+            Card(
+              margin: EdgeInsets.all(8.0),
+              child: ListTile(
+                contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+                title: Center(
+                  child: Text(
+                    AppLocalizations.of(context)!.translate('open_selected_map'),
+                    style: TextStyle(
+                      fontSize: 18.0,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
                 ),
+                onTap: () {
+                  if (selectedUrl.isNotEmpty) {
+                    UrlLauncherHelper.launchURL(selectedUrl);
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('No URL selected')),
+                    );
+                  }
+                },
               ),
-              onTap: () {
-                if (selectedUrl.isNotEmpty) {
-                  UrlLauncherHelper.launchURL(selectedUrl);
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('No URL selected')),
-                  );
-                }
-              },
             ),
           ],
         ),
