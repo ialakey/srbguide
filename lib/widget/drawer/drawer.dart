@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
-import 'package:srbguide/main.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/guide.dart';
