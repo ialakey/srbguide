@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/main.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/guide.dart';
 import 'package:srbguide/screens/map.dart';
-import 'package:srbguide/screens/markdown_reader.dart';
 import 'package:srbguide/screens/settings.dart';
 import 'package:srbguide/screens/tg_chats.dart';
 import 'package:srbguide/screens/white_cardboard.dart';
@@ -13,7 +14,6 @@ import 'package:srbguide/service/url_launcher_helper.dart';
 import 'themed_icon.dart';
 
 class AppDrawer extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -25,22 +25,42 @@ class AppDrawer extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: Colors.transparent,
-                  child: ClipOval(
-                    child: Image.asset(
-                      'assets/serbia.png',
-                      fit: BoxFit.cover,
-                      width: 80.0,
-                      height: 80.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CircleAvatar(
+                          radius: 40.0,
+                          backgroundColor: Colors.transparent,
+                          child: ClipOval(
+                            child: Image.asset(
+                              'assets/serbia.png',
+                              fit: BoxFit.cover,
+                              width: 80.0,
+                              height: 80.0,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 10.0),
+                        Text(
+                          AppLocalizations.of(context)!.translate('app_name'),
+                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        ),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 10.0),
-                Text(
-                    AppLocalizations.of(context)!.translate('app_name'),
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)
+                    IconButton(
+                      icon: ThemedIcon(
+                        lightIcon: 'assets/icons_24x24/moon-stars.png',
+                        darkIcon: 'assets/icons_24x24/sun.png',
+                        size: 30,
+                      ),
+                      onPressed: () {
+                        _toggleTheme(context);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -179,5 +199,17 @@ class AppDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _toggleTheme(BuildContext context) {
+    SharedPreferences.getInstance().then((prefs) {
+      bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+      isDarkMode = !isDarkMode;
+      prefs.setBool('isDarkMode', isDarkMode);
+
+      ThemeMode newThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+      final mainScreen = MainScreen.of(context);
+      mainScreen?.setThemeMode(newThemeMode);
+    });
   }
 }
