@@ -178,9 +178,9 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                     child: Column(
                       children: [
                         ThemedIcon(
-                          lightIcon: 'assets/icons_24x24/clock-three.png',
-                          darkIcon: 'assets/icons_24x24/clock-three.png',
-                          size: 24.0,
+                          lightIcon: 'assets/icons_24x24/clock.gif',
+                          darkIcon: 'assets/icons_24x24/clock.gif',
+                          size: 32.0,
                         ),
                         SizedBox(height: 8),
                         Text(
