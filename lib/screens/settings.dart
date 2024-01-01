@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/language_provider.dart';
 import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/app_bar.dart';
@@ -17,11 +18,13 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
   bool _isDarkMode = false;
+  double _currentTextSize = 18.0;
 
   @override
   void initState() {
     super.initState();
     _loadSettings();
+    _loadSavedTextSize();
     Provider.of<LanguageProvider>(context, listen: false).init();
   }
 
@@ -80,10 +83,42 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  Future<void> _saveTextSize(double textSize) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('textSize', textSize);
+  }
+
+  Future<double> _loadTextSize() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('textSize') ?? 18.0;
+  }
+
+  Future<void> _loadSavedTextSize() async {
+    double savedTextSize = await _loadTextSize();
+    setState(() {
+      _currentTextSize = savedTextSize;
+    });
+  }
+
+  void _setTextSize(double value) {
+    setState(() {
+      _currentTextSize = value;
+    });
+    _saveTextSize(value);
+  }
+
+  _changeTextSize() {
+    DialogHelper.showTextSizeDialog(
+      context,
+      _currentTextSize,
+      _setTextSize,
+    );
+  }
+
   //TODO почему то загружаются по всей видимости все экраны когда меняю тему (слишком медленно)
   @override
   Widget build(BuildContext context) {
-    String buttonText = _isDarkMode ? AppLocalizations.of(context)!.translate('light_theme') : AppLocalizations.of(context)!.translate('dark_theme');
+    //String buttonText = _isDarkMode ? AppLocalizations.of(context)!.translate('light_theme') : AppLocalizations.of(context)!.translate('dark_theme');
 
     return Scaffold(
       appBar:
@@ -99,17 +134,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _buildCard(
-              buttonText,
+              AppLocalizations.of(context)!.translate('change_size_text'),
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/moon-stars.png',
-                darkIcon: 'assets/icons_24x24/sun.png',
+                lightIcon: 'assets/icons_24x24/letter-case.png',
+                darkIcon: 'assets/icons_24x24/letter-case.png',
                 size: 24.0,
               ),
-              _toggleTheme,
+              _changeTextSize,
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 18),
+            // _buildCard(
+            //   buttonText,
+            //   ThemedIcon(
+            //     lightIcon: 'assets/icons_24x24/moon-stars.png',
+            //     darkIcon: 'assets/icons_24x24/sun.png',
+            //     size: 24.0,
+            //   ),
+            //   _toggleTheme,
+            // ),
+            // SizedBox(height: 20),
             _buildLanguageCard(context),
-            SizedBox(height: 20),
+            SizedBox(height: 18),
             _buildCard(
               AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(

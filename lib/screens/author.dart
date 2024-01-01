@@ -32,30 +32,25 @@ class AuthorScreen extends StatelessWidget {
     // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
   };
 
-  List<Widget> generateButtons(Map<String, String> links) {
+  List<Widget> generateListTiles(Map<String, String> links) {
     return links.entries.map((entry) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-        child: ElevatedButton(
-          onPressed: () {
-            UrlLauncherHelper.launchURL(entry.value);
-          },
-          style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8.0),
-            ),
-            padding: EdgeInsets.symmetric(vertical: 16.0),
-            minimumSize: Size(150, 50),
-          ),
+      return ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+        title: Center(
           child: Text(
             entry.key,
-            style: TextStyle(fontSize: 16.0),
+            style: TextStyle(
+              fontSize: 18.0,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
+        onTap: () {
+          UrlLauncherHelper.launchURL(entry.value);
+        },
       );
     }).toList();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +124,7 @@ class AuthorScreen extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              ...generateButtons(links),
+              ...generateListTiles(links),
             ],
           ),
         ),

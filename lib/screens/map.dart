@@ -109,8 +109,18 @@ class _MapScreenState extends State<MapScreen> {
                 child: Text('No URL selected'),
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+              title: Center(
+                child: Text(
+                  AppLocalizations.of(context)!.translate('open_selected_map'),
+                  style: TextStyle(
+                    fontSize: 18.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              onTap: () {
                 if (selectedUrl.isNotEmpty) {
                   UrlLauncherHelper.launchURL(selectedUrl);
                 } else {
@@ -119,16 +129,6 @@ class _MapScreenState extends State<MapScreen> {
                   );
                 }
               },
-              style: ElevatedButton.styleFrom(
-                padding: EdgeInsets.symmetric(vertical: 16.0),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-              ),
-              child: Text(
-                AppLocalizations.of(context)!.translate('open_selected_map'),
-                style: TextStyle(fontSize: 16.0),
-              ),
             ),
           ],
         ),
