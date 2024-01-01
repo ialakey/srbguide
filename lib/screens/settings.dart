@@ -7,7 +7,7 @@ import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/language_provider.dart';
 import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/app_bar.dart';
-import 'package:srbguide/widget/drawer.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {

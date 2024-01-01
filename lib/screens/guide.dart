@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/data/guide_dto.dart';
-import 'package:srbguide/widget/drawer.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/section.dart';
 
 class GuideScreen extends StatefulWidget {
