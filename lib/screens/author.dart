@@ -27,7 +27,7 @@ class AuthorScreen extends StatelessWidget {
 
   final Map<String, String> links = {
     'Linkedin': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
-    'Почта': 'mailto:prosoulk2017@gmail.com',
+    'Mail': 'mailto:prosoulk2017@gmail.com',
     'GitHub': 'https://github.com/ialakey/srbguide',
     // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
   };
@@ -40,14 +40,22 @@ class AuthorScreen extends StatelessWidget {
           onPressed: () {
             UrlLauncherHelper.launchURL(entry.value);
           },
-          child: SizedBox(
-            width: 150,
-            child: Center(child: Text(entry.key)),
+          style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            padding: EdgeInsets.symmetric(vertical: 16.0),
+            minimumSize: Size(150, 50),
+          ),
+          child: Text(
+            entry.key,
+            style: TextStyle(fontSize: 16.0),
           ),
         ),
       );
     }).toList();
   }
+
 
   @override
   Widget build(BuildContext context) {
