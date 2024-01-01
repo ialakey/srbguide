@@ -223,32 +223,40 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
   void _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('select_language'),),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('english'), Locale('en', '')),
-                _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('russian'), Locale('ru', '')),
-              ],
-            ),
+          title: Text(AppLocalizations.of(context)!.translate('select_language')),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('english'), Locale('en', ''), setState),
+                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('russian'), Locale('ru', ''), setState),
+                  ],
+                ),
+              );
+            },
           ),
         );
       },
     );
   }
 
-  Widget _buildLanguageOption(BuildContext context, LanguageProvider languageProvider, String languageName, Locale locale) {
-    return ListTile(
+  Widget _buildLanguageOption(BuildContext context, LanguageProvider languageProvider, String languageName, Locale locale, StateSetter setState) {
+    return RadioListTile<Locale>(
       title: Text(languageName),
-      onTap: () {
-        languageProvider.updateLocale(locale);
-        Navigator.of(context).pop();
+      value: locale,
+      groupValue: languageProvider.selectedLocale,
+      onChanged: (Locale? value) {
+        if (value != null) {
+          languageProvider.updateLocale(value);
+          Navigator.of(context).pop();
+          setState(() {});
+        }
       },
     );
   }

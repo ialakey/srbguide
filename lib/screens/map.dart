@@ -117,7 +117,8 @@ class _MapScreenState extends State<MapScreen> {
                   child: Text(
                     AppLocalizations.of(context)!.translate('open_selected_map'),
                     style: TextStyle(
-                      fontSize: 18.0,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),

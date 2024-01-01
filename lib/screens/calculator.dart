@@ -145,54 +145,77 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Card(
-              elevation: 2,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              child: ListTile(
-                title: Text(
-                  '${AppLocalizations.of(context)!.translate('select_entry_date_serbia')}:',
-                  style: TextStyle(
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.bold,
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Card(
+                elevation: 2,
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                  onTap: () async {
+                    _selectEntryDate(context);
+                  },
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ThemedIcon(
+                              lightIcon: 'assets/icons_24x24/calendar.gif',
+                              darkIcon: 'assets/icons_24x24/calendar.gif',
+                              size: 36.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.0),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.translate('select_entry_date_serbia'),
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
                   ),
                 ),
-                trailing: ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/calendar.png',
-                  darkIcon: 'assets/icons_24x24/calendar.png',
-                  size: 24.0,
-                ),
-                onTap: () async {
-                  _selectEntryDate(context);
-                },
               ),
             ),
             SizedBox(height: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Card(
-                  elevation: 2,
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        ThemedIcon(
-                          lightIcon: 'assets/icons_24x24/clock.gif',
-                          darkIcon: 'assets/icons_24x24/clock.gif',
-                          size: 32.0,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays\n'
-                              '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: \n$exitDateString',
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.w500,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Card(
+                    elevation: 2,
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          ThemedIcon(
+                            lightIcon: 'assets/icons_24x24/alarm.gif',
+                            darkIcon: 'assets/icons_24x24/alarm.gif',
+                            size: 36.0,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                          SizedBox(height: 8),
+                          Text(
+                            '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays\n'
+                                '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: \n$exitDateString',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
