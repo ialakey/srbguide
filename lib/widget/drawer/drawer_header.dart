@@ -18,8 +18,7 @@ class CustomDrawerHeader extends StatefulWidget {
   _CustomDrawerHeaderState createState() => _CustomDrawerHeaderState();
 }
 
-class _CustomDrawerHeaderState extends State<CustomDrawerHeader>
-    with SingleTickerProviderStateMixin {
+class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
   @override
@@ -27,7 +26,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader>
     super.initState();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: Duration(milliseconds: 400),
     );
   }
 
@@ -73,7 +72,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader>
                 animation: _controller,
                 builder: (context, child) {
                   return Transform.rotate(
-                    angle: _controller.value * 2.0 * pi,
+                    angle: _controller.value * pi,
                     child: IconButton(
                       icon: ThemedIcon(
                         lightIcon: 'assets/icons_24x24/moon-stars.png',

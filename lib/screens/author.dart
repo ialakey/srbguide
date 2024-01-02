@@ -26,8 +26,8 @@ class AuthorScreen extends StatelessWidget {
   ];
 
   final Map<String, String> links = {
-    'Linkedin': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
-    'Mail': 'mailto:prosoulk2017@gmail.com',
+    'LinkedIn': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
+    'Gmail': 'mailto:prosoulk2017@gmail.com',
     'GitHub': 'https://github.com/ialakey/srbguide',
     // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
   };

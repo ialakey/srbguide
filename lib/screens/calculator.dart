@@ -242,7 +242,12 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(Icons.calendar_today),
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/calendar.png',
+                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    size: 24.0,
+                  ),
                   title: Text(AppLocalizations.of(context)!.translate('select_date')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.yMMMd().format(selectedDateTime!)
@@ -269,7 +274,12 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.access_time),
+                  leading:
+                  ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/clock-three.png',
+                  darkIcon: 'assets/icons_24x24/clock-three.png',
+                  size: 24.0,
+                  ),
                   title: Text(AppLocalizations.of(context)!.translate('select_time')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.Hm().format(selectedDateTime!)
@@ -293,15 +303,20 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                     }
                   },
                 ),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.create),
-                  onPressed: () {
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/create.png',
+                    darkIcon: 'assets/icons_24x24/create.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('create')),
+                  onTap: () {
                     if (selectedDateTime != null) {
                       Add2Calendar.addEvent2Cal(createCalendarEvent(selectedDateTime!));
                       Navigator.pop(context);
                     }
                   },
-                  label: Text(AppLocalizations.of(context)!.translate('create')),
                 ),
               ],
             );

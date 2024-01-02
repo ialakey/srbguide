@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:srbguide/app_localizations.dart';
@@ -66,29 +67,45 @@ class _TgChatScreenState extends State<TgChatScreen> {
       drawer: AppDrawer(),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsets.all(8.0),
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                labelText: AppLocalizations.of(context)!.translate('search'),
-                prefixIcon:
-                ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/search.png',
-                  darkIcon: 'assets/icons_24x24/search.png',
-                  size: 24.0,
+          Row(
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: TextField(
+                    controller: searchController,
+                    decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('search'),
+                      prefixIcon: ThemedIcon(
+                        lightIcon: 'assets/icons_24x24/search.png',
+                        darkIcon: 'assets/icons_24x24/search.png',
+                        size: 24.0,
+                      ),
+                      suffixIcon: searchController.text.isNotEmpty
+                          ? IconButton(
+                        icon: Icon(Icons.clear, color: Colors.grey),
+                        onPressed: () {
+                          searchController.clear();
+                          setState(() {
+                            filteredButtons = List.from(buttonUrls);
+                          });
+                        },
+                      )
+                          : null,
+                    ),
+                  ),
                 ),
-                suffixIcon: searchController.text.isNotEmpty
-                    ? IconButton(
-                  icon: Icon(Icons.clear, color: Colors.grey),
-                  onPressed: () {
-                    searchController.clear();
-                    filteredButtons = List.from(buttonUrls);
-                  },
-                )
-                    : null,
               ),
-            ),
+              IconButton(
+                onPressed: () {
+                },
+                icon: ThemedIcon(
+                  lightIcon: 'assets/icons_24x24/filter.png',
+                  darkIcon: 'assets/icons_24x24/filter.png',
+                  size: 36.0,
+                ),
+              ),
+            ],
           ),
           Expanded(
             child: ListView.builder(
