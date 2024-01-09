@@ -18,7 +18,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
   bool _isDarkMode = false;
-  double _currentTextSize = 18.0;
+  double _currentTextSize = 13.0;
 
   @override
   void initState() {
@@ -34,14 +34,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) {
       setState(() {});
     }
-  }
-
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-      _prefs!.setBool('isDarkMode', _isDarkMode);
-      _updateThemeMode(_isDarkMode);
-    });
   }
 
   void _updateThemeMode(bool isDarkMode) {
@@ -90,7 +82,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<double> _loadTextSize() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble('textSize') ?? 18.0;
+    return prefs.getDouble('textSize') ?? 13.0;
   }
 
   Future<void> _loadSavedTextSize() async {

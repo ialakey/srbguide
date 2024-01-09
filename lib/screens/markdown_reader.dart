@@ -24,7 +24,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
   late ScrollController _scrollController;
   late TextEditingController _searchController;
   bool _isLoading = true;
-  double _currentTextSize = 18.0;
+  double _currentTextSize = 13.0;
   final MarkdownHelper _markdownHelper = MarkdownHelper();
   final ContentUtil _contentUtil = ContentUtil();
 

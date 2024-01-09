@@ -23,106 +23,114 @@ class AppDrawer extends StatelessWidget {
             appName: AppLocalizations.of(context)!.translate('app_name'),
             imagePath: 'assets/serbia.png',
           ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/time-check.png',
-              darkIcon: 'assets/icons_24x24/time-check.png',
-              size: 24.0,
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                bottom: BorderSide(width: 1.0, color: Colors.grey)
+              ),
             ),
-            title: Text(AppLocalizations.of(context)!.translate('calculator_visarun')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
-              );
-            },
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading: ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/time-check.png',
+                    darkIcon: 'assets/icons_24x24/time-check.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('calculator_visarun')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/edit.png',
+                    darkIcon: 'assets/icons_24x24/edit.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => CreateWhiteCardboardScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/coins.png',
+                    darkIcon: 'assets/icons_24x24/coins.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('flat_tax_calculator')),
+                  onTap: () {
+                    UrlLauncherHelper.launchURL('https://eporezi.purs.gov.rs/kalkulator-pausalnog-poreza-i-doprinosa.html');
+                    Navigator.pop(context);
+                  },
+                ),
+              ],
+            ),
           ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/edit.png',
-              darkIcon: 'assets/icons_24x24/edit.png',
-              size: 24.0,
+          Container(
+            decoration: BoxDecoration(
+              border: Border(
+                  bottom: BorderSide(width: 1.0, color: Colors.grey)
+              ),
             ),
-            title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CreateWhiteCardboardScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/coins.png',
-              darkIcon: 'assets/icons_24x24/coins.png',
-              size: 24.0,
+            padding: EdgeInsets.symmetric(vertical: 8.0),
+            child: Column(
+              children: [
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/map-marker.png',
+                    darkIcon: 'assets/icons_24x24/map-marker.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('maps')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/search-alt.png',
+                    darkIcon: 'assets/icons_24x24/search-alt.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('guide')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => GuideScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    lightIcon: 'assets/icons_24x24/users.png',
+                    darkIcon: 'assets/icons_24x24/users.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('tg_chats')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => TgChatScreen()),
+                    );
+                  },
+                ),
+              ],
             ),
-            title: Text(AppLocalizations.of(context)!.translate('flat_tax_calculator')),
-            onTap: () {
-              UrlLauncherHelper.launchURL('https://eporezi.purs.gov.rs/kalkulator-pausalnog-poreza-i-doprinosa.html');
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/map-marker.png',
-              darkIcon: 'assets/icons_24x24/map-marker.png',
-              size: 24.0,
-            ),
-            title: Text(AppLocalizations.of(context)!.translate('maps')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MapScreen()),
-              );
-            },
-          ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/search-alt.png',
-              darkIcon: 'assets/icons_24x24/search-alt.png',
-              size: 24.0,
-            ),
-            title: Text(AppLocalizations.of(context)!.translate('guide')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => GuideScreen()),
-              );
-            },
-          ),
-          // ListTile(
-          //   leading:
-          //   ThemedIcon(
-          //     lightIcon: 'assets/icons_24x24/physics.png',
-          //     darkIcon: 'assets/icons_24x24/physics.png',
-          //     size: 24.0,
-          //   ),
-          //   title: Text('Полезности'),
-          //   onTap: () {
-          //     onNavItemTapped(4);
-          //     Navigator.pop(context);
-          //   },
-          // ),
-          ListTile(
-            leading:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/users.png',
-              darkIcon: 'assets/icons_24x24/users.png',
-              size: 24.0,
-            ),
-            title: Text(AppLocalizations.of(context)!.translate('tg_chats')),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TgChatScreen()),
-              );
-            },
           ),
           ListTile(
             leading:
