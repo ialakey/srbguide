@@ -40,53 +40,62 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
   Widget build(BuildContext context) {
     return DrawerHeader(
       decoration: BoxDecoration(),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      child: Stack(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    radius: 40.0,
-                    backgroundColor: Colors.transparent,
-                    child: ClipOval(
-                      child: Image.asset(
-                        widget.imagePath,
-                        fit: BoxFit.cover,
-                        width: 80.0,
-                        height: 80.0,
+          Positioned(
+            top: 0,
+            right: 0,
+            left: 0,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                AnimatedBuilder(
+                  animation: _controller,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: _controller.value * pi,
+                      child: IconButton(
+                        icon: ThemedIcon(
+                          lightIcon: 'assets/icons_24x24/moon-stars.png',
+                          darkIcon: 'assets/icons_24x24/sun.png',
+                          size: 30,
+                        ),
+                        onPressed: () {
+                          _toggleTheme(context);
+                        },
                       ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                CircleAvatar(
+                  radius: 40.0,
+                  backgroundColor: Colors.transparent,
+                  child: ClipOval(
+                    child: Image.asset(
+                      widget.imagePath,
+                      fit: BoxFit.cover,
+                      width: 80.0,
+                      height: 80.0,
                     ),
                   ),
-                  SizedBox(height: 10.0),
-                  Text(
-                    widget.appName,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              AnimatedBuilder(
-                animation: _controller,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: _controller.value * pi,
-                    child: IconButton(
-                      icon: ThemedIcon(
-                        lightIcon: 'assets/icons_24x24/moon-stars.png',
-                        darkIcon: 'assets/icons_24x24/sun.png',
-                        size: 30,
-                      ),
-                      onPressed: () {
-                        _toggleTheme(context);
-                      },
-                    ),
-                  );
-                },
-              ),
-            ],
+                ),
+                SizedBox(height: 10.0),
+                Text(
+                  widget.appName,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
           ),
         ],
       ),

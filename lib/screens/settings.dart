@@ -117,8 +117,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //String buttonText = _isDarkMode ? AppLocalizations.of(context)!.translate('light_theme') : AppLocalizations.of(context)!.translate('dark_theme');
-
     return Scaffold(
       appBar:
       CustomAppBar(
@@ -141,19 +139,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               _changeTextSize,
             ),
-            SizedBox(height: 18),
-            // _buildCard(
-            //   buttonText,
-            //   ThemedIcon(
-            //     lightIcon: 'assets/icons_24x24/moon-stars.png',
-            //     darkIcon: 'assets/icons_24x24/sun.png',
-            //     size: 24.0,
-            //   ),
-            //   _toggleTheme,
-            // ),
-            // SizedBox(height: 20),
+            SizedBox(height: 4),
             _buildLanguageCard(context),
-            SizedBox(height: 18),
+            SizedBox(height: 4),
             _buildCard(
               AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(
@@ -179,13 +167,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: EdgeInsets.all(12.0),
           child: Row(
             children: [
-              SizedBox(width: 10),
+              icon,
+              SizedBox(width: 12),
               Text(
                 title,
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(width: 10),
-              icon,
             ],
           ),
         ),
@@ -196,6 +183,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildLanguageCard(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
 
+    String languageCode = languageProvider.selectedLocale.languageCode;
+    String languageName = '';
+    switch (languageCode) {
+      case 'ru':
+        languageName = AppLocalizations.of(context)!.translate('russian');
+        break;
+      case 'en':
+        languageName = AppLocalizations.of(context)!.translate('english');
+        break;
+    }
+
     return Card(
       elevation: 2,
       margin: EdgeInsets.symmetric(vertical: 8.0),
@@ -205,16 +203,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: EdgeInsets.all(12.0),
           child: Row(
             children: [
-              SizedBox(width: 10),
-              Text(
-                AppLocalizations.of(context)!.translate('change_language'),
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(width: 10),
               ThemedIcon(
                 lightIcon: 'assets/icons_24x24/globe.png',
                 darkIcon: 'assets/icons_24x24/globe.png',
                 size: 24.0,
+              ),
+              SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.translate('language'),
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(width: 10),
+              Spacer(),
+              Text(
+                  languageName,
+                  style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -222,12 +225,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
   void _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('select_language')),
+          title: Text(AppLocalizations.of(context)!.translate('language')),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return SingleChildScrollView(
