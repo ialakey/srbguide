@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:srbguide/app_localizations.dart';
-import 'package:srbguide/language_provider.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/provider/language_provider.dart';
 
 import 'screens/calculator.dart';
 

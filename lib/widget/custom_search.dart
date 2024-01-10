@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 typedef ScrollToTextFunction = void Function(String text);
 
 class CustomSearchDelegate extends SearchDelegate<String> {

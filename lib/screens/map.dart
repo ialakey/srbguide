@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:quickalert/quickalert.dart';
-import 'package:srbguide/app_localizations.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 
 class DialogHelper {
   static void showTextSizeDialog(
