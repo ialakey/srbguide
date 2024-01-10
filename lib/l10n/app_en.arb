@@ -58,5 +58,8 @@
   "text_size": "Text size",
   "current_size": "Current size",
   "change_size_text": "Change size text",
-  "open_selected_map": "Open selected map"
+  "open_selected_map": "Open selected map",
+  "privacy_policy": "Privacy policy",
+  "data": "Data",
+  "help": "Help"
 }

@@ -5,11 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
@@ -21,8 +24,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSettings();
     _loadSavedTextSize();
     Provider.of<LanguageProvider>(context, listen: false).init();
+  }
+
+  Future<void> _loadSettings() async {
+    _prefs = await SharedPreferences.getInstance();
   }
 
   Future<void> _clearSharedPreferences() async {
@@ -71,7 +79,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  void _setTextSize(double value) {
+  _setTextSize(double value) {
     setState(() {
       _currentTextSize = value;
     });
@@ -86,11 +94,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  _openPrivacyPolicy() {
+    UrlLauncherHelper.launchURL('https://github.com/ialakey/privacy_policy');
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-      CustomAppBar(
+      appBar: CustomAppBar(
         title: AppLocalizations.of(context)!.translate('settings'),
       ),
       drawer: AppDrawer(),
@@ -101,6 +113,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('settings')),
+            _buildLanguageCard(context),
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('guide')),
             _buildCard(
               AppLocalizations.of(context)!.translate('change_size_text'),
               ThemedIcon(
@@ -109,9 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               _changeTextSize,
             ),
-            SizedBox(height: 4),
-            _buildLanguageCard(context),
-            SizedBox(height: 4),
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('data')),
             _buildCard(
               AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(
@@ -120,7 +133,29 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               _showDialog,
             ),
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('help')),
+            _buildCard(
+              AppLocalizations.of(context)!.translate('privacy_policy'),
+              ThemedIcon(
+                iconPath: 'assets/icons_24x24/shield-check.png',
+                size: 24.0,
+              ),
+              _openPrivacyPolicy,
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -184,8 +219,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
               SizedBox(width: 10),
               Spacer(),
               Text(
-                  languageName,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                languageName,
+                style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -193,6 +228,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
+
 
   void _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
     showDialog(

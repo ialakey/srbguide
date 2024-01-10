@@ -58,5 +58,8 @@
   "text_size": "Размер текста",
   "current_size": "Текущий размер",
   "change_size_text": "Изменить размер текста",
-  "open_selected_map": "Открыть в Google Maps"
+  "open_selected_map": "Открыть в Google Maps",
+  "privacy_policy": "Политика конфиденциальности",
+  "data": "Данные",
+  "help": "Помощь"
 }
