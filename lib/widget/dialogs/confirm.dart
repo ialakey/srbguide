@@ -37,15 +37,9 @@ class CustomConfirmationDialog extends StatelessWidget {
           Text(title),
         ],
       ),
-      content:
-        SizedBox(
-        width: 300,
-        height: 100,
-        child: Text(text),
-        ),
+      content: Text(text),
       actions: <Widget>[
-        Expanded(
-          child: Row(
+        Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               GestureDetector(
@@ -76,7 +70,6 @@ class CustomConfirmationDialog extends StatelessWidget {
               ),
             ],
           ),
-        ),
       ],
     );
   }

@@ -87,7 +87,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
 
   Future<double> _loadTextSize() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble('textSize') ?? 18.0;
+    return prefs.getDouble('textSize') ?? 13.0;
   }
 
   Future<void> _loadSavedTextSize() async {
