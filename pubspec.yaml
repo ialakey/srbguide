@@ -22,7 +22,6 @@ dependencies:
   shared_preferences: ^2.0.8
   add_2_calendar: ^3.0.1
   share: ^2.0.4
-  quickalert: ^1.0.2
   group_button: ^5.3.3
   provider: ^5.0.0
   http: ^1.1.2
@@ -46,8 +45,9 @@ flutter:
   uses-material-design: true
 
   assets:
+    - lib/l10n/
     - assets/
     - assets/icons_24x24/
-    - lib/l10n/
+    - assets/gifs_24x24/
     - assets/data/
     - assets/template/

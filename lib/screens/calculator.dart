@@ -3,11 +3,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/dialogs/confirm.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
 
@@ -88,13 +88,12 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
       calculateRemainingDays();
       if (exitDate != null) {
         final String exitDateString = DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
-        QuickAlert.show(
+        CustomConfirmationDialog.show(
           context: context,
-          type: QuickAlertType.confirm,
           title: '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays',
           text: '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: $exitDateString'
               + '\n${AppLocalizations.of(context)!.translate('create_calendar_event')}',
-          showConfirmBtn: true,
+          iconPath: 'assets/gifs_24x24/info.gif',
           confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
           cancelBtnText: AppLocalizations.of(context)!.translate('no'),
           onConfirmBtnTap: () {
@@ -104,7 +103,6 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
             _saveDate();
             Navigator.of(context).pop();
           },
-          showCancelBtn: false,
         );
       }
     }
@@ -163,7 +161,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                         children: [
                           Expanded(
                             child: ThemedIcon(
-                              iconPath: 'assets/icons_24x24/calendar.gif',
+                              iconPath: 'assets/gifs_24x24/calendar.gif',
                               size: 36.0,
                             ),
                           ),
@@ -199,7 +197,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                       child: Column(
                         children: [
                           ThemedIcon(
-                            iconPath: 'assets/icons_24x24/alarm.gif',
+                            iconPath: 'assets/gifs_24x24/alarm.gif',
                             size: 36.0,
                           ),
                           SizedBox(height: 8),

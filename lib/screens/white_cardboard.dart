@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/service/document_generate.dart';
+import 'package:srbguide/widget/dialogs/success.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/searchable_dropdown.dart';
 import 'package:srbguide/widget/text_field/text_form_field.dart';
@@ -177,9 +177,8 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
             onSelected: (value) {
               if (value == 'save') {
                 _saveData();
-                QuickAlert.show(
+                CustomSuccessDialog.show(
                   context: context,
-                  type: QuickAlertType.success,
                   title: '${AppLocalizations.of(context)!.translate('saved')}!',
                 );
               } else if (value == 'send') {

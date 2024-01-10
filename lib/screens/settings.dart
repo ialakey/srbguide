@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/dialogs/confirm.dart';
+import 'package:srbguide/widget/dialogs/success.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
 
@@ -35,20 +36,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _clearSharedPreferences() async {
     await _prefs?.clear();
-    QuickAlert.show(
+    CustomSuccessDialog.show(
       context: context,
-      type: QuickAlertType.success,
       title: '${AppLocalizations.of(context)!.translate('cleared')}!',
     );
   }
 
   _showDialog() {
-    QuickAlert.show(
+    CustomConfirmationDialog.show(
       context: context,
-      type: QuickAlertType.confirm,
       title: AppLocalizations.of(context)!.translate('confirmation'),
       text: AppLocalizations.of(context)!.translate('confirm_clear_data'),
-      showConfirmBtn: true,
+      iconPath: 'assets/gifs_24x24/warning.gif',
       confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
       cancelBtnText: AppLocalizations.of(context)!.translate('no'),
       onConfirmBtnTap: () {
@@ -58,7 +57,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onCancelBtnTap: () {
         Navigator.of(context).pop();
       },
-      showCancelBtn: false,
     );
   }
 

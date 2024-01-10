@@ -29,7 +29,7 @@ class AuthorScreen extends StatelessWidget {
     'LinkedIn': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
     'Gmail': 'mailto:prosoulk2017@gmail.com',
     'GitHub': 'https://github.com/ialakey/srbguide',
-    // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
+    'Telegram': 'https://t.me/kino_narezo4ka',
   };
 
   List<Widget> generateListTiles(Map<String, String> links) {
@@ -82,11 +82,6 @@ class AuthorScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: '+7 952 633 49 42'));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Номер телефона скопирован'),
-                    ),
-                  );
                 },
                 child:
                 Text(

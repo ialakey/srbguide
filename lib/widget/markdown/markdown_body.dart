@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:srbguide/utils/contents_util.dart';
+import 'package:srbguide/widget/dialogs/error.dart';
 import 'package:srbguide/widget/markdown/card.dart';
 
 class MarkdownHelper {
@@ -17,9 +17,8 @@ class MarkdownHelper {
     if (isLoading) {
       return Center(child: CircularProgressIndicator());
     } else if (markdownContent == null) {
-      QuickAlert.show(
+      CustomErrorDialog.show(
         context: context,
-        type: QuickAlertType.error,
         title: 'Упс...',
         text: 'Данные не были загружены',
       );
