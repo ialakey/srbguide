@@ -7,7 +7,7 @@ import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/searchable_dropdown.dart';
 import 'package:srbguide/widget/text_form_field.dart';
 import 'package:srbguide/widget/text_form_field2.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class CreateWhiteCardboardScreen extends StatefulWidget {
   @override
@@ -171,8 +171,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
           PopupMenuButton<String>(
             icon:
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
-              darkIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              iconPath: 'assets/icons_24x24/circle-ellipsis-vertical.png',
               size: 24.0,
             ),
             onSelected: (value) {
@@ -195,8 +194,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/assept-document.png',
-                    darkIcon: 'assets/icons_24x24/assept-document.png',
+                    iconPath: 'assets/icons_24x24/assept-document.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('save')),
@@ -207,8 +205,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/paper-plane.png',
-                    darkIcon: 'assets/icons_24x24/paper-plane.png',
+                    iconPath: 'assets/icons_24x24/paper-plane.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('share')),
@@ -219,8 +216,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/download.png',
-                    darkIcon: 'assets/icons_24x24/download.png',
+                    iconPath: 'assets/icons_24x24/download.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('download')),
@@ -280,8 +276,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                   ),
                   trailing:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/calendar.png',
-                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    iconPath: 'assets/icons_24x24/calendar.png',
                     size: 24.0,
                   ),
                   onTap: () async {
@@ -306,8 +301,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                   DropdownButtonFormField<String>(
                     icon:
                     ThemedIcon(
-                      lightIcon: 'assets/icons_24x24/caret-down.png',
-                      darkIcon: 'assets/icons_24x24/caret-down.png',
+                      iconPath: 'assets/icons_24x24/caret-down.png',
                       size: 24.0,
                     ),
                     value: _gender,
@@ -390,8 +384,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                         IconButton(
                           icon:
                           ThemedIcon(
-                            lightIcon: 'assets/icons_24x24/search.png',
-                            darkIcon: 'assets/icons_24x24/search.png',
+                            iconPath: 'assets/icons_24x24/search.png',
                             size: 24.0,
                           ),
                           onPressed: () async {
@@ -416,8 +409,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                       ),
                       trailing:
                       ThemedIcon(
-                        lightIcon: 'assets/icons_24x24/calendar.png',
-                        darkIcon: 'assets/icons_24x24/calendar.png',
+                        iconPath: 'assets/icons_24x24/calendar.png',
                         size: 24.0,
                       ),
                       onTap: () async {
@@ -478,8 +470,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                   ),
                   trailing:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/calendar.png',
-                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    iconPath: 'assets/icons_24x24/calendar.png',
                     size: 24.0,
                   ),
                   onTap: () async {

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ThemedIcon extends StatelessWidget {
+class ThemedIcon2 extends StatelessWidget {
   final String lightIcon;
   final String darkIcon;
   final double size;
 
-  const ThemedIcon({
+  const ThemedIcon2({
     Key? key,
     required this.lightIcon,
     required this.darkIcon,

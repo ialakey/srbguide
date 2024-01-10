@@ -7,7 +7,7 @@ import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class TgChatScreen extends StatefulWidget {
   @override
@@ -77,8 +77,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context)!.translate('search'),
                       prefixIcon: ThemedIcon(
-                        lightIcon: 'assets/icons_24x24/search.png',
-                        darkIcon: 'assets/icons_24x24/search.png',
+                        iconPath: 'assets/icons_24x24/search.png',
                         size: 24.0,
                       ),
                       suffixIcon: searchController.text.isNotEmpty
@@ -100,8 +99,7 @@ class _TgChatScreenState extends State<TgChatScreen> {
                 onPressed: () {
                 },
                 icon: ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/filter.png',
-                  darkIcon: 'assets/icons_24x24/filter.png',
+                  iconPath: 'assets/icons_24x24/filter.png',
                   size: 36.0,
                 ),
               ),

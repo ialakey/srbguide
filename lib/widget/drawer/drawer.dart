@@ -10,7 +10,7 @@ import 'package:srbguide/screens/white_cardboard.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/drawer/drawer_header.dart';
 
-import '../themed_icon.dart';
+import '../themed/themed_icon.dart';
 
 class AppDrawer extends StatelessWidget {
   @override
@@ -34,8 +34,7 @@ class AppDrawer extends StatelessWidget {
               children: [
                 ListTile(
                   leading: ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/time-check.png',
-                    darkIcon: 'assets/icons_24x24/time-check.png',
+                    iconPath: 'assets/icons_24x24/time-check.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('calculator_visarun')),
@@ -48,8 +47,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/edit.png',
-                    darkIcon: 'assets/icons_24x24/edit.png',
+                    iconPath: 'assets/icons_24x24/edit.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
@@ -62,8 +60,7 @@ class AppDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/coins.png',
-                    darkIcon: 'assets/icons_24x24/coins.png',
+                    iconPath: 'assets/icons_24x24/coins.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('flat_tax_calculator')),
@@ -87,8 +84,7 @@ class AppDrawer extends StatelessWidget {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/map-marker.png',
-                    darkIcon: 'assets/icons_24x24/map-marker.png',
+                    iconPath: 'assets/icons_24x24/map-marker.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('maps')),
@@ -102,8 +98,7 @@ class AppDrawer extends StatelessWidget {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/search-alt.png',
-                    darkIcon: 'assets/icons_24x24/search-alt.png',
+                    iconPath: 'assets/icons_24x24/search-alt.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('guide')),
@@ -117,8 +112,7 @@ class AppDrawer extends StatelessWidget {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/users.png',
-                    darkIcon: 'assets/icons_24x24/users.png',
+                    iconPath: 'assets/icons_24x24/users.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('tg_chats')),
@@ -135,8 +129,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading:
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/settings.png',
-              darkIcon: 'assets/icons_24x24/settings.png',
+              iconPath: 'assets/icons_24x24/settings.png',
               size: 24.0,
             ),
             title: Text(AppLocalizations.of(context)!.translate('settings')),
@@ -150,8 +143,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             leading:
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/diamond.png',
-              darkIcon: 'assets/icons_24x24/diamond.png',
+              iconPath: 'assets/icons_24x24/diamond.png',
               size: 24.0,
             ),
             title: Text(AppLocalizations.of(context)!.translate('author')),

@@ -9,7 +9,7 @@ import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/language_provider.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class VisaFreeCalculatorScreen extends StatefulWidget {
   @override
@@ -163,8 +163,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                         children: [
                           Expanded(
                             child: ThemedIcon(
-                              lightIcon: 'assets/icons_24x24/calendar.gif',
-                              darkIcon: 'assets/icons_24x24/calendar.gif',
+                              iconPath: 'assets/icons_24x24/calendar.gif',
                               size: 36.0,
                             ),
                           ),
@@ -200,8 +199,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                       child: Column(
                         children: [
                           ThemedIcon(
-                            lightIcon: 'assets/icons_24x24/alarm.gif',
-                            darkIcon: 'assets/icons_24x24/alarm.gif',
+                            iconPath: 'assets/icons_24x24/alarm.gif',
                             size: 36.0,
                           ),
                           SizedBox(height: 8),
@@ -244,8 +242,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/calendar.png',
-                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    iconPath: 'assets/icons_24x24/calendar.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('select_date')),
@@ -276,8 +273,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                 ListTile(
                   leading:
                   ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/clock-three.png',
-                  darkIcon: 'assets/icons_24x24/clock-three.png',
+                  iconPath: 'assets/icons_24x24/clock-three.png',
                   size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('select_time')),
@@ -306,8 +302,7 @@ class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/create.png',
-                    darkIcon: 'assets/icons_24x24/create.png',
+                    iconPath: 'assets/icons_24x24/create.png',
                     size: 24.0,
                   ),
                   title: Text(AppLocalizations.of(context)!.translate('create')),

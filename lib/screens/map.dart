@@ -5,7 +5,7 @@ import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class MapScreen extends StatefulWidget {
@@ -76,9 +76,7 @@ class _MapScreenState extends State<MapScreen> {
                       child: Row(
                         children: [
                           ThemedIcon(
-                            lightIcon:
-                            'assets/icons_24x24/${location['iconPath']}',
-                            darkIcon:
+                            iconPath:
                             'assets/icons_24x24/${location['iconPath']}',
                             size: 24.0,
                           ),
@@ -90,8 +88,7 @@ class _MapScreenState extends State<MapScreen> {
                   },
                 ).toList(),
                 icon: ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/caret-down.png',
-                  darkIcon: 'assets/icons_24x24/caret-down.png',
+                  iconPath: 'assets/icons_24x24/caret-down.png',
                   size: 24.0,
                 ),
               ),

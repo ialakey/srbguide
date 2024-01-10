@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/widget/card_guide.dart';
 
-import 'themed_icon.dart';
+import 'themed/themed_icon.dart';
 
 Widget buildSection(BuildContext context, String sectionTitle, String icon, List<Map<String, String>> sectionItems) {
   return Column(
@@ -22,8 +22,7 @@ Widget buildSection(BuildContext context, String sectionTitle, String icon, List
               width: 7,
             ),
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/$icon',
-              darkIcon: 'assets/icons_24x24/$icon',
+              iconPath: 'assets/icons_24x24/$icon',
               size: 24.0,
             ),
           ],

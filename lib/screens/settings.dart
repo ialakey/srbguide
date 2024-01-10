@@ -5,10 +5,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/app_localizations.dart';
 import 'package:srbguide/helper/text_size_dialog.dart';
 import 'package:srbguide/language_provider.dart';
-import 'package:srbguide/main.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {
   @override
@@ -17,37 +16,17 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
-  bool _isDarkMode = false;
   double _currentTextSize = 13.0;
 
   @override
   void initState() {
     super.initState();
-    _loadSettings();
     _loadSavedTextSize();
     Provider.of<LanguageProvider>(context, listen: false).init();
   }
 
-  Future<void> _loadSettings() async {
-    _prefs = await SharedPreferences.getInstance();
-    _isDarkMode = _prefs!.getBool('isDarkMode') ?? false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _updateThemeMode(bool isDarkMode) {
-    ThemeMode newThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    _prefs!.setBool('isDarkMode', isDarkMode);
-    final mainScreen = MainScreen.of(context);
-    mainScreen?.setThemeMode(newThemeMode);
-  }
-
   Future<void> _clearSharedPreferences() async {
     await _prefs?.clear();
-    setState(() {
-      _isDarkMode = false;
-    });
     QuickAlert.show(
       context: context,
       type: QuickAlertType.success,
@@ -125,8 +104,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildCard(
               AppLocalizations.of(context)!.translate('change_size_text'),
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/letter-case.png',
-                darkIcon: 'assets/icons_24x24/letter-case.png',
+                iconPath: 'assets/icons_24x24/letter-case.png',
                 size: 24.0,
               ),
               _changeTextSize,
@@ -137,8 +115,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildCard(
               AppLocalizations.of(context)!.translate('clear_data'),
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/trash.png',
-                darkIcon: 'assets/icons_24x24/trash.png',
+                iconPath: 'assets/icons_24x24/trash.png',
                 size: 24.0,
               ),
               _showDialog,
@@ -196,8 +173,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Row(
             children: [
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/globe.png',
-                darkIcon: 'assets/icons_24x24/globe.png',
+                iconPath: 'assets/icons_24x24/globe.png',
                 size: 24.0,
               ),
               SizedBox(width: 12),

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
-import 'package:srbguide/widget/themed_icon.dart';
 import 'dart:math';
+
+import 'package:srbguide/widget/themed/themed_icon2.dart';
 
 class CustomDrawerHeader extends StatefulWidget {
   final String appName;
@@ -55,7 +56,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                     return Transform.rotate(
                       angle: _controller.value * pi,
                       child: IconButton(
-                        icon: ThemedIcon(
+                        icon: ThemedIcon2(
                           lightIcon: 'assets/icons_24x24/moon-stars.png',
                           darkIcon: 'assets/icons_24x24/sun.png',
                           size: 30,
