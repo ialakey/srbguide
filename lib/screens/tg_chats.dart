@@ -95,14 +95,14 @@ class _TgChatScreenState extends State<TgChatScreen> {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                },
-                icon: ThemedIcon(
-                  iconPath: 'assets/icons_24x24/filter.png',
-                  size: 36.0,
-                ),
-              ),
+              // IconButton(
+              //   onPressed: () {
+              //   },
+              //   icon: ThemedIcon(
+              //     iconPath: 'assets/icons_24x24/filter.png',
+              //     size: 36.0,
+              //   ),
+              // ),
             ],
           ),
           Expanded(

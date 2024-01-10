@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:photo_view/photo_view.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/data/guide_dto.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
@@ -108,11 +109,25 @@ class _GuideScreenState extends State<GuideScreen> {
                       ),
                     ),
                     SizedBox(height: 20),
-                    InteractiveViewer(
-                      child: Image.network(
-                        'https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a',
-                        fit: BoxFit.contain,
-                      ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (BuildContext context) {
+                              return Scaffold(
+                                appBar: AppBar(),
+                                body: Center(
+                                  child: PhotoView(
+                                    imageProvider: NetworkImage('https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a'),
+                                    minScale: PhotoViewComputedScale.contained,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      },
+                      child: Image.network('https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a'),
                     ),
                     SizedBox(height: 20),
                     Text(

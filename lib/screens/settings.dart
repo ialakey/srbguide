@@ -130,7 +130,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               ),
               _showDialog,
             ),
-            _buildSectionHeader(AppLocalizations.of(context)!.translate('help')),
             _buildCard(
               AppLocalizations.of(context)!.translate('privacy_policy'),
               ThemedIcon(
