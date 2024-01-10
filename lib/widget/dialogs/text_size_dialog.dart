@@ -3,7 +3,7 @@ import 'package:flutter_xlider/flutter_xlider.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 
 class DialogHelper {
-  static void showTextSizeDialog(
+  static void show(
       BuildContext context,
       double currentTextSize,
       void Function(double) setTextSize,

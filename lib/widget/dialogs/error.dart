@@ -16,13 +16,16 @@ class CustomErrorDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: SingleChildScrollView(
+      content: SizedBox(
+      width: 300,
+      height: 100,
+      child: SingleChildScrollView(
         child: ListBody(
           children: <Widget>[
             Text(text),
           ],
         ),
-      ),
+      )),
       actions: <Widget>[
         ElevatedButton(
           onPressed: () {

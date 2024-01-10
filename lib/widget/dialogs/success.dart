@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class CustomSuccessDialog extends StatelessWidget {
   final BuildContext context;
@@ -15,7 +16,10 @@ class CustomSuccessDialog extends StatelessWidget {
     return AlertDialog(
       title: Row(
         children: <Widget>[
-          Icon(Icons.check_circle),
+          ThemedIcon(
+            iconPath: 'assets/icons_24x24/check.png',
+            size: 24.0,
+          ),
           SizedBox(width: 8),
           Text(title),
         ],

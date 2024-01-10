@@ -37,7 +37,12 @@ class CustomConfirmationDialog extends StatelessWidget {
           Text(title),
         ],
       ),
-      content: Text(text),
+      content:
+        SizedBox(
+        width: 300,
+        height: 100,
+        child: Text(text),
+        ),
       actions: <Widget>[
         Expanded(
           child: Row(
@@ -47,7 +52,10 @@ class CustomConfirmationDialog extends StatelessWidget {
                 onTap: onCancelBtnTap,
                 child: Row(
                   children: [
-                    Icon(Icons.cancel),
+                    ThemedIcon(
+                      iconPath: 'assets/icons_24x24/cancel.png',
+                      size: 24.0,
+                    ),
                     SizedBox(width: 8),
                     Text(cancelBtnText),
                   ],
@@ -57,7 +65,10 @@ class CustomConfirmationDialog extends StatelessWidget {
                 onTap: onConfirmBtnTap,
                 child: Row(
                   children: [
-                    Icon(Icons.check_circle),
+                    ThemedIcon(
+                      iconPath: 'assets/icons_24x24/checkbox.png',
+                      size: 24.0,
+                    ),
                     SizedBox(width: 8),
                     Text(confirmBtnText),
                   ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/helper/text_size_dialog.dart';
+import 'package:srbguide/widget/dialogs/text_size_dialog.dart';
 import 'package:srbguide/utils/contents_util.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/markdown/markdown_body.dart';
@@ -119,7 +119,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
         actions: [
           ActionMenuButton(
             onTapChangeTextSize: () {
-              DialogHelper.showTextSizeDialog(
+              DialogHelper.show(
                 context,
                 _currentTextSize,
                 _setTextSize,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
-import 'package:srbguide/helper/text_size_dialog.dart';
+import 'package:srbguide/widget/dialogs/text_size_dialog.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
@@ -85,7 +85,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   _changeTextSize() {
-    DialogHelper.showTextSizeDialog(
+    DialogHelper.show(
       context,
       _currentTextSize,
       _setTextSize,
@@ -94,7 +94,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   _openPrivacyPolicy() {
     UrlLauncherHelper.launchURL('https://github.com/ialakey/privacy_policy');
-    Navigator.pop(context);
   }
 
   @override
