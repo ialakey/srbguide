@@ -7,7 +7,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
 
-import 'screens/calculator.dart';
+import 'widget/screen_mapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,6 +16,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  String initialSelectedScreen = prefs.getString('selectedScreen') ?? 'VisaFreeCalculatorScreen';
 
   LanguageProvider languageProvider = LanguageProvider();
   await languageProvider.init();
@@ -25,6 +26,7 @@ void main() async {
       create: (_) => languageProvider,
       child: MainScreen(
         initialThemeMode: initialThemeMode,
+        initialSelectedScreen: initialSelectedScreen,
       ),
     ),
   );
@@ -32,8 +34,13 @@ void main() async {
 
 class MainScreen extends StatefulWidget {
   final ThemeMode initialThemeMode;
+  final String initialSelectedScreen;
 
-  const MainScreen({Key? key, required this.initialThemeMode}) : super(key: key);
+  const MainScreen({
+    Key? key,
+    required this.initialThemeMode,
+    required this.initialSelectedScreen
+  }) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -44,11 +51,13 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   late ThemeMode _themeMode;
+  late String _selectedScreen;
 
   @override
   void initState() {
     super.initState();
     _themeMode = widget.initialThemeMode;
+    _selectedScreen = widget.initialSelectedScreen;
   }
 
   void setThemeMode(ThemeMode themeMode) async {
@@ -62,7 +71,6 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     final languageProvider = Provider.of<LanguageProvider>(context);
-
     return MaterialApp(
       localizationsDelegates: [
         AppLocalizations.delegate,
@@ -78,15 +86,8 @@ class _MainScreenState extends State<MainScreen> {
       themeMode: _themeMode,
       locale: languageProvider.selectedLocale,
       home: Scaffold(
-        body: AppContent(),
+        body: ScreenMapper.getScreen(_selectedScreen),
       ),
     );
-  }
-}
-
-class AppContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return VisaFreeCalculatorScreen();
   }
 }

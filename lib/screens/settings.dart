@@ -21,12 +21,14 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
   double _currentTextSize = 13.0;
+  String _selectedScreen = 'VisaFreeCalculatorScreen';
 
   @override
   void initState() {
     super.initState();
     _loadSettings();
     _loadSavedTextSize();
+    _loadSelectedScreen();
     Provider.of<LanguageProvider>(context, listen: false).init();
   }
 
@@ -96,6 +98,47 @@ class _SettingsScreenState extends State<SettingsScreen> {
     UrlLauncherHelper.launchURL('https://github.com/ialakey/privacy_policy');
   }
 
+  Future<void> _loadSelectedScreen() async {
+    _prefs = await SharedPreferences.getInstance();
+    String savedScreen = _prefs?.getString('selectedScreen') ?? 'VisaFreeCalculatorScreen';
+    setState(() {
+      _selectedScreen = savedScreen;
+    });
+  }
+
+  _saveSelectedScreen(String screen) async {
+    setState(() {
+      _selectedScreen = screen;
+    });
+    await _prefs?.setString('selectedScreen', screen);
+  }
+
+  void _showScreenDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Select Screen'),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildScreenOption(context, 'VisaFreeCalculatorScreen', AppLocalizations.of(context)!.translate('calculator_visarun')),
+                    _buildScreenOption(context, 'CreateWhiteCardboardScreen', AppLocalizations.of(context)!.translate('create_whiteboard')),
+                    _buildScreenOption(context, 'GuideScreen', AppLocalizations.of(context)!.translate('guide')),
+                    _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
+                    _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,6 +155,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             _buildSectionHeader(AppLocalizations.of(context)!.translate('settings')),
             _buildLanguageCard(context),
+            _buildCard(
+              'Выбор главного экрана',
+              ThemedIcon(
+                iconPath: 'assets/icons_24x24/letter-case.png',
+                size: 24.0,
+              ),
+              () => _showScreenDialog(context),
+            ),
             _buildSectionHeader(AppLocalizations.of(context)!.translate('guide')),
             _buildCard(
               AppLocalizations.of(context)!.translate('change_size_text'),
@@ -225,8 +276,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
-  void _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
+  _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -259,6 +309,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
           languageProvider.updateLocale(value);
           Navigator.of(context).pop();
           setState(() {});
+        }
+      },
+    );
+  }
+
+  Widget _buildScreenOption(BuildContext context, String screen, String screenName) {
+    return RadioListTile<String>(
+      title: Text(screenName),
+      value: screen,
+      groupValue: _selectedScreen,
+      onChanged: (String? value) {
+        if (value != null) {
+          _saveSelectedScreen(value);
+          Navigator.of(context).pop();
         }
       },
     );
