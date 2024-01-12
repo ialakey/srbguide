@@ -61,5 +61,7 @@
   "open_selected_map": "Open selected map",
   "privacy_policy": "Privacy policy",
   "data": "Data",
-  "help": "Help"
+  "help": "Help",
+  "main_screen": "Main screen",
+  "choice_screen": "Choice screen"
 }

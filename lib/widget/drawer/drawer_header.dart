@@ -59,7 +59,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                         icon: ThemedIcon2(
                           lightIcon: 'assets/icons_24x24/moon-stars.png',
                           darkIcon: 'assets/icons_24x24/sun.png',
-                          size: 30,
+                          size: 24,
                         ),
                         onPressed: () {
                           _toggleTheme(context);

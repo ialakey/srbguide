@@ -118,7 +118,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Select Screen'),
+          title: Text(AppLocalizations.of(context)!.translate('main_screen')),
           content: StatefulBuilder(
             builder: (BuildContext context, StateSetter setState) {
               return SingleChildScrollView(
@@ -156,9 +156,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildSectionHeader(AppLocalizations.of(context)!.translate('settings')),
             _buildLanguageCard(context),
             _buildCard(
-              'Выбор главного экрана',
+              AppLocalizations.of(context)!.translate('main_screen'),
               ThemedIcon(
-                iconPath: 'assets/icons_24x24/letter-case.png',
+                iconPath: 'assets/icons_24x24/eye.png',
                 size: 24.0,
               ),
               () => _showScreenDialog(context),
@@ -167,7 +167,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
             _buildCard(
               AppLocalizations.of(context)!.translate('change_size_text'),
               ThemedIcon(
-                iconPath: 'assets/icons_24x24/letter-case.png',
+                iconPath: 'assets/icons_24x24/text.png',
                 size: 24.0,
               ),
               _changeTextSize,

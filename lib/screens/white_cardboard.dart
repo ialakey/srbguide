@@ -171,7 +171,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
           PopupMenuButton<String>(
             icon:
             ThemedIcon(
-              iconPath: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              iconPath: 'assets/icons_24x24/menu-dots-vertical.png',
               size: 24.0,
             ),
             onSelected: (value) {

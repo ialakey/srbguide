@@ -47,7 +47,7 @@ class CustomConfirmationDialog extends StatelessWidget {
                 child: Row(
                   children: [
                     ThemedIcon(
-                      iconPath: 'assets/icons_24x24/cancel.png',
+                      iconPath: 'assets/icons_24x24/cross-circle.png',
                       size: 24.0,
                     ),
                     SizedBox(width: 8),

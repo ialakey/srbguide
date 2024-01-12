@@ -61,5 +61,7 @@
   "open_selected_map": "Открыть в Google Maps",
   "privacy_policy": "Политика конфиденциальности",
   "data": "Данные",
-  "help": "Помощь"
+  "help": "Помощь",
+  "main_screen": "Главный экран",
+  "choice_screen": "Выбрать экран"
 }

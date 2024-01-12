@@ -22,7 +22,7 @@ class ActionMenuButton extends StatelessWidget {
             child: ListTile(
               onTap: onTapChangeTextSize,
               leading: ThemedIcon(
-                iconPath: 'assets/icons_24x24/letter-case.png',
+                iconPath: 'assets/icons_24x24/text.png',
                 size: 24.0,
               ),
               title: Text(AppLocalizations.of(context)!.translate('change_size_text')),
@@ -52,7 +52,7 @@ class ActionMenuButton extends StatelessWidget {
         ];
       },
       icon: ThemedIcon(
-        iconPath: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+        iconPath: 'assets/icons_24x24/menu-dots-vertical.png',
         size: 24.0,
       ),
     );
