@@ -127,8 +127,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     _buildScreenOption(context, 'VisaFreeCalculatorScreen', AppLocalizations.of(context)!.translate('calculator_visarun')),
                     _buildScreenOption(context, 'CreateWhiteCardboardScreen', AppLocalizations.of(context)!.translate('create_whiteboard')),
                     _buildScreenOption(context, 'GuideScreen', AppLocalizations.of(context)!.translate('guide')),
-                    _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
                     _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
+                    _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
+                    _buildScreenOption(context, 'ExchangeRateScreen', AppLocalizations.of(context)!.translate('exchange_rate')),
                   ],
                 ),
               );

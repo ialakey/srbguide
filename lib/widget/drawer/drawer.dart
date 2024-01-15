@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/calculator.dart';
+import 'package:srbguide/screens/exchange_rate.dart';
 import 'package:srbguide/screens/guide.dart';
 import 'package:srbguide/screens/map.dart';
 import 'package:srbguide/screens/settings.dart';
@@ -84,20 +85,6 @@ class AppDrawer extends StatelessWidget {
                 ListTile(
                   leading:
                   ThemedIcon(
-                    iconPath: 'assets/icons_24x24/map-marker.png',
-                    size: 24.0,
-                  ),
-                  title: Text(AppLocalizations.of(context)!.translate('maps')),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => MapScreen()),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading:
-                  ThemedIcon(
                     iconPath: 'assets/icons_24x24/search-alt.png',
                     size: 24.0,
                   ),
@@ -120,6 +107,34 @@ class AppDrawer extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => TgChatScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/map-marker.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('maps')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MapScreen()),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/dollar.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('exchange_rate')),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => ExchangeRateScreen()),
                     );
                   },
                 ),

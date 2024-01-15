@@ -63,5 +63,6 @@
   "data": "Data",
   "help": "Help",
   "main_screen": "Main screen",
-  "choice_screen": "Choice screen"
+  "choice_screen": "Choice screen",
+  "exchange_rate": "Exchange Rate"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
 import 'dart:math';
+import 'package:srbguide/service/url_launcher_helper.dart';
 
 import 'package:srbguide/widget/themed/themed_icon2.dart';
 
@@ -21,6 +22,7 @@ class CustomDrawerHeader extends StatefulWidget {
 
 class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
+  late String exchangeRate = '';
 
   @override
   void initState() {
@@ -29,6 +31,14 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
       vsync: this,
       duration: Duration(milliseconds: 400),
     );
+    _getExchangeRate();
+  }
+
+  _getExchangeRate() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      exchangeRate = prefs.getString('exchangeRate') ?? '';
+    });
   }
 
   @override
@@ -95,6 +105,16 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                   widget.appName,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
+                SizedBox(height: 5.0),
+                GestureDetector(
+                  onTap: () {
+                    UrlLauncherHelper.launchURL('https://www.promonet.rs');
+                  },
+                  child: Text(
+                    exchangeRate,
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                  ),
+                )
               ],
             ),
           ),
@@ -103,7 +123,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
     );
   }
 
-  void _toggleTheme(BuildContext context) {
+  _toggleTheme(BuildContext context) {
     SharedPreferences.getInstance().then((prefs) {
       bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
       isDarkMode = !isDarkMode;

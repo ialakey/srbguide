@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/screens/calculator.dart';
+import 'package:srbguide/screens/exchange_rate.dart';
 import 'package:srbguide/screens/guide.dart';
 import 'package:srbguide/screens/map.dart';
 import 'package:srbguide/screens/tg_chats.dart';
@@ -18,6 +19,8 @@ class ScreenMapper {
         return MapScreen();
       case 'TgChatScreen':
         return TgChatScreen();
+      case 'ExchangeRateScreen':
+        return ExchangeRateScreen();
       default:
         return VisaFreeCalculatorScreen();
     }

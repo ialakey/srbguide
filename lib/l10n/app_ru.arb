@@ -63,5 +63,6 @@
   "data": "Данные",
   "help": "Помощь",
   "main_screen": "Главный экран",
-  "choice_screen": "Выбрать экран"
+  "choice_screen": "Выбрать экран",
+  "exchange_rate": "Курс валют"
 }

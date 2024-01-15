@@ -76,10 +76,12 @@ class _TgChatScreenState extends State<TgChatScreen> {
                     controller: searchController,
                     decoration: InputDecoration(
                       labelText: AppLocalizations.of(context)!.translate('search'),
-                      prefixIcon: ThemedIcon(
-                        iconPath: 'assets/icons_24x24/search.png',
-                        size: 24.0,
-                      ),
+                      prefixIcon:
+                          Icon(Icons.search),
+                      // ThemedIcon(
+                      //   iconPath: 'assets/icons_24x24/search.png',
+                      //   size: 24.0,
+                      // ),
                       suffixIcon: searchController.text.isNotEmpty
                           ? IconButton(
                         icon: Icon(Icons.clear, color: Colors.grey),
