@@ -88,15 +88,18 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                CircleAvatar(
-                  radius: 40.0,
-                  backgroundColor: Colors.transparent,
-                  child: ClipOval(
-                    child: Image.asset(
-                      widget.imagePath,
-                      fit: BoxFit.cover,
-                      width: 80.0,
-                      height: 80.0,
+                ClipRect(
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: CircleAvatar(
+                      radius: 40.0,
+                      backgroundColor: Colors.transparent,
+                      child: Image.asset(
+                        widget.imagePath,
+                        fit: BoxFit.cover,
+                        width: 80.0,
+                        height: 80.0,
+                      ),
                     ),
                   ),
                 ),

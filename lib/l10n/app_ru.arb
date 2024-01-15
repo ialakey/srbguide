@@ -64,5 +64,9 @@
   "help": "Помощь",
   "main_screen": "Главный экран",
   "choice_screen": "Выбрать экран",
-  "exchange_rate": "Курс валют"
+  "exchange_rate": "Курс валют",
+  "exchange_rate_on": "Курс валют на",
+  "exchange_rate": "Курс",
+  "currency": "Валюта",
+  "exchange": "Обмен"
 }

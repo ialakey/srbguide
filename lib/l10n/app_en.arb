@@ -64,5 +64,9 @@
   "help": "Help",
   "main_screen": "Main screen",
   "choice_screen": "Choice screen",
-  "exchange_rate": "Exchange Rate"
+  "exchange_rate": "Exchange rate",
+  "exchange_rate_on": "Exchange rate on",
+  "exchange_rate": "Exchange rate",
+  "currency": "Currency",
+  "exchange": "Exchange"
 }
