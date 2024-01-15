@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
-import 'package:srbguide/widget/dialogs/text_size_dialog.dart';
+import 'package:srbguide/dialogs/text_size_dialog.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
-import 'package:srbguide/widget/dialogs/confirm.dart';
-import 'package:srbguide/widget/dialogs/success.dart';
+import 'package:srbguide/dialogs/confirm.dart';
+import 'package:srbguide/dialogs/success.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
 

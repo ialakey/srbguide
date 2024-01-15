@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:srbguide/utils/contents_util.dart';
-import 'package:srbguide/widget/dialogs/error.dart';
+import 'package:srbguide/dialogs/error.dart';
 import 'package:srbguide/widget/markdown/card.dart';
 
 class MarkdownHelper {

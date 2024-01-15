@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/widget/app_bar.dart';
-import 'package:srbguide/widget/dialogs/confirm.dart';
+import 'package:srbguide/dialogs/confirm.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
 

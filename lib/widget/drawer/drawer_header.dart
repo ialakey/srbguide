@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
+import 'package:srbguide/screens/calculator.dart';
 import 'dart:math';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
@@ -88,17 +90,25 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                ClipRect(
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: CircleAvatar(
-                      radius: 40.0,
-                      backgroundColor: Colors.transparent,
-                      child: Image.asset(
-                        widget.imagePath,
-                        fit: BoxFit.cover,
-                        width: 80.0,
-                        height: 80.0,
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
+                    );
+                  },
+                  child: ClipRect(
+                    child: Align(
+                      alignment: Alignment.topCenter,
+                      child: CircleAvatar(
+                        radius: 40.0,
+                        backgroundColor: Colors.transparent,
+                        child: Image.asset(
+                          widget.imagePath,
+                          fit: BoxFit.cover,
+                          width: 80.0,
+                          height: 80.0,
+                        ),
                       ),
                     ),
                   ),
@@ -115,7 +125,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                   },
                   child: Text(
                     exchangeRate,
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                 )
               ],
