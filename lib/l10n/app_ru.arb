@@ -66,7 +66,8 @@
   "choice_screen": "Выбрать экран",
   "exchange_rate": "Курс валют",
   "exchange_rate_on": "Курс валют на",
-  "exchange_rate_2": "Курс",
+  "buy": "Покупка",
   "currency": "Валюта",
-  "exchange": "Обмен"
+  "sell": "Продажа",
+  "loading": "Загрузка..."
 }

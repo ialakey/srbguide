@@ -64,9 +64,11 @@
   "help": "Help",
   "main_screen": "Main screen",
   "choice_screen": "Choice screen",
-  "exchange_rate": "Exchange rate",
+  "buy": "Buy",
   "exchange_rate_on": "Exchange rate on",
   "exchange_rate": "Exchange rate",
+  "sell": "Sell",
   "currency": "Currency",
-  "exchange": "Exchange"
+  "exchange": "Exchange",
+  "loading": "Loading..."
 }

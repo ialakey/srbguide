@@ -16,6 +16,8 @@ class ExchangeRateScreen extends StatefulWidget {
 
 class _ExchangeRateScreenState extends State<ExchangeRateScreen> {
   late List<ExchangeOffice> exchangeOffices;
+  bool isLoading = true;
+  double progress = 0.0;
 
   @override
   void initState() {
@@ -30,11 +32,20 @@ class _ExchangeRateScreenState extends State<ExchangeRateScreen> {
     loadData();
   }
 
-  void loadData() async {
-    for (var office in exchangeOffices) {
+  Future<void> loadData() async {
+    for (var i = 0; i < exchangeOffices.length; i++) {
+      var office = exchangeOffices[i];
       await office.parser.parse();
+
+      setState(() {
+        progress = (i + 1) / exchangeOffices.length;
+      });
     }
-    setState(() {});
+
+    setState(() {
+      isLoading = false;
+      progress = 0.0;
+    });
   }
 
   @override
@@ -55,7 +66,24 @@ class _ExchangeRateScreenState extends State<ExchangeRateScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ListView(
+      body: isLoading
+          ? Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            LinearProgressIndicator(value: progress),
+            SizedBox(height: 16.0),
+            Text(
+              '${AppLocalizations.of(context)!.translate('loading')} ${(progress * 100).toStringAsFixed(2)}%',
+              style: TextStyle(
+                fontSize: 16.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      )
+          : ListView(
         children: [
           Center(
             child: Padding(
@@ -97,11 +125,11 @@ class ExchangeRateCard extends StatelessWidget {
           DataTable(
             columns: [
               DataColumn(label: Text(
-                  AppLocalizations.of(context)!.translate('exchange_rate_2'))),
+                  AppLocalizations.of(context)!.translate('buy'))),
               DataColumn(label: Text(
                   AppLocalizations.of(context)!.translate('currency'))),
               DataColumn(label: Text(
-                  AppLocalizations.of(context)!.translate('exchange'))),
+                  AppLocalizations.of(context)!.translate('sell'))),
             ],
             rows: [
               if (exchangeOffice.parser.getValueEur() != '' &&
