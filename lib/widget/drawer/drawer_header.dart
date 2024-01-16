@@ -66,7 +66,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                   animation: _controller,
                   builder: (context, child) {
                     return Transform.rotate(
-                      angle: _controller.value * pi,
+                      angle: _controller.value * 2 * pi,
                       child: IconButton(
                         icon: ThemedIcon2(
                           lightIcon: 'assets/icons_24x24/moon-stars.png',
@@ -97,7 +97,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                       MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
                     );
                   },
-                  child: ClipRect(
+                  child: ClipOval(
                     child: Align(
                       alignment: Alignment.topCenter,
                       child: CircleAvatar(
@@ -113,12 +113,11 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                     ),
                   ),
                 ),
-                SizedBox(height: 10.0),
                 Text(
                   widget.appName,
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 5.0),
+                SizedBox(height: 4.0),
                 GestureDetector(
                   onTap: () {
                     UrlLauncherHelper.launchURL('https://www.promonet.rs');

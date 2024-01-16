@@ -1,32 +1,76 @@
 import 'package:flutter/material.dart';
 import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/service/parser/dok_parser.dart';
+import 'package:srbguide/service/parser/exchange_office.dart';
+import 'package:srbguide/service/parser/funta_parser.dart';
+import 'package:srbguide/service/parser/gaga_parser.dart';
+import 'package:srbguide/service/parser/promonet_parser.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
-class ExchangeRateScreen extends StatelessWidget {
-  final List<ExchangeOffice> exchangeOffices = [
-    ExchangeOffice(name: 'ProMonet', url: 'https://www.promonet.rs'),
-    ExchangeOffice(name: 'Funta', url: 'https://funta.rs'),
-    ExchangeOffice(name: 'Gaga', url: 'https://menjacnicegaga.rs/#kursna'),
-    ExchangeOffice(name: 'MenjacnicaDunav', url: 'https://menjacnicadunav.rs'),
-    ExchangeOffice(name: 'Dok', url: 'https://www.menjacnicedok.rs/kursna_lista.html'),
-  ];
+class ExchangeRateScreen extends StatefulWidget {
+  @override
+  _ExchangeRateScreenState createState() => _ExchangeRateScreenState();
+}
+
+class _ExchangeRateScreenState extends State<ExchangeRateScreen> {
+  late List<ExchangeOffice> exchangeOffices;
+
+  @override
+  void initState() {
+    super.initState();
+    exchangeOffices = [
+      ExchangeOffice(name: 'ProMonet', url: 'https://www.promonet.rs', parser: ProMonetParser()),
+      ExchangeOffice(name: 'Funta', url: 'https://funta.rs', parser: FuntaParser()),
+      ExchangeOffice(name: 'Gaga', url: 'https://menjacnicegaga.rs/#kursna', parser: GagaParser()),
+      ExchangeOffice(name: 'Dok', url: 'https://www.menjacnicedok.rs/kursna_lista.html', parser: DokParser()),
+    ];
+
+    loadData();
+  }
+
+  void loadData() async {
+    for (var office in exchangeOffices) {
+      await office.parser.parse();
+    }
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:
-        Text(
-          '${AppLocalizations.of(context)!.translate('exchange_rate_on')} ${DateTime.now().day.toString()}.${DateTime.now().month.toString().padLeft(2, '0')}.${DateTime.now().year.toString()}',
+        title: Text(
+          AppLocalizations.of(context)!.translate('exchange_rate'),
         ),
+        actions: [
+          IconButton(
+            icon: ThemedIcon(
+              iconPath: 'assets/icons_24x24/rotate-right.png',
+              size: 20.0,
+            ),
+            onPressed: loadData,
+          ),
+        ],
       ),
       drawer: AppDrawer(),
-      body: ListView.builder(
-        itemCount: exchangeOffices.length,
-        itemBuilder: (context, index) {
-          return ExchangeRateCard(exchangeOffice: exchangeOffices[index]);
-        },
+      body: ListView(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '${AppLocalizations.of(context)!.translate('exchange_rate_on')} ${DateTime.now().day.toString()}.${DateTime.now().month.toString().padLeft(2, '0')}.${DateTime.now().year.toString()}',
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          ...exchangeOffices.map((office) => ExchangeRateCard(exchangeOffice: office)).toList(),
+        ],
       ),
     );
   }
@@ -35,7 +79,8 @@ class ExchangeRateScreen extends StatelessWidget {
 class ExchangeRateCard extends StatelessWidget {
   final ExchangeOffice exchangeOffice;
 
-  const ExchangeRateCard({Key? key, required this.exchangeOffice}) : super(key: key);
+  const ExchangeRateCard({Key? key, required this.exchangeOffice})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,43 +90,48 @@ class ExchangeRateCard extends StatelessWidget {
         children: [
           ListTile(
             title: Text(exchangeOffice.name),
-            onTap: () {
+            onTap: () async {
               UrlLauncherHelper.launchURL(exchangeOffice.url);
             },
           ),
           DataTable(
             columns: [
-              DataColumn(label: Text(AppLocalizations.of(context)!.translate('exchange_rate'))),
-              DataColumn(label: Text(AppLocalizations.of(context)!.translate('currency'))),
-              DataColumn(label: Text(AppLocalizations.of(context)!.translate('exchange'))),
+              DataColumn(label: Text(
+                  AppLocalizations.of(context)!.translate('exchange_rate_2'))),
+              DataColumn(label: Text(
+                  AppLocalizations.of(context)!.translate('currency'))),
+              DataColumn(label: Text(
+                  AppLocalizations.of(context)!.translate('exchange'))),
             ],
             rows: [
-              DataRow(cells: [
-                DataCell(Text('117.10')),
-                DataCell(Text('EUR')),
-                DataCell(Text('117,50')),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('1.06')),
-                DataCell(Text('RUB')),
-                DataCell(Text('1.172')),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('106.00')),
-                DataCell(Text('USD')),
-                DataCell(Text('107.60')),
-              ]),
+              if (exchangeOffice.parser.getValueEur() != '' &&
+                  exchangeOffice.parser.getCurrencyEur() != '' &&
+                  exchangeOffice.parser.getExchangeEur() != '')
+                DataRow(cells: [
+                  DataCell(Text(exchangeOffice.parser.getValueEur())),
+                  DataCell(Text(exchangeOffice.parser.getCurrencyEur())),
+                  DataCell(Text(exchangeOffice.parser.getExchangeEur())),
+                ]),
+              if (exchangeOffice.parser.getValueRub() != '' &&
+                  exchangeOffice.parser.getCurrencyRub() != '' &&
+                  exchangeOffice.parser.getExchangeRub() != '')
+                DataRow(cells: [
+                  DataCell(Text(exchangeOffice.parser.getValueRub())),
+                  DataCell(Text(exchangeOffice.parser.getCurrencyRub())),
+                  DataCell(Text(exchangeOffice.parser.getExchangeRub())),
+                ]),
+              if (exchangeOffice.parser.getValueUsd() != '' &&
+                  exchangeOffice.parser.getCurrencyUsd() != '' &&
+                  exchangeOffice.parser.getExchangeUsd() != '')
+                DataRow(cells: [
+                  DataCell(Text(exchangeOffice.parser.getValueUsd())),
+                  DataCell(Text(exchangeOffice.parser.getCurrencyUsd())),
+                  DataCell(Text(exchangeOffice.parser.getExchangeUsd())),
+                ]),
             ],
           ),
         ],
       ),
     );
   }
-}
-
-class ExchangeOffice {
-  final String name;
-  final String url;
-
-  ExchangeOffice({required this.name, required this.url});
 }

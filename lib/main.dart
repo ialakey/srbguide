@@ -6,9 +6,8 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as htmlParser;
 
+import 'service/parser/promonet_parser.dart';
 import 'widget/screen_mapper.dart';
 
 void main() async {
@@ -60,7 +59,7 @@ class _MainScreenState extends State<MainScreen> {
     super.initState();
     _themeMode = widget.initialThemeMode;
     _selectedScreen = widget.initialSelectedScreen;
-    getExchangeRate();
+    ProMonetParser().getExchangeRateInHeader();
   }
 
   void setThemeMode(ThemeMode themeMode) async {
@@ -69,35 +68,6 @@ class _MainScreenState extends State<MainScreen> {
     });
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isDarkMode', themeMode == ThemeMode.dark);
-  }
-
-  Future<void> getExchangeRate() async {
-    late String exchangeRate;
-    String url = 'https://www.promonet.rs';
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      final table = document.querySelector('.tablepress');
-
-      if (table != null) {
-        final thead = table.querySelector('thead');
-        if (thead != null) {
-          final headerCells = thead.querySelectorAll('th');
-          List<String> headers = headerCells.map((headerCell) => headerCell.text.trim()).toList();
-          exchangeRate = headers.join(" ");
-        } else {
-          exchangeRate = 'Ошибка загрузки';
-        }
-      } else {
-        exchangeRate = 'Ошибка загрузки';
-      }
-    } else {
-        exchangeRate = 'Ошибка загрузки: ${response.statusCode}';
-    }
-
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('exchangeRate', exchangeRate);
   }
 
   @override
