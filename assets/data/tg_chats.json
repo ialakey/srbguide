@@ -1,930 +1,1702 @@
 [
     {
-        "name": "Чат Сербских IT-ИП. Паушал, налоги, книжар",
-        "url": "https://t.me/serbia_self_it"
+        "name": "Чат Сербских IT-ИП. Паушал, налоги, книгаш",
+        "url": "https://t.me/serbia_self_it",
+        "group": "Гоблин-чаты"
+    },
+    {
+        "name": "Куплю, продам, меняю, ищу по всей Сербии",
+        "url": "https://t.me/serbska_baraholka",
+        "group": "Гоблин-чаты"
+    },
+    {
+        "name": "Ссылка для любителей обсуждать политику, немодерируемый флуд на любые темы",
+        "url": "https://t.me/politics_conspirology",
+        "group": "Гоблин-чаты"
+    },
+    {
+        "name": "Канал с Новисадскими ивентами и мероприятиями от русского коммьюнити",
+        "url": "https://t.me/novisad_events",
+        "group": "Гоблин-чаты"
+    },
+    {
+        "name": "Поиск попутчиков (а также визаранов и грузоперевозок) по всей Сербии и за ее пределами",
+        "url": "https://t.me/travel_together_rs",
+        "group": "Гоблин-чаты"
     },
     {
         "name": "ЧтоГдеКогда в Нови Саде и Белграде",
-        "url": "https://t.me/chgk_u_bg"
+        "url": "https://t.me/chgk_u_bg",
+        "group": "Общий список"
     },
     {
         "name": "Обмен валют/крипты между частными лицами",
-        "url": "https://t.me/serbocoin"
+        "url": "https://t.me/serbocoin",
+        "group": "Общий список"
     },
     {
-        "name": "Вывод криптовалют и цифровых активов в Белграде и Нови-Саде",
-        "url": "https://t.me/qazchange"
+        "name": "Собираем новости, обсуждаем предстоящие изменения законов Сербии о гражданстве.",
+        "url": "https://t.me/serbian_citizenship",
+        "group": "Общий список"
+    },
+    {
+        "name": "Вывод криптовалют и цифровых активов в наличность в Белграде и Нови-Саде",
+        "url": "https://t.me/qazchange",
+        "group": "Общий список"
     },
     {
         "name": "Мужской чат. Вся запрещенка в других чатах здесь разрешена: полита, подколки, взаимопомощь. Белград, Нови Сад, Ниш и все все.",
-        "url": "https://t.me/serbiarusman"
+        "url": "https://t.me/serbiarusman",
+        "group": "Общий список"
     },
     {
         "name": "Сербский язык для начинающих Серафима Генерозова",
-        "url": "http://t.me/generozova_s"
+        "url": "http://t.me/generozova_s",
+        "group": "Общий список"
     },
     {
         "name": "Возможно именно тут прячется ваша будущая работа в Сербии",
-        "url": "https://t.me/rabotavserbii"
+        "url": "https://t.me/rabotavserbii",
+        "group": "Общий список"
     },
     {
-        "name": "Канал про релокацию в Сербию. Как по шагам самому легализоваться как ИП в Сербии, платить налоги и купить микроволновку через интернет магазин.",
-        "url": "https://t.me/ptica_story"
+        "name": "Экскурсии по Сербии",
+        "url": "https://t.me/Tourserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Онлайн-школа сербского языка",
+        "url": "https://t.me/ursaschool",
+        "group": "Общий список"
+    },
+    {
+        "name": "Новый коворкинг в Белграде",
+        "url": "https://t.me/InstantOfficeBG",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал про релокацию в Сербию. Как по шагам самому легализоваться как ИП в Сербии, платить налоги и купить микроволновку через интернет магазин.",
+        "url": "https://t.me/ptica_story",
+        "group": "Общий список"
+    },
+    {
+        "name": "Сербия жильё недвижимость",
+        "url": "https://t.me/serbiya_arenda",
+        "group": "Общий список"
+    },
+    {
+        "name": "Поиск жилья в сербии для покупки, и аренды в Белграде",
+        "url": "https://t.me/kvartiraSerbia",
+        "group": "Общий список"
     },
     {
         "name": "IT-вакансии в Сербии и на удаленке (lenkep recruting)",
-        "url": "https://t.me/youritjob"
+        "url": "https://t.me/youritjob",
+        "group": "Общий список"
     },
     {
-        "name": "Обмен деньгами среди частных лиц",
-        "url": "https://t.me/P2p4rusi"
+        "name": "обмен деньгами среди частных лиц",
+        "url": "https://t.me/P2p4rusi",
+        "group": "Общий список"
     },
     {
         "name": "Сербия Переводы",
-        "url": "https://t.me/+aSvfaV2KXmhiMjU0"
+        "url": "https://t.me/+aSvfaV2KXmhiMjU0",
+        "group": "Общий список"
     },
     {
         "name": "Сербия Психотерапия",
-        "url": "https://t.me/psysrb"
+        "url": "https://t.me/psysrb",
+        "group": "Общий список"
+    },
+    {
+        "name": "чат для совместных поездок на концерты НС и БГ",
+        "url": "https://t.me/concertsrb",
+        "group": "Общий список"
     },
     {
         "name": "HR chat Сербия",
-        "url": "https://t.me/chatsrbhr"
+        "url": "https://t.me/chatsrbhr",
+        "group": "Общий список"
+    },
+    {
+        "name": "Чат мотолюбителей в Сербии. Обсуждение маршрутов, клубов, снаряги, механиков и т.д.",
+        "url": "https://t.me/motoserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Арт-терапия Сербия",
+        "url": "https://t.me/art_therapy_Serbia",
+        "group": "Общий список"
     },
     {
         "name": "Квартиры в Сербии | Аренда квартир Сербия Белград Нови-Сад | Риэлтор Сербия",
-        "url": "https://t.me/serbia4rent"
+        "url": "https://t.me/serbia4rent",
+        "group": "Общий список"
     },
     {
         "name": "Etsy в Сербии",
-        "url": "https://t.me/+iu8DfYn_qBViOGVi"
+        "url": "https://t.me/+iu8DfYn_qBViOGVi",
+        "group": "Общий список"
+    },
+    {
+        "name": "​​Здесь публикуются актуальные скидки и акции в магазинах Сербии.",
+        "url": "https://t.me/salesinserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Канал о веганских находках, заведениях, встречах и инициативах в Сербии",
+        "url": "https://t.me/veganserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "О налогах, учете и отчетности в Сербии на русском",
+        "url": "https://t.me/serbia_nalogi",
+        "group": "Общий список"
     },
     {
         "name": "Однажды в Сербии (канал Анны Ростокиной о Сербии)",
-        "url": "https://t.me/odnazhdy_v_serbii"
+        "url": "https://t.me/odnazhdy_v_serbii",
+        "group": "Общий список"
+    },
+    {
+        "name": "Играем в финансовые и трансформационные игры и развиваем финансовую грамотность участников.",
+        "url": "https://t.me/CashFlowBelgrade",
+        "group": "Общий список"
+    },
+    {
+        "name": "Сообщество творческих людей в Сербии и на Балканах",
+        "url": "https://t.me/artcaa",
+        "group": "Общий список"
+    },
+    {
+        "name": "Детские товары в НС и БГ",
+        "url": "https://t.me/kids_goods_bg",
+        "group": "Общий список"
+    },
+    {
+        "name": "Виза таланта в Сербии",
+        "url": "https://t.me/talantserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Опыт получения убежища в Сербии",
+        "url": "https://t.me/AzilSerbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал-аггрегатор вакансий в Сербии",
+        "url": "https://t.me/serbiawork",
+        "group": "Общий список"
     },
     {
         "name": "Строительные работы в Сербии (русскоязычные мастера)",
-        "url": "https://t.me/stroika_srbija"
+        "url": "https://t.me/stroika_srbija",
+        "group": "Общий список"
+    },
+    {
+        "name": "Хоккейная команда КРАСНАЯ машина - сербской сборки",
+        "url": "https://t.me/belgradehockey",
+        "group": "Общий список"
+    },
+    {
+        "name": "Арт-встречи и живопись. Белград",
+        "url": "https://t.me/aliceartevent",
+        "group": "Общий список"
+    },
+    {
+        "name": "Школа сербского языка в Белграде",
+        "url": "https://t.me/shkolaMedved",
+        "group": "Общий список"
     },
     {
         "name": "медийщики и журналисты",
-        "url": "https://t.me/srdmedia"
+        "url": "https://t.me/srdmedia",
+        "group": "Общий список"
     },
     {
         "name": "Здесь можно давать и искать объявления об аренде квартир, автомобилей, техники и прочего без агентств и посредников",
-        "url": "https://t.me/rentalserbia"
+        "url": "https://t.me/rentalserbia",
+        "group": "Общий список"
     },
     {
         "name": "Рукоделие в Сербии",
-        "url": "https://t.me/handmade_serbia"
+        "url": "https://t.me/handmade_serbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Практические новости, полезная информация и интересные истории.",
+        "url": "https://t.me/beogradske_vesti",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал-стрим переведенных новостей с Н1 Сербия",
+        "url": "https://t.me/n1inforu",
+        "group": "Общий список"
+    },
+    {
+        "name": "микрообзоры интерьерных магазинов в Сербии, услуги дизайна",
+        "url": "https://t.me/teamdesigninteriors",
+        "group": "Общий список"
     },
     {
         "name": "Лекарства в Сербии. Поиск аналогов, доставка.",
-        "url": "https://t.me/lekarstva_v_serbii"
+        "url": "https://t.me/lekarstva_v_serbii",
+        "group": "Общий список"
+    },
+    {
+        "name": "чятик с дискуссией канала про лекарства в Сербии",
+        "url": "https://t.me/lekarstvaserbii",
+        "group": "Общий список"
     },
     {
         "name": "Русско-сербские финансы",
-        "url": "https://t.me/rusrbfinance"
+        "url": "https://t.me/rusrbfinance",
+        "group": "Общий список"
+    },
+    {
+        "name": "Белградский сити-гайд на русском",
+        "url": "https://t.me/mapamagrus",
+        "group": "Общий список"
     },
     {
         "name": "Книжный Сад, книги на русском языке в Сербии",
-        "url": "https://t.me/kniznyjsad"
+        "url": "https://t.me/kniznyjsad",
+        "group": "Общий список"
     },
     {
-        "name": "Производственники Сербии, Обмен опытом, поиск партнеров, обмен контактами",
-        "url": "https://t.me/serbiaManufacture"
+        "name": "Производственники Сербии,  Обмен опытом, поиск партнеров, обмен контактами",
+        "url": "https://t.me/serbiaManufacture",
+        "group": "Общий список"
     },
     {
-        "name": "Перевозка животных",
-        "url": "https://t.me/+Cm_ikyupPDQ4ZDdi"
+        "name": "Сербия, Балканы и РИ",
+        "url": "https://t.me/+fYKE8oZGjsyZWEy",
+        "group": "Общий список"
+    },
+    {
+        "name": "перевозка животных",
+        "url": "https://t.me/+Cm_ikyupPDQ4ZDdi",
+        "group": "Общий список"
+    },
+    {
+        "name": "Солим и сушим речную рыбку в Сербии",
+        "url": "https://t.me/vobla_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Культурное дружество, хз зачем",
-        "url": "https://t.me/kulturno_druzenje"
+        "url": "https://t.me/kulturno_druzenje",
+        "group": "Общий список"
     },
     {
-        "name": "Чат по групповым ивентам в Белграде (квизы, митапы, квесты, вечеринки, походы в кино)",
-        "url": "https://t.me/fz_belgrad"
+        "name": "Понаехавшие музыканты Сербии",
+        "url": "https://t.me/ponaehavshieSerbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Публикация объявлений в Сербии.",
+        "url": "https://t.me/AdsSerbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "чат по групповым ивентам в Белграде (квизы, митапы, квесты, вечеринки, походы в кино)",
+        "url": "https://t.me/fz_belgrad",
+        "group": "Общий список"
+    },
+    {
+        "name": "сушеные лакомства для собак. Да, для этого тоже есть чат/канал.",
+        "url": "https://t.me/hloyastore",
+        "group": "Общий список"
+    },
+    {
+        "name": "Канал о том, как просто можно помогать бездомным песикам и котикам",
+        "url": "https://t.me/DajLapuBelgrad",
+        "group": "Общий список"
+    },
+    {
+        "name": "О видах массажа, физических упражнениях и других оздоровительных технологиях, Белград",
+        "url": "https://t.me/profmasazbeograd",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал о сербском алкоголе",
+        "url": "https://t.me/gorki_list",
+        "group": "Общий список"
+    },
+    {
+        "name": "Через Сербию в Мексику и Грецию",
+        "url": "https://t.me/+7Ze6P6GZBJNmMDg6",
+        "group": "Общий список"
     },
     {
         "name": "Горные и обычные лыжи в Сербии",
-        "url": "https://t.me/snowserbia"
+        "url": "https://t.me/snowserbia",
+        "group": "Общий список"
     },
     {
-        "name": "Канал по групповым ивентам в Белграде (для тех, кто не любит чаты)",
-        "url": "https://t.me/vstrechi_v_belgrade"
+        "name": "Чат болельщиков московского Спартака в Белграде",
+        "url": "https://t.me/lucas_on_tour",
+        "group": "Общий список"
     },
     {
-        "name": "Канал для изучения сербского языка",
-        "url": "https://t.me/srpski5min"
+        "name": "канал по групповым ивентам в Белграде (для тех, кто не любит чаты)",
+        "url": "https://t.me/vstrechi_v_belgrade",
+        "group": "Общий список"
+    },
+    {
+        "name": "Цигун, тайцзи Белград",
+        "url": "https://t.me/qigong_taichi_belgrade",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал для изучения сербского языка",
+        "url": "https://t.me/srpski5min",
+        "group": "Общий список"
+    },
+    {
+        "name": "чат Инфо-Помощь. Белград. Сербия",
+        "url": "https://t.me/BelgradeINFO",
+        "group": "Общий список"
     },
     {
         "name": "Сербская капоейра",
-        "url": "https://t.me/Capoeira_rs"
+        "url": "https://t.me/Capoeira_rs",
+        "group": "Общий список"
     },
     {
         "name": "Как начать жить в Сербии. Всё о нюансах релокации: от visarun, через privremeni boravak, к stalni boravak в подробностях.",
-        "url": "https://t.me/settler_serbia"
+        "url": "https://t.me/settler_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Канал города Земун",
-        "url": "https://t.me/ru_zemun"
+        "name": "Цигун Белград",
+        "url": "https://t.me/qigong_beo",
+        "group": "Общий список"
     },
     {
         "name": "Белорусы в Сербии",
-        "url": "https://t.me/SerbiaBelarus"
+        "url": "https://t.me/SerbiaBelarus",
+        "group": "Общий список"
     },
     {
-        "name": "Книжный клуб",
-        "url": "https://t.me/+_3qeauboJ-djMzFk"
+        "name": "книжный клуб",
+        "url": "https://t.me/+_3qeauboJ-djMzFk",
+        "group": "Общий список"
+    },
+    {
+        "name": "Second-hand’ы Белграда",
+        "url": "https://t.me/+RgE0-eV_VVRjNDBi",
+        "group": "Общий список"
+    },
+    {
+        "name": "Бициклы, пиво и мачки",
+        "url": "https://t.me/veloserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "телеграм-магазин крафтового пива “Два медведя“",
+        "url": "https://t.me/DVA_MEDVхEDA",
+        "group": "Общий список"
+    },
+    {
+        "name": "D&D в Двух медведях",
+        "url": "https://t.me/DVA_MEDVEDA_DnD",
+        "group": "Общий список"
+    },
+    {
+        "name": "Геймдев в Сербии",
+        "url": "https://t.me/+jj9JD2n_SFJmNTI8",
+        "group": "Общий список"
+    },
+    {
+        "name": "«Сербия-особики». Чат родителей детей с РАС",
+        "url": "https://t.me/+BUscUPeORGtjNGY6",
+        "group": "Общий список"
+    },
+    {
+        "name": "Белградский волейбол",
+        "url": "https://t.me/+Gsjk4T_q61llNDBi",
+        "group": "Общий список"
+    },
+    {
+        "name": "Русский BMW клуб в Сербии",
+        "url": "https://t.me/+1i1CcYYzoY9hYjky",
+        "group": "Общий список"
+    },
+    {
+        "name": "Чатик для фильмоманов, обсуждаем фильмы сербские и не только",
+        "url": "https://t.me/filmrsrus",
+        "group": "Общий список"
     },
     {
         "name": "О вкусных заведениях и продуктах Сербии, с геолокациями и ценами",
-        "url": "https://t.me/serbskaj"
+        "url": "https://t.me/serbskaj",
+        "group": "Общий список"
     },
     {
-        "name": "Канал для русскоязычных жителей Суботицы",
-        "url": "https://t.me/russiansubotica"
+        "name": "Прогулки, походы, квесты, игры, велопрогулки, пикники и другие активности для взрослых и детей.",
+        "url": "https://t.me/dunav2",
+        "group": "Общий список"
     },
     {
-        "name": "Рекламный канал “жителей” Суботицы",
-        "url": "https://t.me/suboticaRU"
-    },
-    {
-        "name": "Чат Лозницы",
-        "url": "https://t.me/rusloznica"
-    },
-    {
-        "name": "Чат Чачака",
-        "url": "https://t.me/sosedi_cacak"
+        "name": "Беговой клуб “Ленивая Жопа” Ильи Варламова",
+        "url": "https://t.me/Vmeste_Serbia",
+        "group": "Общий список"
     },
     {
         "name": "Сербский стендап",
-        "url": "https://t.me/standup_beo"
+        "url": "https://t.me/standup_beo",
+        "group": "Общий список"
+    },
+    {
+        "name": "детская барахолка в Белграде",
+        "url": "https://t.me/kids_goods_bg",
+        "group": "Общий список"
     },
     {
         "name": "Всякие полезности из Сербии",
-        "url": "https://t.me/zajednovserbii"
+        "url": "https://t.me/zajednovserbii",
+        "group": "Общий список"
     },
     {
         "name": "Теннис в Сербии",
-        "url": "https://t.me/tennis_serbia"
+        "url": "https://t.me/tennis_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Баскетбол в Белграде",
-        "url": "https://t.me/bg_basket"
+        "url": "https://t.me/bg_basket",
+        "group": "Общий список"
     },
     {
-        "name": "Чат района Палилуа",
-        "url": "https://t.me/palilula"
-    },
-    {
-        "name": "Чат Врнячки Бани",
-        "url": "https://t.me/+MkBVbwBJsgUxOGVi"
-    },
-    {
-        "name": "Чат Врнячки Бани, второй чат на город в 10к человек",
-        "url": "https://t.me/vrnjackabanja"
-    },
-    {
-        "name": "Русские в Вальево",
-        "url": "https://t.me/valjevors"
+        "name": "Чат для организации Product manager/owner, UI/UX специалистов",
+        "url": "https://t.me/srb_product",
+        "group": "Общий список"
     },
     {
         "name": "Звери-потеряшки (потерянные и найденные животные по Сербии)",
-        "url": "https://t.me/dog040622"
+        "url": "https://t.me/dog040622",
+        "group": "Общий список"
     },
     {
-        "name": "Русы в Кральево",
-        "url": "https://t.me/kralevo"
+        "name": "English Amateurs Club Sremska Mitrovica",
+        "url": "https://t.me/sremm_english_amateur",
+        "group": "Общий список"
     },
     {
         "name": "Београдские IT-митапы на русском",
-        "url": "https://t.me/belgradeitmeetups"
+        "url": "https://t.me/belgradeitmeetups",
+        "group": "Общий список"
     },
     {
         "name": "Сербские стартапы",
-        "url": "https://t.me/sns_serbia"
+        "url": "https://t.me/sns_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Канал о релокации. Да, еще один",
-        "url": "https://t.me/shmel_rs"
+        "url": "https://t.me/shmel_rs",
+        "group": "Общий список"
     },
     {
         "name": "Осетины в Сербии",
-        "url": "https://t.me/osetiaserbia"
+        "url": "https://t.me/osetiaserbia",
+        "group": "Общий список"
     },
     {
         "name": "Горы, реки и прочие активности",
-        "url": "https://t.me/balkanoutdoor"
+        "url": "https://t.me/balkanoutdoor",
+        "group": "Общий список"
     },
     {
         "name": "Работа в Белграде",
-        "url": "https://t.me/rabotavbelgrade"
+        "url": "https://t.me/rabotavbelgrade",
+        "group": "Общий список"
     },
     {
-        "name": "Помощь беженцам в Сербии. Голубь Мира.",
-        "url": "https://t.me/golubmiru"
+        "name": "Канал-дневник о том, как мы переживаем побег из страны",
+        "url": "https://t.me/escapeinbelgrade",
+        "group": "Общий список"
     },
     {
-        "name": "Еще один чат Белград",
-        "url": "https://t.me/beograd_ruchat"
+        "name": "Our community helps Ukrainian refugees in Serbia with food, clothing and other essential support. Помощь беженцам в Сербии. Голубь Мира. (канал)",
+        "url": "https://t.me/golubmiru",
+        "group": "Общий список"
     },
     {
         "name": "Art-чат Белграда",
-        "url": "https://t.me/art_beograd"
+        "url": "https://t.me/art_beograd",
+        "group": "Общий список"
+    },
+    {
+        "name": "чат русскоязычных поэтов и писателей в Сербии",
+        "url": "https://t.me/WordsOutOfBounds",
+        "group": "Общий список"
+    },
+    {
+        "name": "Башкиры в Сербии",
+        "url": "https://t.me/izbashkiriivserbiu",
+        "group": "Общий список"
     },
     {
         "name": "Барахолка в Белграде",
-        "url": "https://t.me/belgrad_serbia"
+        "url": "https://t.me/belgrad_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Алкоголики Белграда",
-        "url": "https://t.me/alcoholic_belgrade"
+        "url": "https://t.me/alcoholic_belgrade",
+        "group": "Общий список"
     },
     {
         "name": "Аренда в Белграде",
-        "url": "https://t.me/beograd_stan"
+        "url": "https://t.me/beograd_stan",
+        "group": "Общий список"
     },
     {
-        "name": "Аренда Нови Сад",
-        "url": "https://t.me/novisad_stan"
-    },
-    {
-        "name": "PEOPLE E - Events Emotions Education",
-        "url": "https://t.me/people3e"
+        "name": "PEOPLE E - Events Emotions Education Проект для детей и их родителей, чтобы вместе и интересно проводить время, узнавать что-то новое, исследовать, путешествовать, учиться и отдыхать",
+        "url": "https://t.me/people3e",
+        "group": "Общий список"
     },
     {
         "name": "Дискофокс танцевальный клуб, Белград",
-        "url": "https://t.me/hustleinSerbia"
+        "url": "https://t.me/hustleinSerbia",
+        "group": "Общий список"
     },
     {
-        "name": "Чат района Вождовац, Врачар, Звездара в Белграде. Да, теперь банановый, в смысле районный",
-        "url": "https://t.me/vozdovac_chat"
+        "name": "Ремонт ноутбуков, компьютеров и моноблоков",
+        "url": "https://t.me/repair_service_Serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Группа района Вождовац",
-        "url": "https://t.me/vozdovac_ru"
-    },
-    {
-        "name": "Чат района Звездара в Белграде",
-        "url": "https://t.me/+TFKZrUB_zjtkMDFk"
-    },
-    {
-        "name": "Второй чат района Звездара в БГ",
-        "url": "https://t.me/Rus_zvezdara"
+        "name": "Чайная среда Сербии. Поставки чая и благовоний из Китая",
+        "url": "https://t.me/tea_environment",
+        "group": "Общий список"
     },
     {
         "name": "Белградская болталка",
-        "url": "https://t.me/ChatforBelgradd"
+        "url": "https://t.me/ChatforBelgradd",
+        "group": "Общий список"
     },
     {
-        "name": "Чат района Ватерфронт в Белграде",
-        "url": "https://t.me/rus_BW"
-    },
-    {
-        "name": "Чат Врачара в БГ",
-        "url": "https://t.me/vracar"
-    },
-    {
-        "name": "Сербские вузы",
-        "url": "https://t.me/+yWzEAFJxSfZlOTdi"
-    },
-    {
-        "name": "Чат Старого города в Белграде",
-        "url": "https://t.me/starigrad_belgrade"
-    },
-    {
-        "name": "Кулинарная группа по продаже пельменей в Белграде",
-        "url": "https://t.me/vkusnosti_beograd"
+        "name": "кулинарная группа по продаже пельменей в Белграде",
+        "url": "https://t.me/vkusnosti_beograd",
+        "group": "Общий список"
     },
     {
         "name": "Русские детские книги в Сербии",
-        "url": "https://t.me/+T9GMqqQEwsU0Y2Q6"
+        "url": "https://t.me/+T9GMqqQEwsU0Y2Q6",
+        "group": "Общий список"
     },
     {
-        "name": "Новобелградский чат",
-        "url": "https://t.me/novibeogradrusski"
+        "name": "Через Сербию в Португалию",
+        "url": "https://t.me/serbia_portugal",
+        "group": "Общий список"
     },
     {
-        "name": "Новобелградский чат 61-71 района",
-        "url": "https://t.me/block61_71"
-    },
-    {
-        "name": "Анонсы мероприятий в Нише",
-        "url": "https://t.me/ambiance_nis"
-    },
-    {
-        "name": "Русскоязычных дизайнеров всех направлений, оказавшихся в Сербии",
-        "url": "https://t.me/designers_serbia"
+        "name": "русскоязычных дизайнеров всех направлений, оказавшихся в Сербии.",
+        "url": "https://t.me/designers_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Студия звукозаписи Grip, Белград",
-        "url": "https://t.me/gripsoundlab"
+        "url": "https://t.me/gripsoundlab",
+        "group": "Общий список"
     },
     {
-        "name": "Обмен книгами и прочей печатной продукцией в Сербии",
-        "url": "https://t.me/+RTbs1gvNVyczNDdi"
+        "name": "обмен книгами и прочей печатной продукцией в Сербии",
+        "url": "https://t.me/+RTbs1gvNVyczNDdi",
+        "group": "Общий список"
     },
     {
         "name": "Белградский чат для родителей и детей 7-8 лет",
-        "url": "https://t.me/+6V3F9ImACfthNjNi"
+        "url": "https://t.me/+6V3F9ImACfthNjNi",
+        "group": "Общий список"
     },
     {
         "name": "Сербский словарик в картинках",
-        "url": "https://t.me/serbskiyslivarik_v_kartinkah"
+        "url": "https://t.me/serbskiyslivarik_v_kartinkah",
+        "group": "Общий список"
     },
     {
-        "name": "Музыкальный чат",
-        "url": "https://t.me/musicaSerbia"
+        "name": "музыкальный чат",
+        "url": "https://t.me/musicaSerbia",
+        "group": "Общий список"
     },
     {
-        "name": "Кладоискатели Сербии",
-        "url": "https://t.me/kolekcija"
+        "name": "кладоискатели Сербии",
+        "url": "https://t.me/kolekcija",
+        "group": "Общий список"
     },
     {
-        "name": "Специалисты Сербии",
-        "url": "https://t.me/serbiaspecialists"
+        "name": "Школа Маруся",
+        "url": "https://t.me/MaRusYa_school",
+        "group": "Общий список"
+    },
+    {
+        "name": "специалисты Сербии",
+        "url": "https://t.me/serbiaspecialists",
+        "group": "Общий список"
     },
     {
         "name": "Работа на день, оплата сразу! Чат поиска заказчиков и исполнителей для единоразовых работ в Сербии",
-        "url": "https://t.me/rabota_serbia"
+        "url": "https://t.me/rabota_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Заказать рыбу в Сербии",
-        "url": "https://t.me/elena_ryba_v_Serbia"
-    },
-    {
-        "name": "Чат района Дорчол в Белграде",
-        "url": "https://t.me/+2UCmCgfbicQyNTBi"
+        "name": "Здесь вы можете заказать рыбу соленую, маринованную, в заливке, целиком, филе, кусочками",
+        "url": "https://t.me/elena_ryba_v_Serbia",
+        "group": "Общий список"
     },
     {
         "name": "Поступление в университеты Сербии",
-        "url": "https://t.me/postupim_v_Univer_in_Serbia"
+        "url": "https://t.me/postupim_v_Univer_in_Serbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Канал посвященный Высшему образованию в Сербии",
+        "url": "https://t.me/vyshee_obrazovanie_v_Serbii",
+        "group": "Общий список"
+    },
+    {
+        "name": "Рыбалка в Сербии",
+        "url": "https://t.me/fishingSRB",
+        "group": "Общий список"
     },
     {
         "name": "Тусовки и анонсы Белграда",
-        "url": "https://t.me/zarko_tusic"
+        "url": "https://t.me/zarko_tusic",
+        "group": "Общий список"
     },
     {
-        "name": "Русскоязычные профессионалы в архитектуре и дизайне интерьера в Сербии",
-        "url": "https://t.me/interiorserbia"
+        "name": "Снимаем квартиру вместе",
+        "url": "https://t.me/snimaem_kvartiru_vmeste",
+        "group": "Общий список"
+    },
+    {
+        "name": "Группа русскоязычных профессионалов в сфере архитектуры и дизайна интерьера в Сербии",
+        "url": "https://t.me/interiorserbia",
+        "group": "Общий список"
     },
     {
         "name": "Платные и бесплатные настольные ролевые игры",
-        "url": "https://t.me/RPGSerbia"
+        "url": "https://t.me/RPGSerbia",
+        "group": "Общий список"
     },
     {
-        "name": "3D печать моделей в Белграде",
-        "url": "https://t.me/becreating"
+        "name": "Мы купили 3D принтер, научились им пользоваться и готовы напечатать для вас 3D модели (Белград)",
+        "url": "https://t.me/becreating",
+        "group": "Общий список"
     },
     {
-        "name": "Белградский Консьерж",
-        "url": "https://t.me/beograd_service"
+        "name": "Белградский Консьерж..",
+        "url": "https://t.me/beograd_service",
+        "group": "Общий список"
     },
     {
-        "name": "Родители детей и подростков в Белграде",
-        "url": "https://t.me/beogradsadecom"
-    },
-    {
-        "name": "Русские в Панчево",
-        "url": "https://t.me/+XdxQEEFLBb00MzEy"
-    },
-    {
-        "name": "Русский Сомбор",
-        "url": "https://t.me/RU_Sombor"
-    },
-    {
-        "name": "Русские в Зреньянине",
-        "url": "https://t.me/nashi_v_zrenjanine"
+        "name": "Родители детей и подростков в Белграде. Сады, школы, площадки, кафе, социальная помощь",
+        "url": "https://t.me/beogradsadecom",
+        "group": "Общий список"
     },
     {
         "name": "Роды в Сербии",
-        "url": "https://t.me/rodjenje_serbia"
+        "url": "https://t.me/rodjenje_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Грузоперевозки Россия-Сербия-Черногория",
-        "url": "https://t.me/+kUkFBZAfAeE0YjFi"
+        "name": "грузоперевозки Россия-Сербия-Черногория",
+        "url": "https://t.me/+kUkFBZAfAeE0YjFi",
+        "group": "Общий список"
     },
     {
         "name": "Чат для бесплатных объявлений по трансферу и поиску попутчиков в Сербии",
-        "url": "https://t.me/rsdrivers"
+        "url": "https://t.me/rsdrivers",
+        "group": "Общий список"
     },
     {
-        "name": "Еще один канал по релокации в Сербию",
-        "url": "https://t.me/relocateserbia"
+        "name": "Чат русской диаспоры в Сербии",
+        "url": "https://t.me/relocateserbia",
+        "group": "Общий список"
     },
     {
         "name": "Белград школьный",
-        "url": "https://t.me/belgrade_school_chat"
+        "url": "https://t.me/belgrade_school_chat",
+        "group": "Общий список"
     },
     {
-        "name": "Визовой чат",
-        "url": "https://t.me/+sVat07GmZeJmYTAy"
+        "name": "визовой чат",
+        "url": "https://t.me/+N94hIXb8ufVhMTI6",
+        "group": "Общий список"
     },
     {
-        "name": "Сербское виноделие на русском языке",
-        "url": "https://t.me/serbianwine"
+        "name": "Про сербское виноделие на русском языке",
+        "url": "https://t.me/serbianwine",
+        "group": "Общий список"
     },
     {
-        "name": "Белград. Забеги. Тренировки. Вино",
-        "url": "https://t.me/belgradewinerun"
+        "name": "Белград. Забеги. Совместные трени. Немного вина после.",
+        "url": "https://t.me/belgradewinerun",
+        "group": "Общий список"
     },
     {
-        "name": "Русское бизнес-сообщество в Белграде",
-        "url": "https://t.me/mastermaindbelgrade"
+        "name": "русское бизнес-сообщество в Белграде, Мастер-майнды в Белграде",
+        "url": "https://t.me/mastermaindbelgrade",
+        "group": "Общий список"
     },
     {
         "name": "Бизнес в Сербии",
-        "url": "https://t.me/rsbusines"
+        "url": "https://t.me/rsbusines",
+        "group": "Общий список"
     },
     {
-        "name": "Отзывы на специалистов, места и услуги в Сербии",
-        "url": "https://t.me/otzovik_serbia"
-    },
-    {
-        "name": "Русская еда в Сербии",
-        "url": "https://t.me/rusfoodinserb"
+        "name": "Отзывы на специалистов, места и услуги в Сербии (канал с реальными отзывами от реальных юзеров)",
+        "url": "https://t.me/otzovik_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Еще один бизнес-чат в Сербии",
-        "url": "https://t.me/BussinesSerbia"
+        "url": "https://t.me/BussinesSerbia",
+        "group": "Общий список"
     },
     {
         "name": "Канал ивентов в Белграде",
-        "url": "https://t.me/sta_imas_beograd"
+        "url": "https://t.me/sta_imas_beograd",
+        "group": "Общий список"
     },
     {
         "name": "Антивоенная Сербия",
-        "url": "https://t.me/RDO_Serbia"
+        "url": "https://t.me/RDO_Serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Квизы от клуба 'Без Дураков', Белград",
-        "url": "https://t.me/begbezdurakov"
+        "name": "Квизы от клуба “Без Дураков”, Белград",
+        "url": "https://t.me/begbezdurakov",
+        "group": "Общий список"
     },
     {
         "name": "Еще одни белградские квизоделы",
-        "url": "https://t.me/beoqviz"
+        "url": "https://t.me/beoqviz",
+        "group": "Общий список"
     },
     {
-        "name": "Русскоязычное сообщество в Нише",
-        "url": "https://t.me/nis_serbia_ru_ua_by"
+        "name": "коливинг в Белград",
+        "url": "https://t.me/living_zaedno_beo",
+        "group": "Общий список"
     },
     {
-        "name": "Общение и встречи в Нише",
-        "url": "https://t.me/rus_nis"
+        "name": "Warhammer в Сербии.",
+        "url": "https://t.me/+tAl4k_Fm-MZjNGQy",
+        "group": "Общий список"
     },
     {
-        "name": "Коливинг в Белграде",
-        "url": "https://t.me/living_zaedno_beo"
-    },
-    {
-        "name": "Новый чат по изучению сербского языка",
-        "url": "https://t.me/Serbian_language"
-    },
-    {
-        "name": "Чат сообщества предпринимателей из Сербии и восточной Европы",
-        "url": "https://t.me/dunavspot_chat"
-    },
-    {
-        "name": "Warhammer в Сербии",
-        "url": "https://t.me/+tAl4k_Fm-MZjNGQy"
-    },
-    {
-        "name": "Коуч-митинги в Белграде",
-        "url": "https://t.me/letsmeetbelgrade"
+        "name": "Коуч-митинги (я хз что это такое) в Белграде",
+        "url": "https://t.me/letsmeetbelgrade",
+        "group": "Общий список"
     },
     {
         "name": "Женский клуб в Белграде",
-        "url": "https://t.me/zhenskiclub_bg"
+        "url": "https://t.me/zhenskiclub_bg",
+        "group": "Общий список"
     },
     {
-        "name": "Релокация животных",
-        "url": "https://t.me/petsmoving"
+        "name": "еще одна релокация животных",
+        "url": "https://t.me/petsmoving",
+        "group": "Общий список"
     },
     {
-        "name": "Группа специалистов Белграда",
-        "url": "https://t.me/specialistibelgrad"
+        "name": "группа специалистов Белград",
+        "url": "https://t.me/specialistibelgrad",
+        "group": "Общий список"
     },
     {
         "name": "Улетаем в Сербию вместе",
-        "url": "https://t.me/+0toXyPPvcp8zNTg1"
+        "url": "https://t.me/+0toXyPPvcp8zNTg1",
+        "group": "Общий список"
     },
     {
         "name": "Чат IT-HR Белграда",
-        "url": "https://t.me/+a_Kb-FKD-tM0Y2Ri"
+        "url": "https://t.me/+a_Kb-FKD-tM0Y2Ri",
+        "group": "Общий список"
     },
     {
-        "name": "Всё про иммиграцию в Сербию",
-        "url": "https://t.me/immi_gration"
+        "name": "Всё про иммиграцию в Сербию. Создаём новое комьюнити в солнечной стране. Помогаем тем, кто бежит от войны.",
+        "url": "https://t.me/immi_gration",
+        "group": "Общий список"
     },
     {
         "name": "Београдская ночная и дневная жизнь",
-        "url": "https://t.me/mapamagrus"
+        "url": "https://t.me/mapamagrus",
+        "group": "Общий список"
     },
     {
-        "name": "Белградское зверье",
-        "url": "https://t.me/kuce_beograd"
+        "name": "Белградское зверье мое",
+        "url": "https://t.me/kuce_beograd",
+        "group": "Общий список"
     },
     {
-        "name": "Чат специалистов по компьютерной графике",
-        "url": "https://t.me/cgserbia"
+        "name": "чат специалистов по компьютерной графике",
+        "url": "https://t.me/cgserbia",
+        "group": "Общий список"
     },
     {
-        "name": "Настольные игры в Белграде",
-        "url": "https://t.me/belgrade_boardgames"
+        "name": "настолки в Белграде",
+        "url": "https://t.me/belgrade_boardgames",
+        "group": "Общий список"
     },
     {
-        "name": "Грузопассажирские перевозки и перегон авто РФ - Сербия",
-        "url": "https://t.me/logistika021"
+        "name": "Грузопассажирские перевозки и перегон авто РФ - Сербия, перевозка животных.",
+        "url": "https://t.me/logistika021",
+        "group": "Общий список"
+    },
+    {
+        "name": "сербские дроноводы",
+        "url": "https://t.me/srb_drones",
+        "group": "Общий список"
     },
     {
         "name": "Михаил в Сербском селе",
-        "url": "https://t.me/mikhail_in_serbia"
+        "url": "https://t.me/mikhail_in_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Русский балет в Сербии",
-        "url": "https://t.me/ballet_serbia_russo"
-    },
-    {
-        "name": "Крагуевац Live",
-        "url": "https://t.me/kragujevac_live"
+        "url": "https://t.me/ballet_serbia_russo",
+        "group": "Общий список"
     },
     {
         "name": "Еще одна сербская барахолка",
-        "url": "https://t.me/avito_serbia"
+        "url": "https://t.me/avito_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Учим сербский язык с Юлией Сопильняк",
-        "url": "https://t.me/slovodnia"
+        "name": "учим сербский язык с Юлией Сопильняк",
+        "url": "https://t.me/slovodnia",
+        "group": "Общий список"
     },
     {
-        "name": "Жизнь ИТшника в сербском селе",
-        "url": "https://t.me/VamZdesNeTut"
+        "name": "Канал о жизни  ИТшника в сербском селе, бесплатная помощь с поиском дома для покупки и прочие жизненные вопросы",
+        "url": "https://t.me/VamZdesNeTut",
+        "group": "Общий список"
     },
     {
-        "name": "Автосербия",
-        "url": "https://t.me/autoserbia"
+        "name": "автосербия",
+        "url": "https://t.me/autoserbia",
+        "group": "Общий список"
     },
     {
-        "name": "Белград в голубом",
-        "url": "https://t.me/belgrade_in_blue"
+        "name": "Белград в голубом. Канал русской художницы живущей в Белграде",
+        "url": "https://t.me/belgrade_in_blue",
+        "group": "Общий список"
     },
     {
-        "name": "Балканский бродяга",
-        "url": "https://t.me/vinkolozic"
+        "name": "Балканский бродяга. Еще один канал о Сербии и жизни в ней",
+        "url": "https://t.me/vinkolozic",
+        "group": "Общий список"
     },
     {
-        "name": "Центральная Сербия глазами юриста-экономиста",
-        "url": "https://t.me/belyaevs_in_serbia"
+        "name": "центральная Сербия глазами юриста-экономиста",
+        "url": "https://t.me/belyaevs_in_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "SERBIAN for ČаЙникS",
-        "url": "https://t.me/serbianforcajniks"
+        "name": "SERBIAN for ČаЙникS - сербский язык для чайников и матерящихся чайников",
+        "url": "https://t.me/serbianforcajniks",
+        "group": "Общий список"
     },
     {
-        "name": "Сербия любовь моя",
-        "url": "https://t.me/ourserbia"
+        "name": "Сербия любовь моя, про сербскую кухню и традиции",
+        "url": "https://t.me/ourserbia",
+        "group": "Общий список"
     },
     {
-        "name": "Политические дискуссии",
-        "url": "https://t.me/politics_conspirology"
-    },
-    {
-        "name": "Чат с уникальной тематикой",
-        "url": "https://t.me/yutniycatik"
+        "name": "еще один чат похожий на другие но не такой…",
+        "url": "https://t.me/yutniycatik",
+        "group": "Общий список"
     },
     {
         "name": "Программирование для детей в Белграде",
-        "url": "https://t.me/kidsCodingBelgrade"
+        "url": "https://t.me/kidsCodingBelgrade",
+        "group": "Общий список"
     },
     {
-        "name": "Сербская Авито",
-        "url": "https://t.me/serbska_baraholka"
-    },
-    {
-        "name": "Очередной чат эмигрантов",
-        "url": "https://t.me/o_serbii"
+        "name": "очередной чат эмигрантов",
+        "url": "https://t.me/o_serbii",
+        "group": "Общий список"
     },
     {
         "name": "IT Belgrade",
-        "url": "https://t.me/IT_Belgrade"
+        "url": "https://t.me/IT_Belgrade",
+        "group": "Общий список"
     },
     {
-        "name": "IT специалисты Сербии",
-        "url": "https://t.me/it_serbia"
+        "name": "Ищешь компанию? Размести свое объявление здесь😉",
+        "url": "https://t.me/triponSerbia",
+        "group": "Общий список"
     },
     {
-        "name": "Чат для родителей и детей",
-        "url": "https://t.me/srbija_deca"
+        "name": "IT специалисты Сербии ищут гречку и ВНЖ без налогов",
+        "url": "https://t.me/it_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Коллекция вакансий в Сербии",
-        "url": "https://t.me/serbia_jobs"
+        "name": "чат для матерей, отцов и к ним приравненных. Детские площадки, досуговые центры, вопросы “надо ли апостилировать согласие другого родителя на вывоз” и так далее.",
+        "url": "https://t.me/srbija_deca",
+        "group": "Общий список"
     },
     {
-        "name": "Камерный чатик на 300 человек",
-        "url": "https://t.me/serbia_chat"
+        "name": "коллекция вакансий в Сербии и для релоцированных",
+        "url": "https://t.me/serbia_jobs",
+        "group": "Общий список"
     },
     {
-        "name": "Врачебные услуги в Сербии",
-        "url": "https://t.me/vrachivserbii"
+        "name": "врачебные услуги в Сербии, дискусии, отзывы",
+        "url": "https://t.me/vrachivserbii",
+        "group": "Общий список"
     },
     {
-        "name": "Чат с интересными ботами",
-        "url": "https://t.me/swalle_serbia"
+        "name": "чат с набором интересных (но лично не проверенных ботов) и примерно 1500 человек участников",
+        "url": "https://t.me/swalle_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Каталог специалистов и анонсы мероприятий",
-        "url": "https://t.me/SerbiaInMyMind"
+        "name": "местный, но русскоговорящий стоматолог во Врачаре.",
+        "url": "https://t.me/doctor_stomatologich",
+        "group": "Общий список"
     },
     {
-        "name": "Русские детские книги в Сербии",
-        "url": "https://t.me/+aiDUg5nCQBthZmFi"
+        "name": "Канал о грозах в Сербии",
+        "url": "https://t.me/nenevreme",
+        "group": "Общий список"
     },
     {
-        "name": "Каталог русских специалистов в Сербии",
-        "url": "https://t.me/catalog_russpeaking_serbia"
+        "name": "канал с каталогом специалистов и анонсами мероприятий на всех языках",
+        "url": "https://t.me/SerbiaInMyMind",
+        "group": "Общий список"
     },
     {
-        "name": "Покупка квартиры",
-        "url": "https://t.me/+sMXyzfPevbkyYzIy"
+        "name": "еще один канал с каталогом русских специалистов в Сербии",
+        "url": "https://t.me/catalog_russpeaking_serbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "покупка квартиры",
+        "url": "https://t.me/PokupkaKvartiriSerbii",
+        "group": "Общий список"
+    },
+    {
+        "name": "ВНЖ по недвижимости",
+        "url": "https://t.me/Channel_Serbia_residence_permit",
+        "group": "Общий список"
     },
     {
         "name": "Социальные танцы в Сербии",
-        "url": "https://t.me/social_dancing_serbia"
+        "url": "https://t.me/social_dancing_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Русский дейтинг в Сербии",
-        "url": "https://t.me/serbiadatingrus"
+        "name": "Русский дейтинг в Сербии (но там тоже про плескавицы и Авито)",
+        "url": "https://t.me/serbiadatingrus",
+        "group": "Общий список"
     },
     {
-        "name": "Группа для визаранов из Белграда",
-        "url": "https://t.me/visarun_serbia"
+        "name": "Группа для сбора попутчиков на визаран из Белграда",
+        "url": "https://t.me/visarun_serbia",
+        "group": "Общий список"
     },
     {
-        "name": "Визараны из Белграда",
-        "url": "https://t.me/VisaRunBg"
+        "name": "визараны из Белграда",
+        "url": "https://t.me/VisaRunBg",
+        "group": "Общий список"
     },
     {
         "name": "Визаран НС БГ",
-        "url": "https://t.me/SrbijaVizarun"
+        "url": "https://t.me/SrbijaVizarun",
+        "group": "Общий список"
     },
     {
-        "name": "Комплектующие на заказ в Сербию",
-        "url": "https://t.me/serbiapc"
+        "name": "комплектующие на заказ в Сербию",
+        "url": "https://t.me/serbiapc",
+        "group": "Общий список"
     },
     {
-        "name": "Чат для визаранов",
-        "url": "https://t.me/visarun_tours"
+        "name": "Ышшо одни визаранщики",
+        "url": "https://t.me/visarun_tours",
+        "group": "Общий список"
+    },
+    {
+        "name": "Визаран-чат номер следующий",
+        "url": "https://t.me/visa_run_serbia",
+        "group": "Общий список"
     },
     {
         "name": "Еще одни визаранщики",
-        "url": "https://t.me/visa_run_serbia"
+        "url": "https://t.me/+8A-2wEweJBM1MDE0",
+        "group": "Общий список"
+    },
+    {
+        "name": "визаран по приятной цене",
+        "url": "https://t.me/visarunserb",
+        "group": "Общий список"
     },
     {
         "name": "Девушки Сербии",
-        "url": "https://t.me/girlsinserbia"
+        "url": "https://t.me/girlsinserbia",
+        "group": "Общий список"
     },
     {
-        "name": "Барахолка-бот и база данных специалистов",
-        "url": "https://t.me/SrbMarket"
+        "name": "Барахолка-бот, он же база данных специалистов всех мастей и волостей",
+        "url": "https://t.me/SrbMarket",
+        "group": "Общий список"
     },
     {
-        "name": "Чат проекта 360° по Белграду",
-        "url": "https://t.me/belgrad_chat"
+        "name": "канал с анонсами обнимательных вечеринкок, спиддейтингов, мастермайндов и других мероприятий про контакт с собой и другими людьми",
+        "url": "https://t.me/vmeste_events",
+        "group": "Общий список"
     },
     {
-        "name": "Канал с курсами валют в Белграде",
-        "url": "https://t.me/serbia_exchange_rates"
+        "name": "Чат проекта 360о по Белграду, небольшая активность но 2500 участников",
+        "url": "https://t.me/belgrad_chat",
+        "group": "Общий список"
+    },
+    {
+        "name": "канал с курсами валют в менячницах Белграда",
+        "url": "https://t.me/serbia_exchange_rates",
+        "group": "Общий список"
     },
     {
         "name": "Алкочат",
-        "url": "https://t.me/alcoholic_belgrade"
+        "url": "https://t.me/alcoholic_belgrade",
+        "group": "Общий список"
     },
     {
         "name": "Чат фотографов, видеографов и тп.",
-        "url": "https://t.me/photographic_belgrade"
+        "url": "https://t.me/photographic_belgrade",
+        "group": "Общий список"
     },
     {
-        "name": "Инвестиции из Сербии",
-        "url": "https://t.me/+lnlpCGqk6G8yMzgy"
+        "name": "авторские квизы в Белграде. У нас чуть сложнее, чем у других, и очень разнообразно. А еще мы дарим победителям не алкоголь, а конфеты и настольные игры!",
+        "url": "https://t.me/alexproquiz",
+        "group": "Общий список"
     },
     {
-        "name": "Авторские квизы в Белграде",
-        "url": "https://t.me/alexproquiz"
+        "name": "канал о музеях Белграда",
+        "url": "https://t.me/belgradmuseum",
+        "group": "Общий список"
     },
     {
-        "name": "Канал о музеях Белграда",
-        "url": "https://t.me/belgradmuseum"
+        "name": "исторические танцы в Белграде, некоммерческая группа",
+        "url": "https://t.me/history_dance_Beograd",
+        "group": "Общий список"
+    },
+    {
+        "name": "Serbia Heavy music chat/Фанаты тяжелой музыки в Сербии (Death/Doom/Black/HC/Industrial etc.)",
+        "url": "https://t.me/deathdoomserbia",
+        "group": "Общий список"
+    },
+    {
+        "name": "Русский стендап в Белграде",
+        "url": "https://t.me/comedy_belgrade",
+        "group": "Общий список"
     },
     {
         "name": "Нови Сад daily (новости)",
-        "url": "http://t.me/novisadaily"
+        "url": "http://t.me/novisadaily",
+        "group": "Нови Сад"
     },
     {
         "name": "Женский чат",
-        "url": "http://t.me/+VbgOO7pcyhdhNGM0"
+        "url": "http://t.me/+VbgOO7pcyhdhNGM0",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Лайфхаки от русскоязычного серба",
+        "url": "https://t.me/tvojdrugserb",
+        "group": "Нови Сад"
     },
     {
         "name": "Родительский чат",
-        "url": "http://t.me/novi_sad_parents"
+        "url": "t.me/novi_sad_parents",
+        "group": "Нови Сад"
     },
     {
         "name": "Культурно-образовательный центр Chast-rechi.com",
-        "url": "https://t.me/chast_rechi_school"
+        "url": "https://t.me/chast_rechi_school",
+        "group": "Нови Сад"
     },
     {
         "name": "Футбол",
-        "url": "http://t.me/novisad_football"
+        "url": "http://t.me/novisad_football",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Нови Сад Life",
+        "url": "https://t.me/novisad_life",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Ремонт и обслуживание ноутбуков и техники Apple",
+        "url": "https://t.me/laptopserbia",
+        "group": "Нови Сад"
     },
     {
         "name": "Недвижимость в Нови Саде",
-        "url": "https://t.me/kvartiranovisad"
+        "url": "https://t.me/kvartiranovisad",
+        "group": "Нови Сад"
     },
     {
         "name": "Спорт (пробежки, воркаут)",
-        "url": "http://t.me/nssportchat"
+        "url": "http://t.me/nssportchat",
+        "group": "Нови Сад"
     },
     {
         "name": "Йога Нови Сад",
-        "url": "https://t.me/yoga_novisad"
+        "url": "https://t.me/yoga_novisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Культурный Нови Сад глазами петербуржца",
+        "url": "https://t.me/culture_novisad",
+        "group": "Нови Сад"
     },
     {
         "name": "Канал студии йоги на Брача Рибникар 1",
-        "url": "https://t.me/+jtO-m08zzMJmZWVi"
+        "url": "https://t.me/+jtO-m08zzMJmZWVi",
+        "group": "Нови Сад"
     },
     {
-        "name": "Еще одна йога в Нови Саде",
-        "url": "https://t.me/+yGkZBKXzpO5jZWRi"
+        "name": "Еще одна йога в Нови Саде. Конкуренция, однако",
+        "url": "https://t.me/+yGkZBKXzpO5jZWRi",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Коворкинг и обучение в центре Нови Сада, Железничка д. 20",
+        "url": "https://t.me/maximumns",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Хатха-йога и медитации в Дунавски парк",
+        "url": "https://t.me/yoga_v_novisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Русский официальный rent a car, в Нови Саде",
+        "url": "https://t.me/novisadarenda",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Ламповый ночной чат Нови Сада, балканская атмосфера без токсичности",
+        "url": "https://t.me/novi_sad_serbia",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Новисадский волейбол",
+        "url": "https://t.me/WOW_Volley",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "ФШ 'Универсал' - частная футбольная школа",
+        "url": "https://t.me/universal_serbia_novisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Аренда Нови Сад",
+        "url": "https://t.me/novisad_stan",
+        "group": "Нови Сад"
     },
     {
         "name": "Чат свопа Нови Сада",
-        "url": "https://t.me/+llAGYPdR7TYyZDQy"
+        "url": "https://t.me/+llAGYPdR7TYyZDQy",
+        "group": "Нови Сад"
     },
     {
-        "name": "QA чат для Новосаджан",
-        "url": "https://t.me/+0H0JEWVm78piMDYy"
+        "name": "QA чат для Новосаджан и сочувствующих",
+        "url": "https://t.me/+0H0JEWVm78piMDYy",
+        "group": "Нови Сад"
     },
     {
         "name": "Авто",
-        "url": "https://t.me/nsautochat"
+        "url": "https://t.me/nsautochat",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Новисадские чаепития",
+        "url": "https://t.me/sealkia_tea",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Лёгкие настолки",
+        "url": "https://t.me/ns_boardgame",
+        "group": "Нови Сад"
     },
     {
         "name": "Журка Нови Сада",
-        "url": "https://t.me/zurka_novisad"
+        "url": "https://t.me/zurka_novisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Идём гулять? Совместные прогулки для детей и с детьми",
+        "url": "https://t.me/+8r-UqKxIBsFjYjBi",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Новисадская еда",
+        "url": "https://t.me/eda_rs",
+        "group": "Нови Сад"
     },
     {
         "name": "Novi Sad run chat",
-        "url": "https://t.me/+OnUykRmpUtg5MGFi"
+        "url": "https://t.me/+OnUykRmpUtg5MGFi",
+        "group": "Нови Сад"
     },
     {
         "name": "Новисадские кальяны",
-        "url": "https://t.me/+ygWgXAID-eIwM2Vi"
+        "url": "https://t.me/+ygWgXAID-eIwM2Vi",
+        "group": "Нови Сад"
     },
     {
-        "name": "Розничная продажа качественного чая",
-        "url": "https://t.me/teainserbia"
-    },
-    {
-        "name": "Новисадский коворкинг",
-        "url": "https://t.me/coworkingNS"
+        "name": "Розничная продажа чая",
+        "url": "https://t.me/teainserbia",
+        "group": "Нови Сад"
     },
     {
         "name": "Преферанс и поэтессы",
-        "url": "https://t.me/novisad_pref"
+        "url": "https://t.me/novisad_pref",
+        "group": "Нови Сад"
     },
     {
         "name": "Детско-подростковый клуб Нови Сада",
-        "url": "https://t.me/KidsLab_chat"
+        "url": "https://t.me/KidsLab_chat",
+        "group": "Нови Сад"
     },
     {
         "name": "Илицюань в Нови Саде",
-        "url": "https://t.me/serbia_iliqchuan"
+        "url": "https://t.me/serbia_iliqchuan",
+        "group": "Нови Сад"
     },
     {
         "name": "Художники",
-        "url": "http://t.me/+WJPxpZQPeXVkMTA8"
+        "url": "http://t.me/+WJPxpZQPeXVkMTA8",
+        "group": "Нови Сад"
     },
     {
         "name": "Заказ выпечки и пельменей в Нови Саде",
-        "url": "https://t.me/natali_bakery_ns"
+        "url": "https://t.me/natali_bakery_ns",
+        "group": "Нови Сад"
     },
     {
         "name": "Новисадская барахолка",
-        "url": "https://t.me/+dzYBVRHKtPdhMjZk"
+        "url": "https://t.me/+dzYBVRHKtPdhMjZk",
+        "group": "Нови Сад"
     },
     {
         "name": "Новисадские рассказы",
-        "url": "https://t.me/PriceNaNoC"
+        "url": "https://t.me/PriceNaNoC",
+        "group": "Нови Сад"
     },
     {
         "name": "Туса",
-        "url": "http://t.me/novisad_alky"
+        "url": "http://t.me/novisad_alky",
+        "group": "Нови Сад"
     },
     {
         "name": "RPG Novi Sad",
-        "url": "https://t.me/+qyDpgDflTTc1ZjYy"
+        "url": "https://t.me/+qyDpgDflTTc1ZjYy",
+        "group": "Нови Сад"
     },
     {
         "name": "Клининг-услуги в Нови Саде",
-        "url": "https://t.me/CleaningNoviSad"
+        "url": "https://t.me/CleaningNoviSad",
+        "group": "Нови Сад"
     },
     {
         "name": "Чайный клуб Нови Сада",
-        "url": "https://t.me/teaclubnsserbia"
+        "url": "https://t.me/teaclubnsserbia",
+        "group": "Нови Сад"
     },
     {
         "name": "Игры в Мафию в Нови Саде",
-        "url": "https://t.me/mafia_novisad"
+        "url": "https://t.me/mafia_novisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Буккроссинг в Нови Саде",
+        "url": "https://t.me/+5V0BZUlqinFjNjgy",
+        "group": "Нови Сад"
     },
     {
         "name": "Data Breakfast и сборища по ML, AI",
-        "url": "https://t.me/ods_ns"
+        "url": "https://t.me/ods_ns",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Анонсы курсов рисования в Нови Саде",
+        "url": "https://t.me/risuem_novi_sad",
+        "group": "Нови Сад"
     },
     {
         "name": "Крафтовое пиво Нови Сада",
-        "url": "https://t.me/oncraftinnovisad"
+        "url": "https://t.me/oncraftinnovisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Собачники Нови Сада",
+        "url": "https://t.me/dogsns",
+        "group": "Нови Сад"
     },
     {
         "name": "Russian International Summer School in Serbia",
-        "url": "https://t.me/chast_rechi_school"
+        "url": "https://t.me/chast_rechi_school",
+        "group": "Нови Сад"
     },
     {
         "name": "SmartLab - уроки сербского в Нови Саде",
-        "url": "https://t.me/SrpskiCas"
+        "url": "https://t.me/SrpskiCas",
+        "group": "Нови Сад"
     },
     {
-        "name": "Кошатники Нови Сада",
-        "url": "https://t.me/KoshatnikiNoviSad"
+        "name": "Кошатники и кошатницы Нови Сада",
+        "url": "https://t.me/KoshatnikiNoviSad",
+        "group": "Нови Сад"
     },
     {
         "name": "Genesis RPG в Новом Саде",
-        "url": "https://t.me/+OZDR_T_sUiczODgy"
+        "url": "https://t.me/+OZDR_T_sUiczODgy",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Канал Арена паба",
+        "url": "https://t.me/arenapub",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "D&D игры в кофейне Seal&Tea",
+        "url": "https://t.me/+8RJM1Wu5I285MGU6",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Кофейня/Чаевня Seal&Tea",
+        "url": "https://t.me/sealkia_tea",
+        "group": "Нови Сад"
     },
     {
         "name": "Маркетинг-завтраки в Нови-Сад",
-        "url": "https://t.me/business_breakfast_NS"
+        "url": "https://t.me/business_https://t.me/sealkia_teabreakfast_NS",
+        "group": "Нови Сад"
     },
     {
         "name": "D&D Нови Сад",
-        "url": "https://t.me/thehappywizardns"
+        "url": "https://t.me/thehappywizardns",
+        "group": "Нови Сад"
     },
     {
         "name": "Группа специалистов Нови Сада",
-        "url": "https://t.me/specialistinovisada"
+        "url": "https://t.me/specialistinovisada",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Квиз, плиз! Новисадские квизоделы",
+        "url": "https://t.me/quizplease_ns",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Новисадская барахолка, еще одна",
+        "url": "https://t.me/Baraholka_Sad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Чат родителей малышей-дошколят",
+        "url": "https://t.me/parents_little_kids_NoviSad",
+        "group": "Нови Сад"
     },
     {
         "name": "Баскетбол Нови Сад",
-        "url": "https://t.me/novisad_basketball"
+        "url": "https://t.me/novisad_basketball",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Гончарная студия 5+",
+        "url": "https://t.me/indigo_zadecu/2291",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Телеп + Адице Соседи Нови Сад",
+        "url": "https://t.me/TelepAdice",
+        "group": "Нови Сад"
     },
     {
         "name": "Дизайнеры Нови Сада",
-        "url": "https://t.me/designovisad"
+        "url": "https://t.me/designovisad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Русская тату-студия в НС",
+        "url": "https://t.me/tattooroy_rs",
+        "group": "Нови Сад"
     },
     {
         "name": "Немодерируемая болталка Нови Сада",
-        "url": "https://t.me/boltns"
+        "url": "https://t.me/boltns",
+        "group": "Нови Сад"
     },
     {
-        "name": "Волейбол/отбойка",
-        "url": "https://t.me/NSvolleyball"
+        "name": "Большой теннис для детей и взрослых🎾 Новисад",
+        "url": "https://t.me/tennis_novisad",
+        "group": "Нови Сад"
     },
     {
-        "name": "Большой теннис для детей и взрослых в Нови Сад",
-        "url": "https://t.me/tennis_novisad"
+        "name": "Прогулки и пешие походы по Фрушкой Горе",
+        "url": "https://t.me/izlet_novi_sad",
+        "group": "Нови Сад"
     },
     {
-        "name": "Прогулки и пешие походы выходного дня по Фрушкой Горе",
-        "url": "https://t.me/izlet_novi_sad"
+        "name": "Русскоязычные дизайнеры и архитекторы в г. Нови-Сад",
+        "url": "https://t.me/interior_design_NS",
+        "group": "Нови Сад"
     },
     {
-        "name": "Настолки НС, мафия, пиво и караоке",
-        "url": "https://t.me/boardgames_ns"
+        "name": "Настолки НС, мафия, нечто, пиво и караоке",
+        "url": "https://t.me/boardgames_ns",
+        "group": "Нови Сад"
     },
     {
         "name": "Основная болталка Новисаджан",
-        "url": "https://t.me/novisad_ru"
+        "url": "https://t.me/novisad_ru",
+        "group": "Нови Сад"
     },
     {
         "name": "Прогулки по Фрушке-горе, пешие экскурсии",
-        "url": "https://t.me/serbia_progulki"
+        "url": "https://t.me/serbia_progulki",
+        "group": "Нови Сад"
     },
     {
-        "name": "Новисадские ивенты и мероприятия от русского коммьюнити",
-        "url": "https://t.me/novisad_events"
+        "name": "Трансфер Нови Сад - аэропорт + выездные прогулки",
+        "url": "https://t.me/transfer_ns",
+        "group": "Нови Сад"
     },
     {
-        "name": "Трансфер Нови Сад - аэропорт + выездные прогулки по достопримечательностям Сербии",
-        "url": "https://t.me/transfer_ns"
-    },
-    {
-        "name": "Чат \"Контакт\" Нови Сад—Сербия: знакомства, встречи, прогулки, общение, бизнес",
-        "url": "https://t.me/kontaktnovisad"
+        "name": "Чат 'Контакт' Нови Сад—Сербия: знакомства, встречи, прогулки, общение, бизнес",
+        "url": "https://t.me/kontaktnovisad",
+        "group": "Нови Сад"
     },
     {
         "name": "Визаран и Трансфер Нови-Сад",
-        "url": "https://t.me/visarun_NoviSad"
+        "url": "https://t.me/visarun_NoviSad",
+        "group": "Нови Сад"
+    },
+    {
+        "name": "Земун",
+        "url": "https://t.me/ru_zemun",
+        "group": "География"
+    },
+    {
+        "name": "Копаоник",
+        "url": "https://t.me/kopaonik_ru",
+        "group": "География"
+    },
+    {
+        "name": "Златибор",
+        "url": "https://t.me/sosedskizlatibor",
+        "group": "География"
+    },
+    {
+        "name": "Суботица-1",
+        "url": "https://t.me/russiansubotica",
+        "group": "География"
+    },
+    {
+        "name": "Суботица-2",
+        "url": "https://t.me/suboticaRU",
+        "group": "География"
+    },
+    {
+        "name": "Суботица-3",
+        "url": "https://t.me/SaraFunSubotica",
+        "group": "География"
+    },
+    {
+        "name": "Лозница",
+        "url": "https://t.me/rusloznica",
+        "group": "География"
+    },
+    {
+        "name": "Чачак",
+        "url": "https://t.me/sosedi_cacak",
+        "group": "География"
+    },
+    {
+        "name": "Инджия",
+        "url": "https://t.me/indjija",
+        "group": "География"
+    },
+    {
+        "name": "Батайница",
+        "url": "https://t.me/Batajnica_dlya_russkih",
+        "group": "География"
+    },
+    {
+        "name": "Палилуа (Белград)",
+        "url": "https://t.me/palilula",
+        "group": "География"
+    },
+    {
+        "name": "Врнячка Баня",
+        "url": "https://t.me/+MkBVbwBJsgUxOGVi",
+        "group": "География"
+    },
+    {
+        "name": "Врнячка Баня-2",
+        "url": "https://t.me/vrnjackabanja",
+        "group": "География"
+    },
+    {
+        "name": "Вальево",
+        "url": "https://t.me/valjevors",
+        "group": "География"
+    },
+    {
+        "name": "Кральево",
+        "url": "https://t.me/kralevo",
+        "group": "География"
+    },
+    {
+        "name": "Вождовац, Врачар, Звездара (Белград)",
+        "url": "https://t.me/vozdovac_chat",
+        "group": "География"
+    },
+    {
+        "name": "Вождовац (Белград)",
+        "url": "https://t.me/vozdovac_ru",
+        "group": "География"
+    },
+    {
+        "name": "Звездара-1 (Белград)",
+        "url": "https://t.me/+TFKZrUB_zjtkMDFk",
+        "group": "География"
+    },
+    {
+        "name": "Звездара-2 (Белград). Да их два.",
+        "url": "https://t.me/Rus_zvezdara",
+        "group": "География"
+    },
+    {
+        "name": "Ватерфронт (Белград)",
+        "url": "https://t.me/rus_BW",
+        "group": "География"
+    },
+    {
+        "name": "Врачар (Белград)",
+        "url": "https://t.me/vracar",
+        "group": "География"
+    },
+    {
+        "name": "Старый город (Белград)",
+        "url": "https://t.me/starigrad_belgrade",
+        "group": "География"
+    },
+    {
+        "name": "Новый Белград",
+        "url": "https://t.me/novibeogradrusski",
+        "group": "География"
+    },
+    {
+        "name": "Новобелградский чат 61-71 района",
+        "url": "https://t.me/block61_71",
+        "group": "География"
+    },
+    {
+        "name": "Центр и район Подбара (Нови Сад)",
+        "url": "https://t.me/CentarPodbaraNoviSad",
+        "group": "География"
+    },
+    {
+        "name": "Ниш-1",
+        "url": "https://t.me/ambiance_nis",
+        "group": "География"
+    },
+    {
+        "name": "Дорчол (Белград)",
+        "url": "https://t.me/+2UCmCgfbicQyNTBi",
+        "group": "География"
+    },
+    {
+        "name": "Панчево",
+        "url": "https://t.me/+XdxQEEFLBb00MzEy",
+        "group": "География"
+    },
+    {
+        "name": "Сомбор",
+        "url": "https://t.me/RU_Sombor",
+        "group": "География"
+    },
+    {
+        "name": "Зреньянин",
+        "url": "https://t.me/nashi_v_zrenjanine",
+        "group": "География"
+    },
+    {
+        "name": "Ниш-2",
+        "url": "https://t.me/nis_serbia_ru_ua_by",
+        "group": "География"
+    },
+    {
+        "name": "Ниш-3",
+        "url": "https://t.me/rus_nis",
+        "group": "География"
+    },
+    {
+        "name": "Крагуевац",
+        "url": "https://t.me/kragujevac_live",
+        "group": "География"
+    },
+    {
+        "name": "Коливинг и поиск соседей",
+        "url": "@colive_in_peace_bot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "SerbianFlatCallerBot",
+        "url": "https://t.me/SerbianFlatCallerBot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Бот с вакансиями",
+        "url": "@rabotavserbii_bot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Pixie бот с менячницами Новог Сада",
+        "url": "@novisadbot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Бот быстрых знакомств",
+        "url": "https://t.me/desireappBot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Бот поиска жилья в Нови Саде",
+        "url": "https://t.me/novisad_apartmens",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Поиск курьеров и посылок по РФ и Сербии",
+        "url": "https://t.me/getparcelbot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Случайное знакомство в Сербии",
+        "url": "@Serbia_RCbot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Бот с сербской недвигой",
+        "url": "@RSrealty_bot",
+        "group": "Тележные боты на вкус и цвет"
+    },
+    {
+        "name": "Доставка продуктов из сербской деревни в город",
+        "url": "@Fm2CzBot",
+        "group": "Тележные боты на вкус и цвет"
     }
 ]

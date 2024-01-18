@@ -18,6 +18,8 @@ class _TgChatScreenState extends State<TgChatScreen> {
   late List<Map<String, dynamic>> buttonUrls = [];
   late List<Map<String, dynamic>> filteredButtons = [];
   TextEditingController searchController = TextEditingController();
+  Set<String> uniqueGroups = Set();
+  Set<String> selectedFilters = Set();
 
   @override
   void initState() {
@@ -34,9 +36,13 @@ class _TgChatScreenState extends State<TgChatScreen> {
 
   Future<void> loadJsonData() async {
     try {
-      String jsonString = await rootBundle.loadString('assets/data/tg_chats.json');
+      String jsonString =
+      await rootBundle.loadString('assets/data/tg_chats.json');
       List<dynamic> jsonData = json.decode(jsonString);
       buttonUrls = List<Map<String, dynamic>>.from(jsonData);
+
+      uniqueGroups = buttonUrls.map((map) => map['group'] as String).toSet();
+
       filteredButtons = List.from(buttonUrls);
       setState(() {});
     } catch (e) {
@@ -57,11 +63,82 @@ class _TgChatScreenState extends State<TgChatScreen> {
     });
   }
 
+  void _applyFilters(Set<String> selectedFilters) {
+    setState(() {
+      if (selectedFilters.isEmpty) {
+        filteredButtons = List.from(buttonUrls);
+      } else {
+        filteredButtons = buttonUrls.where((map) {
+          return selectedFilters.contains(map['group']);
+        }).toList();
+      }
+    });
+  }
+
+  void _showFilterDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: Text('Filter Options'),
+              content: Column(
+                children: uniqueGroups
+                    .map(
+                      (group) => CheckboxListTile(
+                    title: Text(group),
+                    value: selectedFilters.contains(group),
+                    onChanged: (value) {
+                      setState(() {
+                        if (value != null && value) {
+                          selectedFilters.add(group);
+                        } else {
+                          selectedFilters.remove(group);
+                        }
+                      });
+                    },
+                  ),
+                )
+                    .toList(),
+              ),
+              actions: [
+                IntrinsicWidth(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text('Cancel'),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: Text('Apply'),
+                          onTap: () {
+                            _applyFilters(selectedFilters);
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar:
-      CustomAppBar(
+      appBar: CustomAppBar(
         title: AppLocalizations.of(context)!.translate('tg_chats'),
       ),
       drawer: AppDrawer(),
@@ -75,13 +152,13 @@ class _TgChatScreenState extends State<TgChatScreen> {
                   child: TextField(
                     controller: searchController,
                     decoration: InputDecoration(
-                      labelText: AppLocalizations.of(context)!.translate('search'),
+                      labelText:
+                      AppLocalizations.of(context)!.translate('search'),
                       prefixIcon:
-                          Icon(Icons.search),
-                      // ThemedIcon(
-                      //   iconPath: 'assets/icons_24x24/search.png',
-                      //   size: 24.0,
-                      // ),
+                      ThemedIcon(
+                        iconPath: 'assets/icons_24x24/search-24.png',
+                        size: 24.0,
+                      ),
                       suffixIcon: searchController.text.isNotEmpty
                           ? IconButton(
                         icon: Icon(Icons.clear, color: Colors.grey),
@@ -97,14 +174,15 @@ class _TgChatScreenState extends State<TgChatScreen> {
                   ),
                 ),
               ),
-              // IconButton(
-              //   onPressed: () {
-              //   },
-              //   icon: ThemedIcon(
-              //     iconPath: 'assets/icons_24x24/filter.png',
-              //     size: 36.0,
-              //   ),
-              // ),
+              IconButton(
+                onPressed: () {
+                  _showFilterDialog();
+                },
+                icon: ThemedIcon(
+                  iconPath: 'assets/icons_24x24/filter.png',
+                  size: 24.0, // Adjust size here
+                ),
+              ),
             ],
           ),
           Expanded(
@@ -114,7 +192,8 @@ class _TgChatScreenState extends State<TgChatScreen> {
                 String title = filteredButtons[index]['name']!;
                 String url = filteredButtons[index]['url']!;
                 return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 8.0),
                   child: Card(
                     elevation: 4,
                     shape: RoundedRectangleBorder(
@@ -135,4 +214,5 @@ class _TgChatScreenState extends State<TgChatScreen> {
       ),
     );
   }
+
 }
