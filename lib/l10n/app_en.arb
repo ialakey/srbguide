@@ -72,5 +72,8 @@
   "exchange": "Exchange",
   "loading": "Loading...",
   "service": "Service",
-  "embassy": "Embassy"
+  "embassy": "Embassy",
+  "cancel", "Cancel",
+  "apply": "Apply",
+  "filter": "Filter option"
 }

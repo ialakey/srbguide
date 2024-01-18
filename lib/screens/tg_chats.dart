@@ -79,61 +79,60 @@ class _TgChatScreenState extends State<TgChatScreen> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: Text('Filter Options'),
-              content: Column(
-                children: uniqueGroups
-                    .map(
-                      (group) => CheckboxListTile(
-                    title: Text(group),
-                    value: selectedFilters.contains(group),
-                    onChanged: (value) {
-                      setState(() {
-                        if (value != null && value) {
-                          selectedFilters.add(group);
-                        } else {
-                          selectedFilters.remove(group);
-                        }
-                      });
-                    },
-                  ),
-                )
-                    .toList(),
-              ),
-              actions: [
-                IntrinsicWidth(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: ListTile(
-                          title: Text('Cancel'),
-                          onTap: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          title: Text('Apply'),
-                          onTap: () {
-                            _applyFilters(selectedFilters);
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('filter')),
+          contentPadding: EdgeInsets.zero,
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: uniqueGroups
+                      .map(
+                        (group) => CheckboxListTile(
+                      title: Text(group),
+                      value: selectedFilters.contains(group),
+                      onChanged: (value) {
+                        setState(() {
+                          if (value != null && value) {
+                            selectedFilters.add(group);
+                          } else {
+                            selectedFilters.remove(group);
+                          }
+                        });
+                      },
+                    ),
+                  )
+                      .toList(),
+                ),
+              );
+            },
+          ),
+          actions: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(AppLocalizations.of(context)!.translate('cancel')),
+                ),
+                TextButton(
+                  onPressed: () {
+                    _applyFilters(selectedFilters);
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(AppLocalizations.of(context)!.translate('apply')),
                 ),
               ],
-            );
-          },
+            ),
+          ],
         );
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {
