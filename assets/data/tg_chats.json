@@ -1651,7 +1651,7 @@
     },
     {
         "name": "Коливинг и поиск соседей",
-        "url": "@colive_in_peace_bot",
+        "url": "https://t.me/colive_in_peace_bot",
         "group": "Тележные боты на вкус и цвет"
     },
     {
@@ -1661,12 +1661,12 @@
     },
     {
         "name": "Бот с вакансиями",
-        "url": "@rabotavserbii_bot",
+        "url": "https://t.me/rabotavserbii_bot",
         "group": "Тележные боты на вкус и цвет"
     },
     {
-        "name": "Pixie бот с менячницами Новог Сада",
-        "url": "@novisadbot",
+        "name": "Pixie бот с менячницами Нови Сада",
+        "url": "https://t.me/novisadbot",
         "group": "Тележные боты на вкус и цвет"
     },
     {
@@ -1686,17 +1686,17 @@
     },
     {
         "name": "Случайное знакомство в Сербии",
-        "url": "@Serbia_RCbot",
+        "url": "https://t.me/Serbia_RCbot",
         "group": "Тележные боты на вкус и цвет"
     },
     {
         "name": "Бот с сербской недвигой",
-        "url": "@RSrealty_bot",
+        "url": "https://t.me/RSrealty_bot",
         "group": "Тележные боты на вкус и цвет"
     },
     {
         "name": "Доставка продуктов из сербской деревни в город",
-        "url": "@Fm2CzBot",
+        "url": "https://t.me/Fm2CzBot",
         "group": "Тележные боты на вкус и цвет"
     }
 ]
