@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/main.dart';
-import 'package:srbguide/screens/calculator.dart';
+import 'package:srbguide/screens/service.dart';
 import 'dart:math';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
@@ -94,7 +94,7 @@ class _CustomDrawerHeaderState extends State<CustomDrawerHeader> with SingleTick
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => VisaFreeCalculatorScreen()),
+                      MaterialPageRoute(builder: (context) => ServiceScreen()),
                     );
                   },
                   child: ClipOval(

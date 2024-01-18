@@ -17,7 +17,7 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-  String initialSelectedScreen = prefs.getString('selectedScreen') ?? 'VisaFreeCalculatorScreen';
+  String initialSelectedScreen = prefs.getString('selectedScreen') ?? 'ServiceScreen';
 
   LanguageProvider languageProvider = LanguageProvider();
   await languageProvider.init();

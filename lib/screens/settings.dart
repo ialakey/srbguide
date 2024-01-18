@@ -21,7 +21,7 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
   double _currentTextSize = 13.0;
-  String _selectedScreen = 'VisaFreeCalculatorScreen';
+  String _selectedScreen = 'ServiceScreen';
 
   @override
   void initState() {
@@ -124,8 +124,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               return SingleChildScrollView(
                 child: Column(
                   children: [
-                    _buildScreenOption(context, 'VisaFreeCalculatorScreen', AppLocalizations.of(context)!.translate('calculator_visarun')),
-                    _buildScreenOption(context, 'CreateWhiteCardboardScreen', AppLocalizations.of(context)!.translate('create_whiteboard')),
+                    _buildScreenOption(context, 'ServiceScreen', AppLocalizations.of(context)!.translate('service')),
                     _buildScreenOption(context, 'GuideScreen', AppLocalizations.of(context)!.translate('guide')),
                     _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
                     _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
