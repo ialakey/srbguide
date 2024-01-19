@@ -73,7 +73,7 @@
   "loading": "Loading...",
   "service": "Service",
   "embassy": "Embassy",
-  "cancel", "Cancel",
+  "cancel": "Cancel",
   "apply": "Apply",
   "filter": "Filter option"
 }
