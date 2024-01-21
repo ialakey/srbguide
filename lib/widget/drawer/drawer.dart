@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/screens/author.dart';
 import 'package:srbguide/screens/exchange_rate.dart';
-import 'package:srbguide/screens/guide.dart';
+import 'package:srbguide/screens/guide_navigation.dart';
 import 'package:srbguide/screens/map.dart';
 import 'package:srbguide/screens/service.dart';
 import 'package:srbguide/screens/settings.dart';
@@ -77,7 +77,7 @@ class AppDrawer extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => GuideScreen()),
+                      MaterialPageRoute(builder: (context) => GuideNavigationScreen()),
                     );
                   },
                 ),

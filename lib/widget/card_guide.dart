@@ -17,7 +17,7 @@ class CardWidgets {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => MarkdownReaderScreen(title: title, content: content),
+                  builder: (context) => MarkdownReaderScreen(title: '$smile $title', content: content),
                 ),
               );
             },

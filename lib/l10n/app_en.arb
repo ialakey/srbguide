@@ -75,5 +75,9 @@
   "embassy": "Embassy",
   "cancel": "Cancel",
   "apply": "Apply",
-  "filter": "Filter option"
+  "filter": "Filter option",
+  "favourite": "Favourite",
+  "no_favourite_message": "No favourite message",
+  "add_favourite": "Add favourite",
+  "delete_favourite": "Delete favourite"
 }

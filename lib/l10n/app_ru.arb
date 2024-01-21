@@ -74,5 +74,9 @@
   "embassy": "Посольство",
   "cancel": "Закрыть",
   "apply": "Подтвердить",
-  "filter": "Фильтры"
+  "filter": "Фильтры",
+  "favourite": "Избранное",
+  "no_favourite_message": "Нет избранных элементов",
+  "add_favourite": "Добавить в избранное",
+  "delete_favourite": "Убрать из избранного"
 }

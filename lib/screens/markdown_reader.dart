@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:srbguide/dialogs/text_size_dialog.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/utils/contents_util.dart';
 import 'package:srbguide/widget/custom_search.dart';
 import 'package:srbguide/widget/markdown/markdown_body.dart';
@@ -27,6 +30,9 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
   double _currentTextSize = 13.0;
   final MarkdownHelper _markdownHelper = MarkdownHelper();
   final ContentUtil _contentUtil = ContentUtil();
+  late Map<String, String> favorites;
+  String buttonText = "";
+  String icon = "";
 
   @override
   void initState() {
@@ -37,6 +43,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
     _title = widget.title;
     _markdownContent = widget.content;
     _isLoading = false;
+    _loadFavorites();
   }
 
   _scrollToText(String anchor) {
@@ -104,6 +111,32 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
     _saveTextSize(value);
   }
 
+  Future<void> _loadFavorites() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    Map<String, String> savedFavorites =
+    Map<String, String>.from(json.decode(prefs.getString('favorites') ?? '{}'));
+    setState(() {
+      favorites = savedFavorites;
+    });
+
+    if (favorites.containsKey(_title)) {
+      setState(() {
+        buttonText = AppLocalizations.of(context)!.translate('delete_favourite');
+        icon = "full-bookmark.png";
+      });
+    } else {
+      setState(() {
+        buttonText = AppLocalizations.of(context)!.translate('add_favourite');
+        icon = "bookmark.png";
+      });
+    }
+  }
+
+  Future<void> _saveFavorites() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('favorites', json.encode(favorites));
+  }
+
   @override
   Widget build(BuildContext context) {
     final double textSize = _currentTextSize;
@@ -119,6 +152,7 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
         actions: [
           ActionMenuButton(
             onTapChangeTextSize: () {
+              Navigator.pop(context);
               DialogHelper.show(
                 context,
                 _currentTextSize,
@@ -139,6 +173,25 @@ class _MarkdownReaderScreenState extends State<MarkdownReaderScreen> {
               }
               Navigator.pop(context);
             },
+            onTapAddToFavorite: () {
+              if (favorites.containsKey(_title)) {
+                setState(() {
+                  favorites.remove(_title);
+                  buttonText = AppLocalizations.of(context)!.translate('add_favourite');
+                  icon = "bookmark.png";
+                });
+              } else {
+                setState(() {
+                  favorites[_title] = _markdownContent;
+                  buttonText = AppLocalizations.of(context)!.translate('delete_favourite');
+                  icon = "full-bookmark.png";
+                });
+              }
+              _saveFavorites();
+              Navigator.pop(context);
+            },
+            buttonText: buttonText,
+            icon: icon,
           ),
         ],
       ),

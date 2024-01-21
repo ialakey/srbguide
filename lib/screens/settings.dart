@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Future<void> _loadSelectedScreen() async {
     _prefs = await SharedPreferences.getInstance();
-    String savedScreen = _prefs?.getString('selectedScreen') ?? 'VisaFreeCalculatorScreen';
+    String savedScreen = _prefs?.getString('selectedScreen') ?? _selectedScreen;
     setState(() {
       _selectedScreen = savedScreen;
     });
@@ -125,7 +125,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Column(
                   children: [
                     _buildScreenOption(context, 'ServiceScreen', AppLocalizations.of(context)!.translate('service')),
-                    _buildScreenOption(context, 'GuideScreen', AppLocalizations.of(context)!.translate('guide')),
+                    _buildScreenOption(context, 'GuideNavigationScreen', AppLocalizations.of(context)!.translate('guide')),
                     _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
                     _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
                     _buildScreenOption(context, 'ExchangeRateScreen', AppLocalizations.of(context)!.translate('exchange_rate')),
