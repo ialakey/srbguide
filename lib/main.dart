@@ -1,17 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/provider/language_provider.dart';
 
-import 'screens/author.dart';
-import 'screens/calculator.dart';
-import 'screens/calculator_tax.dart';
-import 'screens/serbia_guide.dart';
-import 'screens/settings.dart';
-import 'screens/tg_chats.dart';
-import 'screens/useful_links.dart';
-import 'screens/white_cardboard.dart';
-import 'widget/drawer.dart';
-import 'widget/themed_icon.dart';
+import 'service/parser/promonet_parser.dart';
+import 'widget/screen_mapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,16 +17,31 @@ void main() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
   ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
+  String initialSelectedScreen = prefs.getString('selectedScreen') ?? 'ServiceScreen';
 
-  runApp(MainScreen(
-    initialThemeMode: initialThemeMode,
-  ));
+  LanguageProvider languageProvider = LanguageProvider();
+  await languageProvider.init();
+
+  runApp(
+    ChangeNotifierProvider<LanguageProvider>(
+      create: (_) => languageProvider,
+      child: MainScreen(
+        initialThemeMode: initialThemeMode,
+        initialSelectedScreen: initialSelectedScreen,
+      ),
+    ),
+  );
 }
 
 class MainScreen extends StatefulWidget {
   final ThemeMode initialThemeMode;
+  final String initialSelectedScreen;
 
-  const MainScreen({Key? key, required this.initialThemeMode}) : super(key: key);
+  const MainScreen({
+    Key? key,
+    required this.initialThemeMode,
+    required this.initialSelectedScreen
+  }) : super(key: key);
 
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -39,26 +51,15 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late ThemeMode _themeMode;
-  int _selectedNavItem = 0;
-
-  final List<String> _appBarTitles = [
-    'Калькулятор визарана',
-    'Создание белого картона',
-    'Калькулятор паушального налога',
-    'SRB.GUIDE',
-    'Телеграм чаты',
-    'Настройки',
-    'Автор',
-    'Полезности',
-  ];
+  late String _selectedScreen;
 
   @override
   void initState() {
     super.initState();
     _themeMode = widget.initialThemeMode;
+    _selectedScreen = widget.initialSelectedScreen;
+    ProMonetParser().getExchangeRateInHeader();
   }
 
   void setThemeMode(ThemeMode themeMode) async {
@@ -71,60 +72,24 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
     return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.lightBlue,
-      ),
+      localizationsDelegates: [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        ...GlobalCupertinoLocalizations.delegates,
+      ],
+      supportedLocales: [
+        Locale('en', ''),
+        Locale('ru', ''),
+      ],
       darkTheme: ThemeData.dark(),
       themeMode: _themeMode,
+      locale: languageProvider.selectedLocale,
       home: Scaffold(
-        key: _scaffoldKey,
-        appBar: AppBar(
-          title: Text(_appBarTitles[_selectedNavItem]),
-          leading: IconButton(
-            icon:
-            ThemedIcon(
-              lightIcon: 'assets/icons_24x24/burger-menu.png',
-              darkIcon: 'assets/icons_24x24/burger-menu.png',
-              size: 24.0,
-            ),
-            onPressed: () =>  _scaffoldKey.currentState?.openDrawer(),
-          ),
-        ),
-        drawer: DrawerScreen(
-          onNavItemTapped: (index) {
-            setState(() {
-              _selectedNavItem = index;
-            });
-          },
-        ),
-        body: _buildBody(),
+        body: ScreenMapper.getScreen(_selectedScreen),
       ),
     );
   }
-
-  Widget _buildBody() {
-    switch (_selectedNavItem) {
-      case 0:
-        return VisaFreeCalculator();
-      case 1:
-        return InformationForm();
-      case 2:
-        return CalculatorTaxScreen();
-      case 3:
-        return SerbiaGuideScreen();
-      case 4:
-        return TgChatScreen();
-      case 5:
-        return SettingsScreen();
-      case 6:
-        return AuthorScreen();
-      case 7:
-        return UsefulLinksScreen();
-      default:
-        return VisaFreeCalculator();
-    }
-  }
 }
-
-

@@ -1,0 +1,26 @@
+[
+  {
+    "iconPath": "usd.png",
+    "url": "https://www.google.com/maps/search/Мењачница",
+    "title": "Обменники",
+    "section": "Карты"
+  },
+  {
+    "iconPath": "angry.png",
+    "url": "https://t.ly/YAx6",
+    "title": "Черный список квартир",
+    "section": "Карты"
+  },
+  {
+    "iconPath": "no-smoking.png",
+    "url": "https://www.google.com/maps/d/viewer?mid=1DhbU4mNbi0OVkoRSpKBqBmWqeRXU5vo&usp=sharing",
+    "title": "Не курящие",
+    "section": "Карты"
+  },
+  {
+    "iconPath": "tea.png",
+    "url": "https://www.google.com/maps/d/u/0/viewer?mid=12l4BVYg_FV0d9CMeEWEtnJDQioL9804&ll=sharing",
+    "title": "Русские заведения",
+    "section": "Карты"
+  }
+]

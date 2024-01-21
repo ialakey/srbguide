@@ -1,68 +1,57 @@
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/main.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/dialogs/text_size_dialog.dart';
+import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/dialogs/confirm.dart';
+import 'package:srbguide/dialogs/success.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
   SharedPreferences? _prefs;
-  bool _isDarkMode = false;
+  double _currentTextSize = 13.0;
+  String _selectedScreen = 'ServiceScreen';
 
   @override
   void initState() {
     super.initState();
     _loadSettings();
+    _loadSavedTextSize();
+    _loadSelectedScreen();
+    Provider.of<LanguageProvider>(context, listen: false).init();
   }
 
   Future<void> _loadSettings() async {
     _prefs = await SharedPreferences.getInstance();
-    _isDarkMode = _prefs!.getBool('isDarkMode') ?? false;
-    if (mounted) {
-      setState(() {});
-    }
-  }
-
-  void _toggleTheme() {
-    setState(() {
-      _isDarkMode = !_isDarkMode;
-      _prefs!.setBool('isDarkMode', _isDarkMode);
-      _updateThemeMode(_isDarkMode);
-    });
-  }
-
-  void _updateThemeMode(bool isDarkMode) {
-    ThemeMode newThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-    _prefs!.setBool('isDarkMode', isDarkMode);
-    final mainScreen = MainScreen.of(context);
-    mainScreen?.setThemeMode(newThemeMode);
   }
 
   Future<void> _clearSharedPreferences() async {
     await _prefs?.clear();
-    setState(() {
-      _isDarkMode = false;
-    });
-    QuickAlert.show(
+    CustomSuccessDialog.show(
       context: context,
-      type: QuickAlertType.success,
-      title: 'Очищено!',
+      title: '${AppLocalizations.of(context)!.translate('cleared')}!',
     );
   }
 
   _showDialog() {
-    QuickAlert.show(
+    CustomConfirmationDialog.show(
       context: context,
-      type: QuickAlertType.confirm,
-      title: 'Подтверждение',
-      text: 'Вы уверены, что хотите очистить данные?',
-      showConfirmBtn: true,
-      confirmBtnText: 'Да',
-      cancelBtnText: 'Нет',
+      title: AppLocalizations.of(context)!.translate('confirmation'),
+      text: AppLocalizations.of(context)!.translate('confirm_clear_data'),
+      iconPath: 'assets/gifs_24x24/warning.gif',
+      confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
+      cancelBtnText: AppLocalizations.of(context)!.translate('no'),
       onConfirmBtnTap: () {
         _clearSharedPreferences();
         Navigator.of(context).pop();
@@ -70,15 +59,93 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onCancelBtnTap: () {
         Navigator.of(context).pop();
       },
-      showCancelBtn: false,
+    );
+  }
+
+  Future<void> _saveTextSize(double textSize) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setDouble('textSize', textSize);
+  }
+
+  Future<double> _loadTextSize() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.getDouble('textSize') ?? 13.0;
+  }
+
+  Future<void> _loadSavedTextSize() async {
+    double savedTextSize = await _loadTextSize();
+    setState(() {
+      _currentTextSize = savedTextSize;
+    });
+  }
+
+  _setTextSize(double value) {
+    setState(() {
+      _currentTextSize = value;
+    });
+    _saveTextSize(value);
+  }
+
+  _changeTextSize() {
+    DialogHelper.show(
+      context,
+      _currentTextSize,
+      _setTextSize,
+    );
+  }
+
+  _openPrivacyPolicy() {
+    UrlLauncherHelper.launchURL('https://github.com/ialakey/privacy_policy');
+  }
+
+  Future<void> _loadSelectedScreen() async {
+    _prefs = await SharedPreferences.getInstance();
+    String savedScreen = _prefs?.getString('selectedScreen') ?? 'VisaFreeCalculatorScreen';
+    setState(() {
+      _selectedScreen = savedScreen;
+    });
+  }
+
+  _saveSelectedScreen(String screen) async {
+    setState(() {
+      _selectedScreen = screen;
+    });
+    await _prefs?.setString('selectedScreen', screen);
+  }
+
+  void _showScreenDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('main_screen')),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildScreenOption(context, 'ServiceScreen', AppLocalizations.of(context)!.translate('service')),
+                    _buildScreenOption(context, 'GuideScreen', AppLocalizations.of(context)!.translate('guide')),
+                    _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
+                    _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
+                    _buildScreenOption(context, 'ExchangeRateScreen', AppLocalizations.of(context)!.translate('exchange_rate')),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    String buttonText = _isDarkMode ? 'Светлая тема' : 'Темная тема';
-
     return Scaffold(
+      appBar: CustomAppBar(
+        title: AppLocalizations.of(context)!.translate('settings'),
+      ),
+      drawer: AppDrawer(),
       body: _prefs == null
           ? Center(child: CircularProgressIndicator())
           : Padding(
@@ -86,26 +153,56 @@ class _SettingsScreenState extends State<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('settings')),
+            _buildLanguageCard(context),
             _buildCard(
-              buttonText,
+              AppLocalizations.of(context)!.translate('main_screen'),
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/moon-stars.png',
-                darkIcon: 'assets/icons_24x24/sun.png',
+                iconPath: 'assets/icons_24x24/eye.png',
                 size: 24.0,
               ),
-              _toggleTheme,
+              () => _showScreenDialog(context),
             ),
-            SizedBox(height: 20),
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('guide')),
             _buildCard(
-              'Очистить данные',
+              AppLocalizations.of(context)!.translate('change_size_text'),
               ThemedIcon(
-                lightIcon: 'assets/icons_24x24/trash.png',
-                darkIcon: 'assets/icons_24x24/trash.png',
+                iconPath: 'assets/icons_24x24/text.png',
+                size: 24.0,
+              ),
+              _changeTextSize,
+            ),
+            _buildSectionHeader(AppLocalizations.of(context)!.translate('data')),
+            _buildCard(
+              AppLocalizations.of(context)!.translate('clear_data'),
+              ThemedIcon(
+                iconPath: 'assets/icons_24x24/trash.png',
                 size: 24.0,
               ),
               _showDialog,
             ),
+            _buildCard(
+              AppLocalizations.of(context)!.translate('privacy_policy'),
+              ThemedIcon(
+                iconPath: 'assets/icons_24x24/shield-check.png',
+                size: 24.0,
+              ),
+              _openPrivacyPolicy,
+            ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.0),
+      child: Text(
+        title,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );
@@ -121,17 +218,113 @@ class _SettingsScreenState extends State<SettingsScreen> {
           padding: EdgeInsets.all(12.0),
           child: Row(
             children: [
-              SizedBox(width: 10),
+              icon,
+              SizedBox(width: 12),
               Text(
                 title,
                 style: TextStyle(fontSize: 16),
               ),
-              SizedBox(width: 10),
-              icon,
             ],
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildLanguageCard(BuildContext context) {
+    final languageProvider = Provider.of<LanguageProvider>(context);
+
+    String languageCode = languageProvider.selectedLocale.languageCode;
+    String languageName = '';
+    switch (languageCode) {
+      case 'ru':
+        languageName = AppLocalizations.of(context)!.translate('russian');
+        break;
+      case 'en':
+        languageName = AppLocalizations.of(context)!.translate('english');
+        break;
+    }
+
+    return Card(
+      elevation: 2,
+      margin: EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        onTap: () => _showLanguageDialog(context, languageProvider),
+        child: Padding(
+          padding: EdgeInsets.all(12.0),
+          child: Row(
+            children: [
+              ThemedIcon(
+                iconPath: 'assets/icons_24x24/globe.png',
+                size: 24.0,
+              ),
+              SizedBox(width: 12),
+              Text(
+                AppLocalizations.of(context)!.translate('language'),
+                style: TextStyle(fontSize: 16),
+              ),
+              SizedBox(width: 10),
+              Spacer(),
+              Text(
+                languageName,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.translate('language')),
+          content: StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('english'), Locale('en', ''), setState),
+                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('russian'), Locale('ru', ''), setState),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLanguageOption(BuildContext context, LanguageProvider languageProvider, String languageName, Locale locale, StateSetter setState) {
+    return RadioListTile<Locale>(
+      title: Text(languageName),
+      value: locale,
+      groupValue: languageProvider.selectedLocale,
+      onChanged: (Locale? value) {
+        if (value != null) {
+          languageProvider.updateLocale(value);
+          Navigator.of(context).pop();
+          setState(() {});
+        }
+      },
+    );
+  }
+
+  Widget _buildScreenOption(BuildContext context, String screen, String screenName) {
+    return RadioListTile<String>(
+      title: Text(screenName),
+      value: screen,
+      groupValue: _selectedScreen,
+      onChanged: (String? value) {
+        if (value != null) {
+          _saveSelectedScreen(value);
+          Navigator.of(context).pop();
+        }
+      },
     );
   }
 }

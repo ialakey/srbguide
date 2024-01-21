@@ -38,7 +38,7 @@ android {
         applicationId "com.alakey.serbiaguide"
         minSdkVersion 21
         targetSdkVersion flutter.targetSdkVersion
-        versionCode 3
+        versionCode 11
         versionName flutterVersionName
     }
 

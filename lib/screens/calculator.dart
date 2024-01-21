@@ -3,27 +3,39 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/dialogs/confirm.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
-class VisaFreeCalculator extends StatefulWidget {
+class VisaFreeCalculatorScreen extends StatefulWidget {
   @override
-  _VisaFreeCalculatorState createState() => _VisaFreeCalculatorState();
+  _VisaFreeCalculatorScreenState createState() => _VisaFreeCalculatorScreenState();
 }
 
-class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
+class _VisaFreeCalculatorScreenState extends State<VisaFreeCalculatorScreen> {
   final TextEditingController _entryDateController = TextEditingController();
   final int visaFreeDays = 29;
   int remainingDays = 29;
   DateTime? exitDate;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   late SharedPreferences _prefs;
+  late String languageCode;
 
   @override
   void initState() {
     super.initState();
+    _initLanguage();
     _initDate();
+  }
+
+  _initLanguage() async {
+    LanguageProvider languageProvider = LanguageProvider();
+    await languageProvider.init();
+    languageCode = languageProvider.selectedLocale.languageCode;
   }
 
   _initDate() async {
@@ -46,7 +58,7 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   _setupInitialValues() {
     if (exitDate != null) {
       _entryDateController.text =
-          DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+          DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
       calculateRemainingDays();
     }
   }
@@ -59,8 +71,7 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   }
 
   _selectEntryDate(BuildContext context) {
-
-    initializeDateFormatting('ru').then((_) async {
+    initializeDateFormatting(languageCode).then((_) async {
 
     final DateTime? picked = await showDatePicker(
       context: context,
@@ -70,21 +81,21 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
     );
     if (picked != null) {
       setState(() {
-        _entryDateController.text = DateFormat('EEEE, d MMMM y г.', 'ru').format(picked);
+        _entryDateController.text = DateFormat('EEEE, d MMMM y г.', languageCode).format(picked);
         exitDate = picked.add(Duration(days: visaFreeDays));
       });
 
       calculateRemainingDays();
       if (exitDate != null) {
-        final String exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
-        QuickAlert.show(
+        final String exitDateString = DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
+        CustomConfirmationDialog.show(
           context: context,
-          type: QuickAlertType.confirm,
-          title: 'Осталось дней: $remainingDays',
-          text: 'Вы должны покинуть Сербию до: $exitDateString' + '\nСоздать событие в календаре?',
-          showConfirmBtn: true,
-          confirmBtnText: 'Да',
-          cancelBtnText: 'Нет',
+          title: '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays',
+          text: '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: $exitDateString'
+              + '\n${AppLocalizations.of(context)!.translate('create_calendar_event')}',
+          iconPath: 'assets/gifs_24x24/info.gif',
+          confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
+          cancelBtnText: AppLocalizations.of(context)!.translate('no'),
           onConfirmBtnTap: () {
             _showDateTimePickerDialog(context, exitDate);
           },
@@ -92,7 +103,6 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
             _saveDate();
             Navigator.of(context).pop();
           },
-          showCancelBtn: false,
         );
       }
     }
@@ -119,63 +129,89 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
   Widget build(BuildContext context) {
     String exitDateString = '';
     if (exitDate != null) {
-      exitDateString = DateFormat('EEEE, d MMMM y г.', 'ru').format(exitDate!);
+      exitDateString = DateFormat('EEEE, d MMMM y г.', languageCode).format(exitDate!);
     }
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: AppLocalizations.of(context)!.translate('calculator_visarun'),
+      ),
+      drawer: AppDrawer(),
       key: _scaffoldKey,
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Card(
-              elevation: 2,
-              margin: EdgeInsets.symmetric(vertical: 8.0),
-              child: ListTile(
-                title: Text(
-                  'Выберите день въезда в Сербию:',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
+            SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Card(
+                elevation: 2,
+                margin: EdgeInsets.symmetric(vertical: 8.0),
+                child: ListTile(
+                  contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                  onTap: () async {
+                    _selectEntryDate(context);
+                  },
+                  title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: ThemedIcon(
+                              iconPath: 'assets/gifs_24x24/calendar.gif',
+                              size: 36.0,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 8.0),
+                      Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.translate('select_entry_date_serbia'),
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
+                    mainAxisAlignment: MainAxisAlignment.center,
                   ),
                 ),
-                trailing: ThemedIcon(
-                  lightIcon: 'assets/icons_24x24/calendar.png',
-                  darkIcon: 'assets/icons_24x24/calendar.png',
-                  size: 24.0,
-                ),
-                onTap: () async {
-                  _selectEntryDate(context);
-                },
               ),
             ),
             SizedBox(height: 10),
             Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Card(
-                  elevation: 2,
-                  margin: EdgeInsets.symmetric(vertical: 8.0),
-                  child: Padding(
-                    padding: EdgeInsets.all(12.0),
-                    child: Column(
-                      children: [
-                        ThemedIcon(
-                          lightIcon: 'assets/icons_24x24/clock-three.png',
-                          darkIcon: 'assets/icons_24x24/clock-three.png',
-                          size: 24.0,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          'Осталось дней: $remainingDays\n'
-                              'Вы должны покинуть Сербию до: \n$exitDateString',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.w500,
+                SizedBox(
+                  width: MediaQuery.of(context).size.width,
+                  child: Card(
+                    elevation: 2,
+                    margin: EdgeInsets.symmetric(vertical: 8.0),
+                    child: Padding(
+                      padding: EdgeInsets.all(12.0),
+                      child: Column(
+                        children: [
+                          ThemedIcon(
+                            iconPath: 'assets/gifs_24x24/alarm.gif',
+                            size: 36.0,
                           ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ],
+                          SizedBox(height: 8),
+                          Text(
+                            '${AppLocalizations.of(context)!.translate('remaining_days')}: $remainingDays\n'
+                                '${AppLocalizations.of(context)!.translate('leave_serbia_by')}: \n$exitDateString',
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -202,11 +238,15 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: Icon(Icons.calendar_today),
-                  title: Text('Выбрать дату'),
+                  leading:
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/calendar.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('select_date')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.yMMMd().format(selectedDateTime!)
-                      : 'Выберите дату'),
+                      : AppLocalizations.of(context)!.translate('choose_date')),
                   onTap: () async {
                     DateTime? pickedDate = await showDatePicker(
                       context: context,
@@ -229,11 +269,15 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                   },
                 ),
                 ListTile(
-                  leading: Icon(Icons.access_time),
-                  title: Text('Выбрать время'),
+                  leading:
+                  ThemedIcon(
+                  iconPath: 'assets/icons_24x24/clock-three.png',
+                  size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('select_time')),
                   subtitle: Text(selectedDateTime != null
                       ? DateFormat.Hm().format(selectedDateTime!)
-                      : 'Выберите время'),
+                      : AppLocalizations.of(context)!.translate('choose_time')),
                   onTap: () async {
                     TimeOfDay? pickedTime = await showTimePicker(
                       context: context,
@@ -253,15 +297,19 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
                     }
                   },
                 ),
-                ElevatedButton.icon(
-                  icon: Icon(Icons.create),
-                  onPressed: () {
+                ListTile(
+                  leading:
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/create.png',
+                    size: 24.0,
+                  ),
+                  title: Text(AppLocalizations.of(context)!.translate('create')),
+                  onTap: () {
                     if (selectedDateTime != null) {
                       Add2Calendar.addEvent2Cal(createCalendarEvent(selectedDateTime!));
                       Navigator.pop(context);
                     }
                   },
-                  label: Text('Создать'),
                 ),
               ],
             );
@@ -273,8 +321,8 @@ class _VisaFreeCalculatorState extends State<VisaFreeCalculator> {
 
   Event createCalendarEvent(DateTime noticeDate) {
     return Event(
-      title: 'Визаран',
-      description: 'Нужно сделать визаран до $exitDate',
+      title: AppLocalizations.of(context)!.translate('visarun'),
+      description: '${AppLocalizations.of(context)!.translate('need_make_visa_run_by')} $exitDate',
       startDate: noticeDate,
       endDate: noticeDate.add(const Duration(hours: 1)),
       allDay: false,

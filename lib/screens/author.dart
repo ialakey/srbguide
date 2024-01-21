@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
+import 'package:srbguide/widget/app_bar.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
 
 class AuthorScreen extends StatelessWidget {
 
@@ -23,32 +26,44 @@ class AuthorScreen extends StatelessWidget {
   ];
 
   final Map<String, String> links = {
-    'Linkedin': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
-    'Почта': 'mailto:prosoulk2017@gmail.com',
+    'LinkedIn': 'https://www.linkedin.com/in/ilya-alakov-14b979266',
+    'Gmail': 'mailto:prosoulk2017@gmail.com',
     'GitHub': 'https://github.com/ialakey/srbguide',
-    // 'Telegram с фильмами': 'https://t.me/kino_narezo4ka',
+    'Telegram': 'https://t.me/kino_narezo4ka',
   };
 
-  List<Widget> generateButtons(Map<String, String> links) {
+  List<Widget> generateListTiles(Map<String, String> links) {
     return links.entries.map((entry) {
-      return Padding(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 4.0),
-        child: ElevatedButton(
-          onPressed: () {
-            UrlLauncherHelper.launchURL(entry.value);
-          },
-          child: SizedBox(
-            width: 150,
-            child: Center(child: Text(entry.key)),
-          ),
-        ),
-      );
-    }).toList();
+      return Card(
+          margin: EdgeInsets.all(8.0),
+          child:
+            ListTile(
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0),
+              title: Center(
+                child: Text(
+                  entry.key,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              onTap: () {
+                UrlLauncherHelper.launchURL(entry.value);
+              },
+            ));
+        }).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar:
+      CustomAppBar(
+        title: AppLocalizations.of(context)!.translate('author'),
+      ),
+      drawer: AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.all(16.0),
@@ -57,7 +72,7 @@ class AuthorScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Это приложение разрабатывается исключительно на основе энтузиазма. Если оно оказало вам помощь и вы желаете выразить благодарность автору, есть несколько способов сделать это! 😎",
+                AppLocalizations.of(context)!.translate('info_by_author'),
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -67,15 +82,10 @@ class AuthorScreen extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Clipboard.setData(ClipboardData(text: '+7 952 633 49 42'));
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('Номер телефона скопирован'),
-                    ),
-                  );
                 },
                 child:
                 Text(
-                  'По номеру телефона +7 952 633 49 42 СПБ Сбер, QIWI',
+                  AppLocalizations.of(context)!.translate('donate'),
                   style: TextStyle(
                     fontSize: 18.0,
                     fontWeight: FontWeight.bold,
@@ -83,7 +93,8 @@ class AuthorScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Крипта',
+              Text(
+                AppLocalizations.of(context)!.translate('crypto'),
                 style: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.bold,
@@ -112,7 +123,7 @@ class AuthorScreen extends StatelessWidget {
                   }).toList(),
                 ),
               ),
-              ...generateButtons(links),
+              ...generateListTiles(links),
             ],
           ),
         ),

@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:quickalert/quickalert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/screens/document_scanner.dart';
+import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/service/document_generate.dart';
-import 'package:srbguide/widget/text_form_field.dart';
-import 'package:srbguide/widget/text_form_field2.dart';
-import 'package:srbguide/widget/themed_icon.dart';
+import 'package:srbguide/dialogs/success.dart';
+import 'package:srbguide/widget/drawer/drawer.dart';
+import 'package:srbguide/widget/searchable_dropdown.dart';
+import 'package:srbguide/widget/text_field/text_form_field.dart';
+import 'package:srbguide/widget/text_field/text_form_field2.dart';
+import 'package:srbguide/widget/themed/themed_icon.dart';
 
-class InformationForm extends StatefulWidget {
+class CreateWhiteCardboardScreen extends StatefulWidget {
   @override
-  _InformationFormState createState() => _InformationFormState();
+  _CreateWhiteCardboardScreenState createState() => _CreateWhiteCardboardScreenState();
 }
 
-class _InformationFormState extends State<InformationForm> {
+class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _surnameController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
@@ -29,9 +31,7 @@ class _InformationFormState extends State<InformationForm> {
 
   String _gender = 'M';
   List<String> _genderOptions = ['M', 'Ž'];
-  String _selectedValue = 'Выбрать';
   List<String> locations = [
-    'Выбрать',
     'Badovinci',
     'Banatski Brestovac',
     'Bačka Palanka',
@@ -148,23 +148,17 @@ class _InformationFormState extends State<InformationForm> {
 
   _saveData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('surname', _surnameController.text);
-    await prefs.setString('name', _nameController.text);
-    await prefs.setString('placeOfBirth', _placeOfBirthController.text);
-    await prefs.setString('nationality', _nationalityController.text);
-    await prefs.setString('documentNumber', _documentNumberController.text);
-    await prefs.setString('address', _addressController.text);
-    await prefs.setString('ownerInfo', _ownerInfoController.text);
-    await prefs.setString('placeArrival', _placeArrivalController.text);
-    if (_dateOfBirth != null) {
-      await prefs.setString('dateOfBirth', _dateOfBirth!.toIso8601String());
-    }
-    if (_arrivalDate != null) {
-      await prefs.setString('arrivalDate', _arrivalDate!.toIso8601String());
-    }
-    if (_registrationDate != null) {
-      await prefs.setString('registrationDate', _registrationDate!.toIso8601String());
-    }
+    await prefs.setString('surname', _surnameController.text.isEmpty ? "" : _surnameController.text);
+    await prefs.setString('name', _nameController.text.isEmpty ? "" : _nameController.text);
+    await prefs.setString('placeOfBirth', _placeOfBirthController.text.isEmpty ? "" : _placeOfBirthController.text);
+    await prefs.setString('nationality', _nationalityController.text.isEmpty ? "" : _nationalityController.text);
+    await prefs.setString('documentNumber', _documentNumberController.text.isEmpty ? "" : _documentNumberController.text);
+    await prefs.setString('address', _addressController.text.isEmpty ? "" : _addressController.text);
+    await prefs.setString('ownerInfo', _ownerInfoController.text.isEmpty ? "" : _ownerInfoController.text);
+    await prefs.setString('placeArrival', _placeArrivalController.text.isEmpty ? "" : _placeArrivalController.text);
+    await prefs.setString('dateOfBirth', _dateOfBirth != null ? _dateOfBirth!.toIso8601String() : "");
+    await prefs.setString('arrivalDate', _arrivalDate != null ? _arrivalDate!.toIso8601String() : "");
+    await prefs.setString('registrationDate', _registrationDate != null ? _registrationDate!.toIso8601String() : "");
   }
 
   @override
@@ -172,35 +166,20 @@ class _InformationFormState extends State<InformationForm> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Образац 1.'),
+        title: Text(AppLocalizations.of(context)!.translate('create_whiteboard')),
         actions: [
-          IconButton(
-            icon: ThemedIcon(
-              lightIcon: 'assets/icons_24x24/expand.png',
-              darkIcon: 'assets/icons_24x24/expand.png',
-              size: 24.0,
-            ),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => DocumentScannerScreen()),
-              );
-            },
-          ),
           PopupMenuButton<String>(
             icon:
             ThemedIcon(
-              lightIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
-              darkIcon: 'assets/icons_24x24/circle-ellipsis-vertical.png',
+              iconPath: 'assets/icons_24x24/menu-dots-vertical.png',
               size: 24.0,
             ),
             onSelected: (value) {
               if (value == 'save') {
                 _saveData();
-                QuickAlert.show(
+                CustomSuccessDialog.show(
                   context: context,
-                  type: QuickAlertType.success,
-                  title: 'Сохранено!',
+                  title: '${AppLocalizations.of(context)!.translate('saved')}!',
                 );
               } else if (value == 'send') {
                 _onButtonPressed(true);
@@ -214,11 +193,10 @@ class _InformationFormState extends State<InformationForm> {
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/assept-document.png',
-                    darkIcon: 'assets/icons_24x24/assept-document.png',
+                    iconPath: 'assets/icons_24x24/assept-document.png',
                     size: 24.0,
                   ),
-                  title: Text('Сохранить'),
+                  title: Text(AppLocalizations.of(context)!.translate('save')),
                 ),
               ),
               PopupMenuItem<String>(
@@ -226,11 +204,10 @@ class _InformationFormState extends State<InformationForm> {
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/paper-plane.png',
-                    darkIcon: 'assets/icons_24x24/paper-plane.png',
+                    iconPath: 'assets/icons_24x24/paper-plane.png',
                     size: 24.0,
                   ),
-                  title: Text('Поделиться'),
+                  title: Text(AppLocalizations.of(context)!.translate('share')),
                 ),
               ),
               PopupMenuItem<String>(
@@ -238,17 +215,17 @@ class _InformationFormState extends State<InformationForm> {
                 child: ListTile(
                   leading:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/download.png',
-                    darkIcon: 'assets/icons_24x24/download.png',
+                    iconPath: 'assets/icons_24x24/download.png',
                     size: 24.0,
                   ),
-                  title: Text('Скачать'),
+                  title: Text(AppLocalizations.of(context)!.translate('download')),
                 ),
               ),
             ],
           ),
         ],
       ),
+      drawer: AppDrawer(),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Form(
@@ -259,10 +236,12 @@ class _InformationFormState extends State<InformationForm> {
                 labelText: 'Презиме - Surname',
                 child: TextFormField(
                   controller: _surnameController,
-                  decoration: InputDecoration(labelText: 'Фамилия'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('surname')
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите фамилию';
+                      return AppLocalizations.of(context)!.translate('input_surname');
                     }
                     return null;
                   },
@@ -273,10 +252,12 @@ class _InformationFormState extends State<InformationForm> {
                 labelText: 'Име - Name',
                 child: TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: 'Имя'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('name')
+                  ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Введите имя';
+                      return AppLocalizations.of(context)!.translate('input_name');
                     }
                     return null;
                   },
@@ -288,12 +269,13 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                 ListTile(
                   title: Text(
-                    'Дата рождения: ${_dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : 'Выберите дату'}',
+                    '${AppLocalizations.of(context)!.translate('date_of_birth')}: ${_dateOfBirth != null ?
+                    _dateOfBirth!.toString().split(' ')[0] :
+                    AppLocalizations.of(context)!.translate('choose_date')}',
                   ),
                   trailing:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/calendar.png',
-                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    iconPath: 'assets/icons_24x24/calendar.png',
                     size: 24.0,
                   ),
                   onTap: () async {
@@ -318,8 +300,7 @@ class _InformationFormState extends State<InformationForm> {
                   DropdownButtonFormField<String>(
                     icon:
                     ThemedIcon(
-                      lightIcon: 'assets/icons_24x24/caret-down.png',
-                      darkIcon: 'assets/icons_24x24/caret-down.png',
+                      iconPath: 'assets/icons_24x24/caret-down.png',
                       size: 24.0,
                     ),
                     value: _gender,
@@ -336,7 +317,9 @@ class _InformationFormState extends State<InformationForm> {
                         });
                       }
                     },
-                    decoration: InputDecoration(labelText: 'Пол'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('sex')
+                    ),
                   ),
               ),
               SizedBox(height: 2),
@@ -346,7 +329,9 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                 TextFormField(
                   controller: _placeOfBirthController,
-                  decoration: InputDecoration(labelText: 'Место рождения'),
+                  decoration: InputDecoration(
+                      labelText: AppLocalizations.of(context)!.translate('place_of_birth')
+                  ),
                   maxLines: null,
                   keyboardType: TextInputType.multiline,
                 ),
@@ -357,7 +342,9 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                   TextFormField(
                     controller: _nationalityController,
-                    decoration: InputDecoration(labelText: 'Национальность'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('nationality')
+                    ),
                   ),
               ),
               SizedBox(height: 3),
@@ -368,7 +355,9 @@ class _InformationFormState extends State<InformationForm> {
                   TextFormField(
                     keyboardType: TextInputType.number,
                     controller: _documentNumberController,
-                    decoration: InputDecoration(labelText: 'Номер документа'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('number_document')
+                    ),
                   ),
               ),
               SizedBox(height: 2),
@@ -383,45 +372,43 @@ class _InformationFormState extends State<InformationForm> {
                         Expanded(
                           child: TextFormField(
                             controller: _placeArrivalController,
-                            decoration: InputDecoration(labelText: 'Место прибытия'),
+                            decoration: InputDecoration(
+                                labelText: AppLocalizations.of(context)!.translate('place_arrival')
+                            ),
                             maxLines: null,
                             keyboardType: TextInputType.multiline,
                           ),
                         ),
                         SizedBox(width: 10),
-                        DropdownButton<String>(
+                        IconButton(
                           icon:
                           ThemedIcon(
-                            lightIcon: 'assets/icons_24x24/caret-down.png',
-                            darkIcon: 'assets/icons_24x24/caret-down.png',
+                            iconPath: 'assets/icons_24x24/search.png',
                             size: 24.0,
                           ),
-                          value: _selectedValue,
-                          onChanged: (String? newValue) {
-                            if (newValue != null && newValue != 'Выбрать') {
+                          onPressed: () async {
+                            String? searchValue = await showSearch<String>(
+                              context: context,
+                              delegate: SearchableDropdownDelegate(locations),
+                            );
+                            if (searchValue != null && searchValue.isNotEmpty) {
                               setState(() {
-                                _selectedValue = newValue;
-                                _placeArrivalController.text = newValue;
+                                _placeArrivalController.text = searchValue;
                               });
                             }
                           },
-                          items: locations.map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
                         ),
                       ],
                     ),
                     ListTile(
                       title: Text(
-                        'Дата прибытия: ${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                        '${AppLocalizations.of(context)!.translate('arrival_date')}: ${_arrivalDate != null ?
+                        _arrivalDate!.toString().split(' ')[0] :
+                        AppLocalizations.of(context)!.translate('choose_date')}',
                       ),
                       trailing:
                       ThemedIcon(
-                        lightIcon: 'assets/icons_24x24/calendar.png',
-                        darkIcon: 'assets/icons_24x24/calendar.png',
+                        iconPath: 'assets/icons_24x24/calendar.png',
                         size: 24.0,
                       ),
                       onTap: () async {
@@ -448,7 +435,9 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                   TextFormField(
                     controller: _addressController,
-                    decoration: InputDecoration(labelText: 'Адрес регистрации'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('registration_address')
+                    ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
@@ -460,7 +449,9 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                   TextFormField(
                     controller: _ownerInfoController,
-                    decoration: InputDecoration(labelText: 'Информация о владельце'),
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.translate('owner_info')
+                    ),
                     maxLines: null,
                     keyboardType: TextInputType.multiline,
                   ),
@@ -472,12 +463,13 @@ class _InformationFormState extends State<InformationForm> {
                 child:
                 ListTile(
                   title: Text(
-                    'Дата регистрации: ${_registrationDate != null ? _registrationDate!.toString().split(' ')[0] : 'Выберите дату'}',
+                    '${AppLocalizations.of(context)!.translate('registration_date')}: ${_registrationDate != null ?
+                    _registrationDate!.toString().split(' ')[0] :
+                    AppLocalizations.of(context)!.translate('choose_date')}',
                   ),
                   trailing:
                   ThemedIcon(
-                    lightIcon: 'assets/icons_24x24/calendar.png',
-                    darkIcon: 'assets/icons_24x24/calendar.png',
+                    iconPath: 'assets/icons_24x24/calendar.png',
                     size: 24.0,
                   ),
                   onTap: () async {
@@ -503,43 +495,19 @@ class _InformationFormState extends State<InformationForm> {
   }
 
   void _onButtonPressed(bool isSending) {
-    if (_formKey.currentState!.validate() && isFormValid()) {
-      final params = {
-        'surname': _surnameController.text,
-        'name': _nameController.text,
-        'dateOfBirth': _dateOfBirth.toString().split(' ')[0],
-        'sex': _gender,
-        'placeOfBirth': _placeOfBirthController.text,
-        'nationality': _nationalityController.text,
-        'documentNumber': _documentNumberController.text,
-        'dateOfEntry': '${_arrivalDate.toString().split(' ')[0]} ${_placeArrivalController.text}',
-        'addressOfPlace': _addressController.text,
-        'landlordInformation': _ownerInfoController.text,
-        'dateOfRegistration': _registrationDate.toString().split(' ')[0],
-      };
-      DocumentGenerator.generateAndEventDocument(params, isSending);
-    } else {
-        QuickAlert.show(
-          context: context,
-          type: QuickAlertType.error,
-          title: 'Ошибка!',
-          text: 'Заполните все поля',
-        );
-      }
-    }
-
-  bool isFormValid() {
-    return _surnameController.text.isNotEmpty &&
-        _nameController.text.isNotEmpty &&
-        _dateOfBirth != null &&
-        _gender != null &&
-        _placeOfBirthController.text.isNotEmpty &&
-        _nationalityController.text.isNotEmpty &&
-        _documentNumberController.text.isNotEmpty &&
-        _arrivalDate != null &&
-        _placeArrivalController.text.isNotEmpty &&
-        _addressController.text.isNotEmpty &&
-        _ownerInfoController.text.isNotEmpty &&
-        _registrationDate != null;
+    final params = {
+      'surname': _surnameController.text.isEmpty ? "" : _surnameController.text,
+      'name': _nameController.text.isEmpty ? "" : _nameController.text,
+      'dateOfBirth': _dateOfBirth != null ? _dateOfBirth!.toString().split(' ')[0] : "",
+      'sex': _gender ?? "",
+      'placeOfBirth': _placeOfBirthController.text.isEmpty ? "" : _placeOfBirthController.text,
+      'nationality': _nationalityController.text.isEmpty ? "" : _nationalityController.text,
+      'documentNumber': _documentNumberController.text.isEmpty ? "" : _documentNumberController.text,
+      'dateOfEntry': '${_arrivalDate != null ? _arrivalDate!.toString().split(' ')[0] : ""} ${_placeArrivalController.text.isEmpty ? "" : _placeArrivalController.text}',
+      'addressOfPlace': _addressController.text.isEmpty ? "" : _addressController.text,
+      'landlordInformation': _ownerInfoController.text.isEmpty ? "" : _ownerInfoController.text,
+      'dateOfRegistration': _registrationDate != null ? _registrationDate!.toString().split(' ')[0] : "",
+    };
+    DocumentGenerator.generateAndEventDocument(params, isSending);
   }
 }
