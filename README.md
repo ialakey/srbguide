@@ -1,5 +1,7 @@
 # Serbia Guide
 
+[Google Play](https://play.google.com/store/apps/details?id=com.alakey.serbiaguide)
+
 ## Приложение 'Serbia Guide': ваш надежный помощник в путешествиях по Сербии!
 
 Особенности:
