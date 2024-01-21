@@ -78,5 +78,7 @@
   "favourite": "Избранное",
   "no_favourite_message": "Нет избранных элементов",
   "add_favourite": "Добавить в избранное",
-  "delete_favourite": "Убрать из избранного"
+  "delete_favourite": "Убрать из избранного",
+  "ops": "Упс...",
+  "data_not_loaded": "Данные не были загружены"
 }
