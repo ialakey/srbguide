@@ -2,26 +2,24 @@
 
 [Google Play](https://play.google.com/store/apps/details?id=com.alakey.serbiaguide)
 
-## Добро пожаловать в 'Serbia Guide' – вашего верного помощника в увлекательных путешествиях по Сербии!
+## Welcome to 'Serbia Guide' – your reliable companion in exciting journeys across Serbia!
+App Features:
 
-Особенности приложения:
+1) Convenient visarun calculation and calendar reminders: Organize your visits with ease and receive timely reminders of upcoming important events.
 
-1) Удобный расчёт визарана и напоминания в календаре: Организуйте свои визиты с лёгкостью и получайте своевременные напоминания о предстоящих важных событиях.
+2) White cardboard creation with customization: Forget about manually filling out white cards – just press 'Save,' and your data will be stored on your smartphone.
 
-2) Создание белого картона с кастомизацией: Забудьте о ручном заполнении белого картона – просто нажмите кнопку 'Сохранить', и ваши данные будут храниться на смартфоне. 
+3) Convenient list of Telegram channels and chats: Gain quick access to interesting communities and relevant channels for exchanging information and experiences.
 
-3) Удобный список телеграм каналов и чатов: Получайте быстрый доступ к интересным сообществам и актуальным каналам для обмена информацией и опытом.
+4) Interactive maps: Find currency exchanges, cozy non-smoking establishments, as well as Russian venues in any part of Serbia.
 
-4) Интерактивные карты: Найдите обменники, уютные заведения для некурящих, а также русские заведения в любой точке Сербии. 
+5) Comprehensive Serbia guide.
 
-5) Полноценный гайд по Сербии.
+6) Stay updated on current currency exchange rates right in the app to be aware of financial changes during your journey.
 
-6) Следите за актуальными курсами валют прямо в приложении, чтобы быть в курсе финансовых изменений во время вашего путешествия.
+7) Customize the app to your liking to make it perfectly suited to your needs.
 
-7) Кастомизируйте приложение по своему вкусу, чтобы сделать его идеально подходящим для ваших потребностей.
-
-С 'Serbia Guide' ваше путешествие станет не только удобным, но и незабываемым! Установите приложение прямо сейчас и начните свои приключения в Сербии. Путеводитель, который делает каждый момент особенным!
-
+With 'Serbia Guide,' your journey will not only be convenient but also unforgettable! Install the app right now and start your adventures in Serbia. A guide that makes every moment special!
 
 <img src="https://github.com/ialakey/srbguide/assets/56916175/428ef8e7-e7df-4049-93ee-9d8d6b1f5ead" width="300" height="500" alt="Screenshot1">
 
