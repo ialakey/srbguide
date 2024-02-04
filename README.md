@@ -1,7 +1,7 @@
 # Serbia Guide
 
-[Google Play](https://play.google.com/store/apps/details?id=com.alakey.serbiaguide)
-[Backend](https://github.com/ialakey/serbiaguide)
+[Google Play](https://play.google.com/store/apps/details?id=com.alakey.serbiaguide) </br>
+[Backend](https://github.com/ialakey/serbiaguide) </br>
 [Frontend Admin Panel](https://github.com/ialakey/serbiaguide-front-admin)
 
 ## Welcome to 'Serbia Guide' – your reliable companion in exciting journeys across Serbia!
