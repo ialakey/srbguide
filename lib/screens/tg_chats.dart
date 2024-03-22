@@ -8,6 +8,7 @@ import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/app_bar.dart';
 import 'package:srbguide/widget/drawer/drawer.dart';
 import 'package:srbguide/widget/themed/themed_icon.dart';
+import 'package:http/http.dart' as http;
 
 class TgChatScreen extends StatefulWidget {
   @override
@@ -36,19 +37,43 @@ class _TgChatScreenState extends State<TgChatScreen> {
 
   Future<void> loadJsonData() async {
     try {
-      String jsonString =
-      await rootBundle.loadString('assets/data/tg_chats.json');
-      List<dynamic> jsonData = json.decode(jsonString);
-      buttonUrls = List<Map<String, dynamic>>.from(jsonData);
+      final response = await http.get(Uri.parse('http://localhost:8080/tgchats'));
 
-      uniqueGroups = buttonUrls.map((map) => map['group'] as String).toSet();
+      if (response.statusCode == 200) {
+        // Parse the response body if successful
+        List<dynamic> jsonData = json.decode(response.body);
+        buttonUrls = List<Map<String, dynamic>>.from(jsonData);
 
-      filteredButtons = List.from(buttonUrls);
-      setState(() {});
+        uniqueGroups = buttonUrls.map((map) => map['group'] as String).toSet();
+
+        filteredButtons = List.from(buttonUrls);
+        print(jsonData);
+        setState(() {});
+      } else {
+        // Handle errors if the request was not successful
+        print("Error loading data from server. Status code: ${response.statusCode}");
+      }
     } catch (e) {
-      print("Error loading JSON data: $e");
+      // Handle other exceptions
+      print("Error loading data from server: $e");
     }
   }
+
+  // Future<void> loadJsonData() async {
+  //   try {
+  //     String jsonString =
+  //     await rootBundle.loadString('assets/data/tg_chats.json');
+  //     List<dynamic> jsonData = json.decode(jsonString);
+  //     buttonUrls = List<Map<String, dynamic>>.from(jsonData);
+  //
+  //     uniqueGroups = buttonUrls.map((map) => map['group'] as String).toSet();
+  //
+  //     filteredButtons = List.from(buttonUrls);
+  //     setState(() {});
+  //   } catch (e) {
+  //     print("Error loading JSON data: $e");
+  //   }
+  // }
 
   void _filterButtons() {
     setState(() {

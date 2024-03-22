@@ -283,7 +283,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
+                      lastDate: DateTime.now().add(Duration(days: 365 * 10)),
                     );
                     if (pickedDate != null && pickedDate != _dateOfBirth) {
                       setState(() {
@@ -416,7 +416,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                           context: context,
                           initialDate: DateTime.now(),
                           firstDate: DateTime(2000),
-                          lastDate: DateTime.now(),
+                          lastDate: DateTime.now().add(Duration(days: 365 * 10)),
                         );
                         if (pickedDate != null && pickedDate != _arrivalDate) {
                           setState(() {
@@ -477,7 +477,7 @@ class _CreateWhiteCardboardScreenState extends State<CreateWhiteCardboardScreen>
                       context: context,
                       initialDate: DateTime.now(),
                       firstDate: DateTime(2000),
-                      lastDate: DateTime.now(),
+                      lastDate: DateTime.now().add(Duration(days: 365 * 10)),
                     );
                     if (pickedDate != null && pickedDate != _registrationDate) {
                       setState(() {
