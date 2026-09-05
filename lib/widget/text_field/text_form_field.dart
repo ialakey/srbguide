@@ -5,10 +5,10 @@ class TextFormFieldContainer extends StatelessWidget {
   final Widget child;
 
   const TextFormFieldContainer({
-    Key? key,
+    super.key,
     required this.labelText,
     required this.child,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

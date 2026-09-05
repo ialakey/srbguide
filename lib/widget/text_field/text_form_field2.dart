@@ -6,6 +6,7 @@ class TextFormFieldContainer2 extends StatelessWidget {
   final Widget child;
 
   const TextFormFieldContainer2({
+    super.key,
     required this.labelText,
     required this.labelText2,
     required this.child,

@@ -1,160 +1,202 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:photo_view/photo_view.dart';
-import 'package:srbguide/localization/app_localizations.dart';
-import 'package:srbguide/data/guide_dto.dart';
-import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/section.dart';
 
+import 'package:srbguide/data/guide_dto.dart';
+import 'package:srbguide/data/guide_repository.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/screens/article.dart';
+import 'package:srbguide/screens/guide_search.dart';
+import 'package:srbguide/utils/guide_icons.dart';
+import 'package:srbguide/widget/guide_tiles.dart';
+
+/// The guide, grouped into collapsible sections.
+///
+/// The old screen flattened all articles into one `Column` inside a
+/// `SingleChildScrollView`, building every card up front. With 74 articles it
+/// is a lazy `CustomScrollView` instead.
 class GuideScreen extends StatefulWidget {
+  const GuideScreen({super.key});
+
   @override
-  _GuideScreenState createState() => _GuideScreenState();
+  State<GuideScreen> createState() => _GuideScreenState();
 }
 
 class _GuideScreenState extends State<GuideScreen> {
-  Map<String, List<Map<String, dynamic>>> locations = {};
+  final GuideRepository _repository = GuideRepository.instance;
 
-  List<Map<String, dynamic>> filteredLocations = [];
-
-  TextEditingController searchController = TextEditingController();
+  GuideContent? _content;
+  final Set<String> _expanded = <String>{};
 
   @override
   void initState() {
-    _loadLocations();
     super.initState();
+    _load();
   }
 
-  Future<void> _loadLocations() async {
-    try {
-      String jsonData = await rootBundle.loadString('assets/data/guide.json');
-      Map<String, dynamic> decodedJson = json.decode(jsonData);
-
-      if (decodedJson.containsKey('ru') && decodedJson['ru'] is List<dynamic>) {
-        List<Map<String, dynamic>> locationsList = (decodedJson['ru'] as List<dynamic>).expand<Map<String, dynamic>>((item) {
-          String section = item['group'] ?? '';
-          String icon = item['icon'] ?? '';
-          List<Map<String, dynamic>> items = (item['items'] as List<dynamic>).cast<Map<String, dynamic>>();
-
-          List<Map<String, dynamic>> itemsWithGroup = items.map<Map<String, dynamic>>((item) {
-            return {
-              ...item,
-              'group': section,
-              'icon': icon,
-            };
-          }).toList();
-
-          return itemsWithGroup;
-        }).toList();
-
-        setState(() {
-          filteredLocations = locationsList;
-        });
+  Future<void> _load() async {
+    final GuideContent content = await _repository.load();
+    if (!mounted) return;
+    setState(() {
+      _content = content;
+      // Open the first section so the screen never looks empty.
+      if (_expanded.isEmpty && content.sections.isNotEmpty) {
+        _expanded.add(content.sections.first.slug);
       }
-    } catch (e) {
-      print('Error loading locations: $e');
-    }
-  }
-
-  Map<String, Guide> _guides() {
-    Map<String, Guide> grouped = {};
-
-    if (filteredLocations.isNotEmpty) {
-      for (var location in filteredLocations) {
-        String? section = location['group'];
-        String? icon = location['icon'];
-        if (section != null) {
-          if (!grouped.containsKey(section)) {
-            grouped[section] = Guide(
-              group: section,
-              icon: icon ?? '',
-              items: [],
-            );
-          }
-          grouped[section]!.items.add({
-            'smile': location['smile'] ?? '',
-            'title': location['title'] ?? '',
-            'description': location['description'] ?? '',
-          });
-        }
-      }
-    }
-    return grouped;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    Map<String, Guide> groupedLocations = _guides();
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    final GuideContent? content = _content;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.translate('guide')),
-      ),
-      drawer: AppDrawer(),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SizedBox(height: 20),
-                    Text(
-                      'Описание каждой жизненной ситуации для экспатов из РФ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute<void>(
-                            builder: (BuildContext context) {
-                              return Scaffold(
-                                appBar: AppBar(),
-                                body: Center(
-                                  child: PhotoView(
-                                    imageProvider: NetworkImage('https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a'),
-                                    minScale: PhotoViewComputedScale.contained,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      child: Image.network('https://github.com/ialakey/serbia.guide/assets/56916175/336f8093-06cc-405c-9122-49bf1a0b727a'),
-                    ),
-                    SizedBox(height: 20),
-                    Text(
-                      'Более детальную информацию по каждому пункту ищите в разделах ниже',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                  ],
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar.large(
+            title: Text(l10n.translate('guide')),
+            actions: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.search),
+                tooltip: l10n.translate('search'),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute<void>(
+                    builder: (_) => const GuideSearchScreen(),
+                  ),
                 ),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: groupedLocations.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    Guide guide = groupedLocations.values.elementAt(index);
-                    return buildSection(context, guide.group, guide.icon, guide.items);
-                  },
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
+          if (content == null)
+            const SliverFillRemaining(
+              hasScrollBody: false,
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 28),
+              sliver: SliverList.separated(
+                itemCount: content.sections.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 10),
+                itemBuilder: (BuildContext context, int i) {
+                  final GuideSection section = content.sections[i];
+                  return _SectionCard(
+                    section: section,
+                    expanded: _expanded.contains(section.slug),
+                    onToggle: () => setState(() {
+                      if (!_expanded.remove(section.slug)) {
+                        _expanded.add(section.slug);
+                      }
+                    }),
+                    onOpen: _openArticle,
+                  );
+                },
+              ),
+            ),
         ],
       ),
+    );
+  }
+
+  Future<void> _openArticle(GuideArticle article) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => ArticleScreen(article: article)),
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  final GuideSection section;
+  final bool expanded;
+  final VoidCallback onToggle;
+  final ValueChanged<GuideArticle> onOpen;
+
+  const _SectionCard({
+    required this.section,
+    required this.expanded,
+    required this.onToggle,
+    required this.onOpen,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final ColorScheme scheme = Theme.of(context).colorScheme;
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: <Widget>[
+        Card(
+          color: expanded ? scheme.secondaryContainer : null,
+          child: InkWell(
+            onTap: onToggle,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              child: Row(
+                children: <Widget>[
+                  Icon(
+                    guideSectionIcon(section.icon),
+                    color:
+                        expanded ? scheme.onSecondaryContainer : scheme.primary,
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          section.title,
+                          style: const TextStyle(
+                              fontSize: 15.5, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          '${section.items.length} ${l10n.translate('articles')}',
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: expanded
+                                ? scheme.onSecondaryContainer
+                                    .withValues(alpha: 0.8)
+                                : scheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  AnimatedRotation(
+                    turns: expanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 180),
+                    child: Icon(Icons.expand_more,
+                        color: expanded
+                            ? scheme.onSecondaryContainer
+                            : scheme.onSurfaceVariant),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        AnimatedCrossFade(
+          firstChild: const SizedBox(width: double.infinity),
+          secondChild: Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Column(
+              children: section.items
+                  .map((GuideArticle a) => Padding(
+                        padding: const EdgeInsets.only(bottom: 8),
+                        child: ArticleTile(
+                          article: a,
+                          onTap: () => onOpen(a),
+                        ),
+                      ))
+                  .toList(),
+            ),
+          ),
+          crossFadeState:
+              expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+          duration: const Duration(milliseconds: 180),
+          sizeCurve: Curves.easeOut,
+        ),
+      ],
     );
   }
 }

@@ -1,0 +1,5 @@
+tags:
+  # Hits the real exchange-office websites. Excluded from the normal test run
+  # and exercised on a schedule instead (see .github/workflows/parsers.yml).
+  live:
+    description: Tests that require network access to third-party sites.

@@ -1,116 +1,51 @@
-import 'exchange_rate_parser.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as htmlParser;
 import 'package:html/dom.dart';
 
-class FuntaParser implements ExchangeRateParser {
-  late String valueEur = '';
-  late String valueRub = '';
-  late String valueUsd = '';
+import 'package:srbguide/data/currency_rate.dart';
+import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 
-  late String currencyEur = 'EUR';
-  late String currencyRub = 'RUB';
-  late String currencyUsd = 'USD';
-
-  late String exchangeEur = '';
-  late String exchangeRub = '';
-  late String exchangeUsd = '';
+/// funta.rs — TablePress table.
+///
+/// The site dropped `tbody.row-hover` and renumbered its columns
+/// (`column-4/5` became `column-2/3`), which is why the old positional parser
+/// returned nothing. Columns are now read by their `column-N` class and rows
+/// matched on the currency code in the first column.
+class FuntaParser extends ExchangeRateParser {
+  @override
+  String get name => 'Funta';
 
   @override
-  String getCurrencyEur() {
-    return currencyEur;
-  }
+  String get url => 'https://funta.rs';
 
   @override
-  String getCurrencyRub() {
-    return currencyRub;
-  }
-
-  @override
-  String getCurrencyUsd() {
-    return currencyUsd;
-  }
-
-  @override
-  String getExchangeEur() {
-    return exchangeEur;
-  }
-
-  @override
-  String getExchangeRub() {
-    return exchangeRub;
-  }
-
-  @override
-  String getExchangeUsd() {
-    return exchangeUsd;
-  }
-
-  @override
-  String getValueEur() {
-    return valueEur;
-  }
-
-  @override
-  String getValueRub() {
-    return valueRub;
-  }
-
-  @override
-  String getValueUsd() {
-    return valueUsd;
-  }
-
-  @override
-  Future<void> parse() async {
-    String url = 'https://funta.rs';
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      List<String> listRow = ['row-2', 'row-11', 'row-15'];
-      _parseRow(document, listRow);
-    } else {
-      print('Error: ${response.statusCode}');
+  Future<List<CurrencyRate>> fetch() async {
+    final Document document = await loadDocument();
+    final Element? table = document.querySelector('#tablepress-2') ??
+        document.querySelector('table.tablepress');
+    if (table == null) {
+      throw ExchangeRateException('$name: rate table not found');
     }
-  }
 
-  void _parseRow(Document document, List<String> rowClasses) {
-    final table = document.querySelector('#tablepress-2');
-    if (table != null) {
-      final tbody = table.querySelector('tbody.row-hover');
-      if (tbody != null) {
-        List<String> values = [];
+    final List<CurrencyRate> rates = <CurrencyRate>[];
+    for (final Element row in table.querySelectorAll('tr')) {
+      final Element? currencyCell = row.querySelector('td.column-1');
+      final Element? buyCell = row.querySelector('td.column-2');
+      final Element? sellCell = row.querySelector('td.column-3');
+      if (currencyCell == null || buyCell == null || sellCell == null) continue;
 
-        for (String rowClass in rowClasses) {
-          final row = tbody.querySelector('tr.$rowClass');
-          if (row != null) {
-            row.querySelectorAll('td.column-4, td.column-5').forEach((column) {
-              values.add(column.text.trim());
-            });
-          } else {
-            print('Row not found for $rowClass');
-          }
-        }
+      final String code = extractCurrencyCode(currencyCell.text);
+      if (!kSupportedCurrencies.contains(code)) continue;
 
-        if (values.length >= 2) {
-          valueEur = values[0];
-          exchangeEur = values[1];
-        }
-        if (values.length >= 4) {
-          valueRub = values[2];
-          exchangeRub = values[3];
-        }
-        if (values.length >= 6) {
-          valueUsd = values[4];
-          exchangeUsd = values[5];
-        }
-      } else {
-        print('Tbody with class "row-hover" not found');
-      }
-    } else {
-      print('Table with id "tablepress-2" not found');
+      final CurrencyRate rate = CurrencyRate(
+        code: code,
+        buy: normalizeAmount(buyCell.text),
+        sell: normalizeAmount(sellCell.text),
+      );
+      if (rate.isComplete) rates.add(rate);
     }
-  }
 
+    if (rates.isEmpty) {
+      throw ExchangeRateException('$name: no rates in table');
+    }
+    return sortByPreferredOrder(rates);
+  }
 }

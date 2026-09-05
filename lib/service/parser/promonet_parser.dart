@@ -1,135 +1,70 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:html/dom.dart';
 
-import 'exchange_rate_parser.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as htmlParser;
+import 'package:srbguide/data/currency_rate.dart';
+import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 
-class ProMonetParser implements ExchangeRateParser {
-  late String valueEur = '';
-  late String valueRub = '';
-  late String valueUsd = '';
-
-  late String currencyEur = 'EUR';
-  late String currencyRub = 'RUB';
-  late String currencyUsd = 'USD';
-
-  late String exchangeEur = '';
-  late String exchangeRub = '';
-  late String exchangeUsd = '';
+/// promonet.rs — TablePress table with an unusual layout:
+/// the EUR quote sits in the `thead` (`buy | EUR | sell | note`) and the other
+/// currencies follow in the `tbody` with the same column order.
+///
+/// The previous parser assigned tbody rows by `index % 2`, so the third row
+/// (CHF) overwrote the RUB quote. Rows are matched on the code in column 1
+/// instead.
+class ProMonetParser extends ExchangeRateParser {
+  @override
+  String get name => 'ProMonet';
 
   @override
-  String getCurrencyEur() {
-    return currencyEur;
-  }
+  String get url => 'https://www.promonet.rs';
 
   @override
-  String getCurrencyRub() {
-    return currencyRub;
-  }
-
-  @override
-  String getCurrencyUsd() {
-    return currencyUsd;
-  }
-
-  @override
-  String getExchangeEur() {
-    return exchangeEur;
-  }
-
-  @override
-  String getExchangeRub() {
-    return exchangeRub;
-  }
-
-  @override
-  String getExchangeUsd() {
-    return exchangeUsd;
-  }
-
-  @override
-  String getValueEur() {
-    return valueEur;
-  }
-
-  @override
-  String getValueRub() {
-    return valueRub;
-  }
-
-  @override
-  String getValueUsd() {
-    return valueUsd;
-  }
-
-  @override
-  Future<void> parse() async {
-    String url = 'https://www.promonet.rs';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      final table = document.querySelector('.tablepress');
-
-      if (table != null) {
-        final thead = table.querySelector('thead');
-        if (thead != null) {
-          final headerCells = thead.querySelectorAll('th');
-          valueEur = headerCells[0].text.trim();
-          exchangeEur = headerCells[2].text.trim();
-        }
-        final tbody = table.querySelector('tbody');
-        if (tbody != null) {
-          final rows = tbody.querySelectorAll('tr');
-          for (int i = 0; i < rows.length; i++) {
-            final row = rows[i];
-            final cells = row.querySelectorAll('td');
-
-            if (cells.isNotEmpty) {
-              if (i % 2 == 0) {
-                valueRub = cells[0].text.trim();
-                exchangeRub = cells[2].text.trim();
-              } else {
-                valueUsd = cells[0].text.trim();
-                exchangeUsd = cells[2].text.trim();
-              }
-            }
-          }
-
-        }
-      } else {
-        print('Таблица с классом "tablepress" не найдена.');
-      }
-    } else {
-      print('Ошибка при получении HTML: ${response.statusCode}');
-    }
-  }
-
-  Future<void> getExchangeRateInHeader() async {
-    late String exchangeRate;
-    String url = 'https://www.promonet.rs';
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      final table = document.querySelector('.tablepress');
-
-      if (table != null) {
-        final thead = table.querySelector('thead');
-        if (thead != null) {
-          final headerCells = thead.querySelectorAll('th');
-          List<String> headers = headerCells.map((headerCell) => headerCell.text.trim()).toList();
-          exchangeRate = headers.join(" ");
-        } else {
-          exchangeRate = 'Ошибка загрузки';
-        }
-      } else {
-        exchangeRate = 'Ошибка загрузки';
-      }
-    } else {
-      exchangeRate = 'Ошибка загрузки: ${response.statusCode}';
+  Future<List<CurrencyRate>> fetch() async {
+    final Document document = await loadDocument();
+    final Element? table = document.querySelector('.tablepress');
+    if (table == null) {
+      throw ExchangeRateException('$name: rate table not found');
     }
 
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('exchangeRate', exchangeRate);
+    final List<CurrencyRate> rates = <CurrencyRate>[];
+
+    final Element? head = table.querySelector('thead');
+    if (head != null) {
+      final List<Element> cells = head.querySelectorAll('th');
+      if (cells.length >= 3) {
+        _addRate(rates, cells[1].text, cells[0].text, cells[2].text);
+      }
+    }
+
+    final Element? body = table.querySelector('tbody');
+    if (body != null) {
+      for (final Element row in body.querySelectorAll('tr')) {
+        final List<Element> cells = row.querySelectorAll('td');
+        if (cells.length < 3) continue;
+        _addRate(rates, cells[1].text, cells[0].text, cells[2].text);
+      }
+    }
+
+    if (rates.isEmpty) {
+      throw ExchangeRateException('$name: no rates in table');
+    }
+    return sortByPreferredOrder(rates);
+  }
+
+  void _addRate(
+    List<CurrencyRate> into,
+    String codeText,
+    String buyText,
+    String sellText,
+  ) {
+    final String code = extractCurrencyCode(codeText);
+    if (!kSupportedCurrencies.contains(code)) return;
+    if (into.any((CurrencyRate r) => r.code == code)) return;
+
+    final CurrencyRate rate = CurrencyRate(
+      code: code,
+      buy: normalizeAmount(buyText),
+      sell: normalizeAmount(sellText),
+    );
+    if (rate.isComplete) into.add(rate);
   }
 }

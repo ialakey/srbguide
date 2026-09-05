@@ -31,7 +31,8 @@ class SearchableDropdownDelegate extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     final List<String> searchResults = locations
-        .where((location) => location.toLowerCase().contains(query.toLowerCase()))
+        .where(
+            (location) => location.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
@@ -50,7 +51,8 @@ class SearchableDropdownDelegate extends SearchDelegate<String> {
   @override
   Widget buildSuggestions(BuildContext context) {
     final List<String> suggestionList = locations
-        .where((location) => location.toLowerCase().contains(query.toLowerCase()))
+        .where(
+            (location) => location.toLowerCase().contains(query.toLowerCase()))
         .toList();
 
     return ListView.builder(
@@ -66,7 +68,6 @@ class SearchableDropdownDelegate extends SearchDelegate<String> {
     );
   }
 
-  @override
   Widget buildSearchField(BuildContext context) {
     return TextField(
       autofocus: true,

@@ -40,36 +40,36 @@ class CustomConfirmationDialog extends StatelessWidget {
       content: Text(text),
       actions: <Widget>[
         Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              GestureDetector(
-                onTap: onCancelBtnTap,
-                child: Row(
-                  children: [
-                    ThemedIcon(
-                      iconPath: 'assets/icons_24x24/cross-circle.png',
-                      size: 24.0,
-                    ),
-                    SizedBox(width: 8),
-                    Text(cancelBtnText),
-                  ],
-                ),
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            GestureDetector(
+              onTap: onCancelBtnTap,
+              child: Row(
+                children: [
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/cross-circle.png',
+                    size: 24.0,
+                  ),
+                  SizedBox(width: 8),
+                  Text(cancelBtnText),
+                ],
               ),
-              GestureDetector(
-                onTap: onConfirmBtnTap,
-                child: Row(
-                  children: [
-                    ThemedIcon(
-                      iconPath: 'assets/icons_24x24/checkbox.png',
-                      size: 24.0,
-                    ),
-                    SizedBox(width: 8),
-                    Text(confirmBtnText),
-                  ],
-                ),
+            ),
+            GestureDetector(
+              onTap: onConfirmBtnTap,
+              child: Row(
+                children: [
+                  ThemedIcon(
+                    iconPath: 'assets/icons_24x24/checkbox.png',
+                    size: 24.0,
+                  ),
+                  SizedBox(width: 8),
+                  Text(confirmBtnText),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
+        ),
       ],
     );
   }
