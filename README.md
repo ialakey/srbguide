@@ -48,16 +48,34 @@ Address registration in Serbia means filling in the same form by hand every time
 stores your data once and renders a ready-to-print `.docx` from a bundled template
 (`assets/template/cardboard.docx`) using `docx_template`, then hands it to the system share sheet.
 
+### Deadline reminders
+Missing a Serbian deadline costs money. The app tracks visa runs, residence-permit renewal,
+paušal tax (the 15th of every month), eco tax (30 April), insurance and document expiry, and
+notifies ahead of each one. Dates are derived from what the obligation *is*, so most reminders
+need no data entry; monthly and yearly ones roll forward on their own. Scheduling is deliberately
+inexact — exact alarms are a Play-restricted permission that a reminder app does not need.
+
+### "My path" checklist
+The guide explains *how* to do each thing; the checklist says *what to do next*. 24 steps across
+six stages, each linked to the article that explains it, with progress on the home screen.
+
 ### Live exchange rates
 Serbian exchange offices don't publish an API, so the app scrapes their public pages directly.
-Five independent parsers live in `lib/service/parser/` — one per office — each returning a normalized
-rate. Adding a sixth office means adding one parser file, nothing else changes.
+Four independent parsers live in `lib/service/parser/` — one per office — each matching rows by
+**currency code** rather than row position, because these sites renumber their tables regularly
+and positional parsing fails silently. The best rate across offices is highlighted, the National
+Bank reference rate is shown as a yardstick, and the last successful fetch is cached so the screen
+still works offline.
 
 ### Offline guide
-The relocation guide ships as Markdown inside the app (`assets/data/guide.json` plus 112 images in
-`assets/data/media/`), rendered by `flutter_markdown` with full-text search, favourites, and an
+The relocation guide — 74 articles in 8 sections — ships as Markdown inside the app
+(`assets/data/guide.json`), mirrored from [srb.guide](https://www.srb.guide/) with the authors'
+permission and re-scraped weekly by CI. Rendered with full-text search, favourites and an
 adjustable font size. **It works with no connection** — which matters on day one in a new country,
 before you have a local SIM.
+
+Search stems the query, so the Russian "банка" finds "банки" and "банковский"; results are ranked
+title-first and show the snippet that matched.
 
 ### Map of useful places
 A curated set of Google Maps searches — exchange offices, non-smoking cafés, expat-friendly venues —
@@ -82,10 +100,13 @@ persisted with `shared_preferences` and restored on launch.
 | State | `provider` (`LanguageProvider`) + `setState` for local screen state |
 | Persistence | `shared_preferences` (theme, language, start screen, saved form data) |
 | Localisation | `flutter_localizations` + ARB files (`lib/l10n/app_en.arb`, `app_ru.arb`) |
-| Content | Offline JSON + Markdown in `assets/data/`, rendered with `flutter_markdown` |
+| UI | Material 3, one seeded `ColorScheme` for light and dark |
+| Content | Offline JSON + Markdown in `assets/data/`, rendered with `flutter_markdown_plus` |
 | Scraping | `http` + `html` — one parser class per exchange office |
-| Documents | `docx_template` + `xml` for `.docx` generation, `open_file` / `share` to export |
+| Reminders | `flutter_local_notifications` + `timezone` |
+| Documents | `docx_template` + `xml` for `.docx` generation, `open_file` / `share_plus` to export |
 | Integrations | `add_2_calendar`, `url_launcher`, `webview_flutter`, `photo_view` |
+| CI | GitHub Actions — analyze/test, weekly content sync, signed release, daily parser health |
 
 ---
 
@@ -93,28 +114,38 @@ persisted with `shared_preferences` and restored on launch.
 
 ```
 lib/
-├── main.dart                  # bootstrap: prefs, locale, theme, initial screen
-├── screens/                   # one file per screen
+├── main.dart                  # bootstrap: prefs, locale, theme, warm caches
+├── data/                      # models + repositories
+│   ├── guide_dto.dart         #   guide content model
+│   ├── guide_repository.dart  #   single cached load, search, favourites
+│   ├── deadline.dart          #   deadline kinds and their default schedules
+│   ├── journey.dart           #   the relocation checklist
+│   └── currency_rate.dart
+├── screens/
+│   ├── app_shell.dart         #   NavigationBar: Home / Guide / Services / Saved
+│   ├── home.dart              #   search, rate, next deadline, checklist progress
+│   ├── guide.dart             #   collapsible sections
+│   ├── article.dart           #   reader: text size, bookmark, source link
+│   ├── guide_search.dart      #   stemmed full-text search
+│   ├── deadlines.dart         #   reminders
+│   ├── journey.dart           #   "my path" checklist
+│   ├── exchange_rate.dart     #   best rate, NBS reference, converter
 │   ├── calculator.dart        #   visa-free day counter + calendar export
 │   ├── white_cardboard.dart   #   .docx form generation
-│   ├── exchange_rate.dart     #   aggregated rates from all parsers
-│   ├── guide.dart             #   Markdown guide + search
-│   ├── guide_favourite.dart
-│   ├── map.dart
-│   ├── tg_chats.dart
-│   └── settings.dart
+│   ├── services.dart, map.dart, tg_chats.dart, favourites.dart
+│   ├── author.dart, settings.dart
 ├── service/
-│   ├── document_generate.dart # .docx rendering from template
-│   └── parser/                # one scraper per exchange office
-│       ├── dok_parser.dart
-│       ├── funta_parser.dart
-│       ├── gaga_parser.dart
-│       ├── promonet_parser.dart
-│       └── exchange_office.dart
-├── provider/language_provider.dart
-├── widget/                    # reusable UI: app bar, drawer, cards, search, themed icons
-├── localization/              # AppLocalizations wrapper over the ARB files
-└── l10n/                      # app_en.arb, app_ru.arb
+│   ├── exchange_rate_service.dart  # parallel fetch, offline cache, best rate
+│   ├── notification_service.dart   # scheduling
+│   ├── document_generate.dart      # .docx rendering from template
+│   └── parser/                     # one scraper per exchange office
+├── theme/app_theme.dart       # Material 3 light + dark
+├── utils/search_stem.dart     # Russian query stemming
+├── widget/                    # reusable UI
+├── localization/, l10n/       # AppLocalizations + ARB files
+tool/
+├── sync_guide.dart            # re-scrape srb.guide -> assets/data/guide.json
+└── validate_guide.dart        # sanity gate before that content is committed
 ```
 
 ---
@@ -137,16 +168,44 @@ flutter build apk --release
 No API keys or backend are required — the app ships its content offline and only reaches the
 network for live exchange rates.
 
+Refresh the bundled guide from the website:
+
+```bash
+dart run tool/sync_guide.dart
+```
+
+Release builds and signing are documented in [`docs/RELEASE.md`](docs/RELEASE.md).
+
+---
+
+## Continuous integration
+
+| Workflow | Trigger | What it does |
+|---|---|---|
+| `ci.yml` | push / PR | format, analyze, tests, guide validation, debug build |
+| `sync-guide.yml` | weekly | re-scrapes srb.guide, validates, commits only real changes |
+| `release.yml` | tag `v*` | signed AAB + APK, verifies the signature, draft release |
+| `parsers.yml` | daily | runs the parsers against the live sites, opens an issue on failure |
+
+The daily parser check is the important one. The exchange offices redesign without notice, and two
+of the four parsers had been returning nothing for months before anyone noticed — the whole point
+of that job is that CI finds out before users do.
+
 ---
 
 ## Notes
 
 The exchange-rate parsers depend on the HTML of third-party sites and will break when those sites
-are redesigned. Each parser is isolated so a broken office degrades that one row rather than the
-screen.
+are redesigned. Each parser is isolated so a broken office degrades that one card rather than the
+screen, and each card reports its own failure with a retry.
+
+Guide content belongs to the authors of srb.guide and is used with their permission; see
+[`NOTICE`](NOTICE). The MIT licence in [`LICENSE`](LICENSE) covers the source code only.
 
 ---
 
 ## Author
 
-Ilia Alakov — [Telegram](https://t.me/i_alakey) · [LinkedIn](https://www.linkedin.com/in/ilia-alakov)
+Ilia Alakov — [LinkedIn](https://www.linkedin.com/in/ilia-alakov/) ·
+[GitHub](https://github.com/ialakey) · [Medium](https://medium.com/@alakov.ilia) ·
+[Habr](https://habr.com/ru/users/i_alakey/) · alakov.ilia@gmail.com

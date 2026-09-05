@@ -1,105 +1,41 @@
-import 'exchange_rate_parser.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as htmlParser;
 import 'package:html/dom.dart';
 
-class DokParser implements ExchangeRateParser {
-  late String valueEur = '';
-  late String valueRub = '';
-  late String valueUsd = '';
+import 'package:srbguide/data/currency_rate.dart';
+import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 
-  late String currencyEur = 'EUR';
-  late String currencyRub = '';
-  late String currencyUsd = 'USD';
-
-  late String exchangeEur = '';
-  late String exchangeRub = '';
-  late String exchangeUsd = '';
+/// menjacnicedok.rs — classic HTML table.
+///
+/// Row shape: `Country | numeric code | CODE | unit | buy | sell | name`
+/// The currency code lives in cell 2, so rows are matched on that instead of
+/// assuming EUR is first and USD is second.
+class DokParser extends ExchangeRateParser {
+  @override
+  String get name => 'Dok';
 
   @override
-  String getCurrencyEur() {
-    return currencyEur;
-  }
+  String get url => 'https://www.menjacnicedok.rs/kursna_lista.html';
 
   @override
-  String getCurrencyRub() {
-    return currencyRub;
-  }
+  Future<List<CurrencyRate>> fetch() async {
+    final Document document = await loadDocument();
+    final List<CurrencyRate> rates = <CurrencyRate>[];
 
-  @override
-  String getCurrencyUsd() {
-    return currencyUsd;
-  }
+    for (final Element row in document.querySelectorAll('tr')) {
+      final List<Element> cells = row.querySelectorAll('td');
+      if (cells.length < 6) continue;
 
-  @override
-  String getExchangeEur() {
-    return exchangeEur;
-  }
+      final String code = extractCurrencyCode(cells[2].text);
+      if (!kSupportedCurrencies.contains(code)) continue;
 
-  @override
-  String getExchangeRub() {
-    return exchangeRub;
-  }
-
-  @override
-  String getExchangeUsd() {
-    return exchangeUsd;
-  }
-
-  @override
-  String getValueEur() {
-    return valueEur;
-  }
-
-  @override
-  String getValueRub() {
-    return valueRub;
-  }
-
-  @override
-  String getValueUsd() {
-    return valueUsd;
-  }
-
-  @override
-  Future<void> parse() async {
-    String url = 'https://www.menjacnicedok.rs/kursna_lista.html';
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      _parseTable(document);
-    } else {
-      print('Error: ${response.statusCode}');
+      final String buy = normalizeAmount(cells[4].text);
+      final String sell = normalizeAmount(cells[5].text);
+      final CurrencyRate rate = CurrencyRate(code: code, buy: buy, sell: sell);
+      if (rate.isComplete) rates.add(rate);
     }
-  }
 
-  void _parseTable(Document document) {
-    final tbodyList = document.querySelectorAll('tbody');
-    if (tbodyList.length >= 2) {
-      final secondTbody = tbodyList[1];
-      final rows = secondTbody.querySelectorAll('tr');
-
-      if (rows.length >= 2) {
-        final firstRowCells = rows[0].querySelectorAll('td');
-        if (firstRowCells.length >= 6) {
-          valueEur = firstRowCells[4].text.trim();
-          exchangeEur = firstRowCells[5].text.trim();
-        } else {
-          print('Not enough cells in the first row');
-        }
-        final secondRowCells = rows[1].querySelectorAll('td');
-        if (secondRowCells.length >= 6) {
-          valueUsd = secondRowCells[4].text.trim();
-          exchangeUsd = secondRowCells[5].text.trim();
-        } else {
-          print('Not enough cells in the second row');
-        }
-      } else {
-        print('Not enough rows in the second tbody');
-      }
-    } else {
-      print('Not enough tbody elements in the document');
+    if (rates.isEmpty) {
+      throw ExchangeRateException('$name: rate table not found');
     }
+    return sortByPreferredOrder(rates);
   }
-
 }

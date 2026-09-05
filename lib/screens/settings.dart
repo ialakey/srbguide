@@ -1,330 +1,202 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:srbguide/localization/app_localizations.dart';
-import 'package:srbguide/dialogs/text_size_dialog.dart';
-import 'package:srbguide/provider/language_provider.dart';
-import 'package:srbguide/service/url_launcher_helper.dart';
-import 'package:srbguide/widget/app_bar.dart';
+
 import 'package:srbguide/dialogs/confirm.dart';
 import 'package:srbguide/dialogs/success.dart';
-import 'package:srbguide/widget/drawer/drawer.dart';
-import 'package:srbguide/widget/themed/themed_icon.dart';
+import 'package:srbguide/localization/app_localizations.dart';
+import 'package:srbguide/main.dart';
+import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/service/url_launcher_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
+  State<SettingsScreen> createState() => _SettingsScreenState();
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  static const List<String> _tabKeys = <String>[
+    'home',
+    'guide',
+    'service',
+    'favourite',
+  ];
+
   SharedPreferences? _prefs;
-  double _currentTextSize = 13.0;
-  String _selectedScreen = 'ServiceScreen';
+  int _startTab = 0;
 
   @override
   void initState() {
     super.initState();
-    _loadSettings();
-    _loadSavedTextSize();
-    _loadSelectedScreen();
-    Provider.of<LanguageProvider>(context, listen: false).init();
+    _load();
   }
 
-  Future<void> _loadSettings() async {
-    _prefs = await SharedPreferences.getInstance();
+  Future<void> _load() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    setState(() {
+      _prefs = prefs;
+      _startTab = prefs.getInt('mainTabIndex') ?? 0;
+    });
   }
 
-  Future<void> _clearSharedPreferences() async {
-    await _prefs?.clear();
-    CustomSuccessDialog.show(
-      context: context,
-      title: '${AppLocalizations.of(context)!.translate('cleared')}!',
-    );
+  Future<void> _setStartTab(int index) async {
+    setState(() => _startTab = index);
+    await _prefs?.setInt('mainTabIndex', index);
   }
 
-  _showDialog() {
+  Future<void> _setLocale(String code) async {
+    Provider.of<LanguageProvider>(context, listen: false)
+        .updateLocale(Locale(code, ''));
+  }
+
+  void _confirmClear() {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
     CustomConfirmationDialog.show(
       context: context,
-      title: AppLocalizations.of(context)!.translate('confirmation'),
-      text: AppLocalizations.of(context)!.translate('confirm_clear_data'),
+      title: l10n.translate('confirmation'),
+      text: l10n.translate('confirm_clear_data'),
       iconPath: 'assets/gifs_24x24/warning.gif',
-      confirmBtnText: AppLocalizations.of(context)!.translate('yes'),
-      cancelBtnText: AppLocalizations.of(context)!.translate('no'),
-      onConfirmBtnTap: () {
-        _clearSharedPreferences();
+      confirmBtnText: l10n.translate('yes'),
+      cancelBtnText: l10n.translate('no'),
+      onConfirmBtnTap: () async {
         Navigator.of(context).pop();
-      },
-      onCancelBtnTap: () {
-        Navigator.of(context).pop();
-      },
-    );
-  }
-
-  Future<void> _saveTextSize(double textSize) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setDouble('textSize', textSize);
-  }
-
-  Future<double> _loadTextSize() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.getDouble('textSize') ?? 13.0;
-  }
-
-  Future<void> _loadSavedTextSize() async {
-    double savedTextSize = await _loadTextSize();
-    setState(() {
-      _currentTextSize = savedTextSize;
-    });
-  }
-
-  _setTextSize(double value) {
-    setState(() {
-      _currentTextSize = value;
-    });
-    _saveTextSize(value);
-  }
-
-  _changeTextSize() {
-    DialogHelper.show(
-      context,
-      _currentTextSize,
-      _setTextSize,
-    );
-  }
-
-  _openPrivacyPolicy() {
-    UrlLauncherHelper.launchURL('https://github.com/ialakey/privacy_policy');
-  }
-
-  Future<void> _loadSelectedScreen() async {
-    _prefs = await SharedPreferences.getInstance();
-    String savedScreen = _prefs?.getString('selectedScreen') ?? _selectedScreen;
-    setState(() {
-      _selectedScreen = savedScreen;
-    });
-  }
-
-  _saveSelectedScreen(String screen) async {
-    setState(() {
-      _selectedScreen = screen;
-    });
-    await _prefs?.setString('selectedScreen', screen);
-  }
-
-  void _showScreenDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('main_screen')),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildScreenOption(context, 'ServiceScreen', AppLocalizations.of(context)!.translate('service')),
-                    _buildScreenOption(context, 'GuideNavigationScreen', AppLocalizations.of(context)!.translate('guide')),
-                    _buildScreenOption(context, 'TgChatScreen', AppLocalizations.of(context)!.translate('tg_chats')),
-                    _buildScreenOption(context, 'MapScreen', AppLocalizations.of(context)!.translate('maps')),
-                    _buildScreenOption(context, 'ExchangeRateScreen', AppLocalizations.of(context)!.translate('exchange_rate')),
-                  ],
-                ),
-              );
-            },
-          ),
+        await _prefs?.clear();
+        if (!mounted) return;
+        setState(() => _startTab = 0);
+        CustomSuccessDialog.show(
+          context: context,
+          title: '${l10n.translate('cleared')}!',
         );
       },
+      onCancelBtnTap: () => Navigator.of(context).pop(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    final LanguageProvider language = Provider.of<LanguageProvider>(context);
+    final MainScreenState? root = MainScreen.of(context);
+    final bool isDark = root?.themeMode == ThemeMode.dark;
+
     return Scaffold(
-      appBar: CustomAppBar(
-        title: AppLocalizations.of(context)!.translate('settings'),
-      ),
-      drawer: AppDrawer(),
+      appBar: AppBar(title: Text(l10n.translate('settings'))),
       body: _prefs == null
-          ? Center(child: CircularProgressIndicator())
-          : Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            _buildSectionHeader(AppLocalizations.of(context)!.translate('settings')),
-            _buildLanguageCard(context),
-            _buildCard(
-              AppLocalizations.of(context)!.translate('main_screen'),
-              ThemedIcon(
-                iconPath: 'assets/icons_24x24/eye.png',
-                size: 24.0,
-              ),
-              () => _showScreenDialog(context),
-            ),
-            _buildSectionHeader(AppLocalizations.of(context)!.translate('guide')),
-            _buildCard(
-              AppLocalizations.of(context)!.translate('change_size_text'),
-              ThemedIcon(
-                iconPath: 'assets/icons_24x24/text.png',
-                size: 24.0,
-              ),
-              _changeTextSize,
-            ),
-            _buildSectionHeader(AppLocalizations.of(context)!.translate('data')),
-            _buildCard(
-              AppLocalizations.of(context)!.translate('clear_data'),
-              ThemedIcon(
-                iconPath: 'assets/icons_24x24/trash.png',
-                size: 24.0,
-              ),
-              _showDialog,
-            ),
-            _buildCard(
-              AppLocalizations.of(context)!.translate('privacy_policy'),
-              ThemedIcon(
-                iconPath: 'assets/icons_24x24/shield-check.png',
-                size: 24.0,
-              ),
-              _openPrivacyPolicy,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSectionHeader(String title) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.0),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCard(String title, Widget icon, Function() onTap) {
-    return Card(
-      elevation: 2,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              icon,
-              SizedBox(width: 12),
-              Text(
-                title,
-                style: TextStyle(fontSize: 16),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildLanguageCard(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context);
-
-    String languageCode = languageProvider.selectedLocale.languageCode;
-    String languageName = '';
-    switch (languageCode) {
-      case 'ru':
-        languageName = AppLocalizations.of(context)!.translate('russian');
-        break;
-      case 'en':
-        languageName = AppLocalizations.of(context)!.translate('english');
-        break;
-    }
-
-    return Card(
-      elevation: 2,
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      child: InkWell(
-        onTap: () => _showLanguageDialog(context, languageProvider),
-        child: Padding(
-          padding: EdgeInsets.all(12.0),
-          child: Row(
-            children: [
-              ThemedIcon(
-                iconPath: 'assets/icons_24x24/globe.png',
-                size: 24.0,
-              ),
-              SizedBox(width: 12),
-              Text(
-                AppLocalizations.of(context)!.translate('language'),
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(width: 10),
-              Spacer(),
-              Text(
-                languageName,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  _showLanguageDialog(BuildContext context, LanguageProvider languageProvider) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.translate('language')),
-          content: StatefulBuilder(
-            builder: (BuildContext context, StateSetter setState) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('english'), Locale('en', ''), setState),
-                    _buildLanguageOption(context, languageProvider, AppLocalizations.of(context)!.translate('russian'), Locale('ru', ''), setState),
-                  ],
+          ? const Center(child: CircularProgressIndicator())
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+              children: <Widget>[
+                _Heading(l10n.translate('settings')),
+                const SizedBox(height: 8),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      SwitchListTile(
+                        secondary: Icon(
+                          isDark ? Icons.dark_mode : Icons.light_mode,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        title: Text(l10n
+                            .translate(isDark ? 'dark_theme' : 'light_theme')),
+                        value: isDark,
+                        onChanged: (bool v) => root?.setThemeMode(
+                            v ? ThemeMode.dark : ThemeMode.light),
+                      ),
+                      const Divider(height: 1, indent: 56),
+                      ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        leading: Icon(Icons.translate,
+                            color: Theme.of(context).colorScheme.primary),
+                        title: Text(l10n.translate('language')),
+                        trailing: SegmentedButton<String>(
+                          style: const ButtonStyle(
+                            visualDensity: VisualDensity.compact,
+                          ),
+                          segments: <ButtonSegment<String>>[
+                            ButtonSegment<String>(
+                              value: 'ru',
+                              label: Text(l10n.translate('russian')),
+                            ),
+                            ButtonSegment<String>(
+                              value: 'en',
+                              label: Text(l10n.translate('english')),
+                            ),
+                          ],
+                          selected: <String>{
+                            language.selectedLocale.languageCode
+                          },
+                          showSelectedIcon: false,
+                          onSelectionChanged: (Set<String> s) =>
+                              _setLocale(s.first),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
-              );
-            },
-          ),
-        );
-      },
+                const SizedBox(height: 20),
+                _Heading(l10n.translate('main_screen')),
+                const SizedBox(height: 8),
+                Card(
+                  child: RadioGroup<int>(
+                    groupValue: _startTab,
+                    onChanged: (int? v) => _setStartTab(v ?? 0),
+                    child: Column(
+                      children: <Widget>[
+                        for (int i = 0; i < _tabKeys.length; i++)
+                          RadioListTile<int>(
+                            value: i,
+                            title: Text(l10n.translate(_tabKeys[i])),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                _Heading(l10n.translate('data')),
+                const SizedBox(height: 8),
+                Card(
+                  child: Column(
+                    children: <Widget>[
+                      ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        leading: Icon(Icons.delete_outline,
+                            color: Theme.of(context).colorScheme.error),
+                        title: Text(l10n.translate('clear_data')),
+                        onTap: _confirmClear,
+                      ),
+                      const Divider(height: 1, indent: 56),
+                      ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        leading: Icon(Icons.privacy_tip_outlined,
+                            color: Theme.of(context).colorScheme.primary),
+                        title: Text(l10n.translate('privacy_policy')),
+                        trailing: const Icon(Icons.open_in_new, size: 18),
+                        onTap: () => UrlLauncherHelper.launchURL(
+                            'https://github.com/ialakey/privacy_policy'),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
     );
   }
+}
 
-  Widget _buildLanguageOption(BuildContext context, LanguageProvider languageProvider, String languageName, Locale locale, StateSetter setState) {
-    return RadioListTile<Locale>(
-      title: Text(languageName),
-      value: locale,
-      groupValue: languageProvider.selectedLocale,
-      onChanged: (Locale? value) {
-        if (value != null) {
-          languageProvider.updateLocale(value);
-          Navigator.of(context).pop();
-          setState(() {});
-        }
-      },
-    );
-  }
+class _Heading extends StatelessWidget {
+  final String text;
 
-  Widget _buildScreenOption(BuildContext context, String screen, String screenName) {
-    return RadioListTile<String>(
-      title: Text(screenName),
-      value: screen,
-      groupValue: _selectedScreen,
-      onChanged: (String? value) {
-        if (value != null) {
-          _saveSelectedScreen(value);
-          Navigator.of(context).pop();
-        }
-      },
-    );
-  }
+  const _Heading(this.text);
+
+  @override
+  Widget build(BuildContext context) => Padding(
+        padding: const EdgeInsets.only(left: 4),
+        child: Text(
+          text,
+          style: const TextStyle(fontSize: 17, fontWeight: FontWeight.w700),
+        ),
+      );
 }

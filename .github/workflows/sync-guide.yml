@@ -1,0 +1,120 @@
+name: Sync guide content
+
+# Re-scrapes https://www.srb.guide/ into assets/data/guide.json once a week so
+# the offline guide does not drift from the site. The scrape is validated
+# before anything is committed — see tool/validate_guide.dart — because this
+# commits third-party content with no human in the loop.
+
+on:
+  schedule:
+    # Mondays, 04:00 UTC (06:00 Belgrade).
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      open_pull_request:
+        description: "Open a PR instead of committing to master"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  FLUTTER_VERSION: "3.47.2"
+  GUIDE: assets/data/guide.json
+
+jobs:
+  sync:
+    name: Scrape, validate, commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Keep a copy of the current guide for comparison
+        run: cp "$GUIDE" /tmp/guide-baseline.json
+
+      - name: Scrape srb.guide
+        run: dart run tool/sync_guide.dart
+
+      - name: Validate the result
+        run: dart run tool/validate_guide.dart --baseline /tmp/guide-baseline.json
+
+      # `syncedAt` changes on every run, so compare the content itself rather
+      # than the file — otherwise we would commit a no-op diff every week.
+      - name: Detect real content changes
+        id: diff
+        run: |
+          before=$(jq -S -c '.ru' /tmp/guide-baseline.json | sha256sum | cut -d' ' -f1)
+          after=$(jq -S -c '.ru' "$GUIDE" | sha256sum | cut -d' ' -f1)
+          if [ "$before" = "$after" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Guide content is unchanged."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            {
+              echo "articles_before=$(jq '[.ru[].items[]] | length' /tmp/guide-baseline.json)"
+              echo "articles_after=$(jq '[.ru[].items[]] | length' "$GUIDE")"
+            } >> "$GITHUB_OUTPUT"
+            echo "Guide content changed."
+          fi
+
+      - name: Summarise which articles changed
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          {
+            echo "### Guide sync"
+            echo ""
+            echo "- articles before: ${{ steps.diff.outputs.articles_before }}"
+            echo "- articles after: ${{ steps.diff.outputs.articles_after }}"
+            echo ""
+            echo "#### Added"
+            comm -13 \
+              <(jq -r '[.ru[].items[].source] | sort | .[]' /tmp/guide-baseline.json) \
+              <(jq -r '[.ru[].items[].source] | sort | .[]' "$GUIDE") | sed 's/^/- /'
+            echo ""
+            echo "#### Removed"
+            comm -23 \
+              <(jq -r '[.ru[].items[].source] | sort | .[]' /tmp/guide-baseline.json) \
+              <(jq -r '[.ru[].items[].source] | sort | .[]' "$GUIDE") | sed 's/^/- /'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Discard a no-op scrape
+        if: steps.diff.outputs.changed != 'true'
+        run: git checkout -- "$GUIDE"
+
+      - name: Commit to master
+        if: steps.diff.outputs.changed == 'true' && inputs.open_pull_request != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "$GUIDE"
+          git commit -m "content: sync guide from srb.guide
+
+          Automated weekly scrape via tool/sync_guide.dart.
+          Articles: ${{ steps.diff.outputs.articles_before }} -> ${{ steps.diff.outputs.articles_after }}."
+          git push
+
+      - name: Open a pull request
+        if: steps.diff.outputs.changed == 'true' && inputs.open_pull_request == true
+        uses: peter-evans/create-pull-request@v6
+        with:
+          branch: guide-sync
+          title: "content: sync guide from srb.guide"
+          commit-message: "content: sync guide from srb.guide"
+          body: |
+            Automated scrape of https://www.srb.guide/ via `tool/sync_guide.dart`.
+
+            Articles: ${{ steps.diff.outputs.articles_before }} → ${{ steps.diff.outputs.articles_after }}
+
+            Validated by `tool/validate_guide.dart` against the previous bundle.
+          add-paths: ${{ env.GUIDE }}

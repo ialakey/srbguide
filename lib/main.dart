@@ -1,33 +1,42 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:srbguide/data/guide_repository.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/screens/app_shell.dart';
+import 'package:srbguide/service/exchange_rate_service.dart';
+import 'package:srbguide/service/notification_service.dart';
+import 'package:srbguide/theme/app_theme.dart';
 
-import 'service/parser/promonet_parser.dart';
-import 'widget/screen_mapper.dart';
-
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('ru', null);
 
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
-  ThemeMode initialThemeMode = isDarkMode ? ThemeMode.dark : ThemeMode.light;
-  String initialSelectedScreen = prefs.getString('selectedScreen') ?? 'ServiceScreen';
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final bool isDarkMode = prefs.getBool('isDarkMode') ?? false;
+  final int initialTab = prefs.getInt('mainTabIndex') ?? 0;
 
-  LanguageProvider languageProvider = LanguageProvider();
+  final LanguageProvider languageProvider = LanguageProvider();
   await languageProvider.init();
 
+  // Warm the guide cache while the first frame is being built; the bundle is a
+  // couple of megabytes and this keeps the guide tab instant.
+  unawaited(GuideRepository.instance.load());
+  unawaited(ExchangeRateService.refreshSummary());
+  unawaited(NotificationService.instance.init());
+
   runApp(
-    ChangeNotifierProvider<LanguageProvider>(
-      create: (_) => languageProvider,
+    ChangeNotifierProvider<LanguageProvider>.value(
+      value: languageProvider,
       child: MainScreen(
-        initialThemeMode: initialThemeMode,
-        initialSelectedScreen: initialSelectedScreen,
+        initialThemeMode: isDarkMode ? ThemeMode.dark : ThemeMode.light,
+        initialTab: initialTab,
       ),
     ),
   );
@@ -35,61 +44,54 @@ void main() async {
 
 class MainScreen extends StatefulWidget {
   final ThemeMode initialThemeMode;
-  final String initialSelectedScreen;
+  final int initialTab;
 
   const MainScreen({
-    Key? key,
+    super.key,
     required this.initialThemeMode,
-    required this.initialSelectedScreen
-  }) : super(key: key);
+    this.initialTab = 0,
+  });
 
   @override
-  _MainScreenState createState() => _MainScreenState();
+  State<MainScreen> createState() => MainScreenState();
 
-  static _MainScreenState? of(BuildContext context) =>
-      context.findAncestorStateOfType<_MainScreenState>();
+  static MainScreenState? of(BuildContext context) =>
+      context.findAncestorStateOfType<MainScreenState>();
 }
 
-class _MainScreenState extends State<MainScreen> {
-  late ThemeMode _themeMode;
-  late String _selectedScreen;
+class MainScreenState extends State<MainScreen> {
+  late ThemeMode _themeMode = widget.initialThemeMode;
 
-  @override
-  void initState() {
-    super.initState();
-    _themeMode = widget.initialThemeMode;
-    _selectedScreen = widget.initialSelectedScreen;
-    ProMonetParser().getExchangeRateInHeader();
-  }
+  ThemeMode get themeMode => _themeMode;
 
-  void setThemeMode(ThemeMode themeMode) async {
-    setState(() {
-      _themeMode = themeMode;
-    });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> setThemeMode(ThemeMode themeMode) async {
+    setState(() => _themeMode = themeMode);
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isDarkMode', themeMode == ThemeMode.dark);
   }
 
   @override
   Widget build(BuildContext context) {
-    final languageProvider = Provider.of<LanguageProvider>(context);
+    final LanguageProvider languageProvider =
+        Provider.of<LanguageProvider>(context);
+
     return MaterialApp(
-      localizationsDelegates: [
+      debugShowCheckedModeBanner: false,
+      localizationsDelegates: const <LocalizationsDelegate<dynamic>>[
         AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
-        ...GlobalCupertinoLocalizations.delegates,
+        GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
+      supportedLocales: const <Locale>[
         Locale('en', ''),
         Locale('ru', ''),
       ],
-      darkTheme: ThemeData.dark(),
-      themeMode: _themeMode,
       locale: languageProvider.selectedLocale,
-      home: Scaffold(
-        body: ScreenMapper.getScreen(_selectedScreen),
-      ),
+      theme: AppTheme.light(),
+      darkTheme: AppTheme.dark(),
+      themeMode: _themeMode,
+      home: AppShell(initialIndex: widget.initialTab),
     );
   }
 }

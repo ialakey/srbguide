@@ -5,10 +5,10 @@ class ThemedIcon extends StatelessWidget {
   final double size;
 
   const ThemedIcon({
-    Key? key,
+    super.key,
     required this.iconPath,
     this.size = 24.0,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

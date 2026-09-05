@@ -1,112 +1,53 @@
-import 'exchange_rate_parser.dart';
-import 'package:http/http.dart' as http;
-import 'package:html/parser.dart' as htmlParser;
 import 'package:html/dom.dart';
 
-class GagaParser implements ExchangeRateParser {
-  late String valueEur = '';
-  late String valueRub = '';
-  late String valueUsd = '';
+import 'package:srbguide/data/currency_rate.dart';
+import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 
-  late String currencyEur = 'EUR';
-  late String currencyRub = '';
-  late String currencyUsd = 'USD';
-
-  late String exchangeEur = '';
-  late String exchangeRub = '';
-  late String exchangeUsd = '';
+/// menjacnicegaga.rs — no longer a table at all.
+///
+/// The site replaced its TablePress table (`#tablepress-1`) with a ticker built
+/// from `.rate-ticker-row` / `.rate-ticker-cell` divs, so the old table lookup
+/// always failed. Cells are: `currency | buy | NBS reference | sell`.
+class GagaParser extends ExchangeRateParser {
+  @override
+  String get name => 'Gaga';
 
   @override
-  String getCurrencyEur() {
-    return currencyEur;
-  }
+  String get url => 'https://menjacnicegaga.rs/#kursna';
 
   @override
-  String getCurrencyRub() {
-    return currencyRub;
-  }
+  Future<List<CurrencyRate>> fetch() async {
+    final Document document =
+        await loadDocument(overrideUrl: 'https://menjacnicegaga.rs/');
 
-  @override
-  String getCurrencyUsd() {
-    return currencyUsd;
-  }
-
-  @override
-  String getExchangeEur() {
-    return exchangeEur;
-  }
-
-  @override
-  String getExchangeRub() {
-    return exchangeRub;
-  }
-
-  @override
-  String getExchangeUsd() {
-    return exchangeUsd;
-  }
-
-  @override
-  String getValueEur() {
-    return valueEur;
-  }
-
-  @override
-  String getValueRub() {
-    return valueRub;
-  }
-
-  @override
-  String getValueUsd() {
-    return valueUsd;
-  }
-
-  @override
-  Future<void> parse() async {
-    String url = 'https://menjacnicegaga.rs/#kursna';
-    final response = await http.get(Uri.parse(url));
-
-    if (response.statusCode == 200) {
-      final document = htmlParser.parse(response.body);
-      List<String> listRow = ['row-2', 'row-3'];
-      _parseRow(document, listRow);
-    } else {
-      print('Error: ${response.statusCode}');
+    final List<Element> rows = document.querySelectorAll('.rate-ticker-row');
+    if (rows.isEmpty) {
+      throw ExchangeRateException('$name: rate ticker not found');
     }
-  }
 
-  void _parseRow(Document document, List<String> rowClasses) {
-    final table = document.querySelector('#tablepress-1');
-    if (table != null) {
-      final tbody = table.querySelector('tbody.row-hover');
-      if (tbody != null) {
-        List<String> values = [];
+    final List<CurrencyRate> rates = <CurrencyRate>[];
+    for (final Element row in rows) {
+      final List<Element> cells = row.querySelectorAll('.rate-ticker-cell');
+      if (cells.length < 4) continue;
 
-        for (String rowClass in rowClasses) {
-          final row = tbody.querySelector('tr.$rowClass');
-          if (row != null) {
-            row.querySelectorAll('td.column-5, td.column-7').forEach((column) {
-              values.add(column.text.trim());
-            });
-          } else {
-            print('Row not found for $rowClass');
-          }
-        }
+      final String code = extractCurrencyCode(cells[0].text);
+      if (!kSupportedCurrencies.contains(code)) continue;
 
-        if (values.length >= 2) {
-          valueEur = values[0];
-          exchangeEur = values[1];
-        }
-        if (values.length >= 4) {
-          valueUsd = values[2];
-          exchangeUsd = values[3];
-        }
-      } else {
-        print('Tbody with class "row-hover" not found');
-      }
-    } else {
-      print('Table with id "tablepress-1" not found');
+      // cells[2] is the NBS reference rate — kept alongside the office's own
+      // buy/sell so the UI can show how far the spread sits from official.
+      final String nbs = normalizeAmount(cells[2].text);
+      final CurrencyRate rate = CurrencyRate(
+        code: code,
+        buy: normalizeAmount(cells[1].text),
+        sell: normalizeAmount(cells[3].text),
+        nbs: nbs.isEmpty ? null : nbs,
+      );
+      if (rate.isComplete) rates.add(rate);
     }
-  }
 
+    if (rates.isEmpty) {
+      throw ExchangeRateException('$name: no rates in ticker');
+    }
+    return sortByPreferredOrder(rates);
+  }
 }

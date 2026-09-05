@@ -6,30 +6,35 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.19.0-146.2.beta <3.0.0'
+  sdk: '>=3.5.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
-  intl: ^0.18.1
-  path_provider: ^2.0.14
-  open_file: ^3.2.1
+  intl: ^0.20.2
+  path_provider: ^2.1.5
+  open_file: ^4.0.0
   cupertino_icons: ^1.0.2
-  xml: ^6.4.0
-  docx_template: ^0.3.6
-  webview_flutter: ^2.0.13
-  url_launcher: ^6.0.12
-  shared_preferences: ^2.0.8
-  add_2_calendar: ^3.0.1
-  share: ^2.0.4
-  group_button: ^5.3.3
-  provider: ^5.0.0
-  http: ^1.1.2
-  html: ^0.15.0
+  xml: ^6.5.0
+  docx_template: ^0.4.0
+  webview_flutter: ^4.14.0
+  url_launcher: ^6.3.1
+  shared_preferences: ^2.5.3
+  add_2_calendar: ^3.1.1
+  share_plus: ^13.0.0
+  group_button: ^5.3.4
+  provider: ^6.1.5
+  http: ^1.5.0
+  html: ^0.15.6
 
-  flutter_markdown: ^0.6.18+2
-  photo_view: ^0.14.0
+  flutter_markdown_plus: ^1.0.12
+  photo_view: ^0.15.0
   flutter_xlider: ^3.5.0
+
+  # Deadline reminders (visa run, ВНЖ renewal, paušal tax, eco tax).
+  flutter_local_notifications: ^22.3.0
+  timezone: ^0.11.0
+  flutter_timezone: ^5.1.0
 
   flutter_localizations:
     sdk: flutter
@@ -37,9 +42,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  change_app_package_name: ^1.1.0
+  change_app_package_name: ^1.5.0
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^6.0.0
 
 flutter:
 
