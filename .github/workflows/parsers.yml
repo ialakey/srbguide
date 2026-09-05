@@ -1,0 +1,101 @@
+name: Exchange parser health
+
+# The exchange offices change their markup without warning, and when they do the
+# parsers fail silently — that is exactly how funta.rs and menjacnicegaga.rs
+# ended up returning nothing for months. This runs the live parser tests daily
+# and opens an issue the first time one breaks.
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+env:
+  FLUTTER_VERSION: "3.47.2"
+
+jobs:
+  live-parsers:
+    name: Check parsers against live sites
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run live parser tests
+        id: parsers
+        run: |
+          set -o pipefail
+          flutter test test/exchange_parsers_live_test.dart 2>&1 | tee /tmp/parsers.log
+
+      - name: Attach output to the run summary
+        if: always()
+        run: |
+          {
+            echo "### Exchange parsers"
+            echo '```'
+            grep -E "^(ProMonet|Funta|Gaga|Dok):|Expected|Actual|passed|failed" /tmp/parsers.log || tail -30 /tmp/parsers.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Open an issue when a parser breaks
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let log = '';
+            try { log = fs.readFileSync('/tmp/parsers.log', 'utf8').slice(-4000); } catch (e) {}
+
+            const title = 'Exchange rate parser is failing';
+            const { data: existing } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'parsers',
+            });
+            const body = [
+              'The daily live parser check failed.',
+              '',
+              `Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+              '',
+              'This usually means an exchange office changed its page markup.',
+              'The parsers live in `lib/service/parser/` and match rows by',
+              'currency code, so the fix is normally a selector update.',
+              '',
+              '<details><summary>Test output</summary>',
+              '',
+              '```',
+              log,
+              '```',
+              '',
+              '</details>',
+            ].join('\n');
+
+            if (existing.length > 0) {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: existing[0].number,
+                body,
+              });
+            } else {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title,
+                labels: ['parsers'],
+                body,
+              });
+            }

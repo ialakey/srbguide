@@ -1,0 +1,15 @@
+Serbia Guide
+Copyright (c) 2026 Ilia Alakov (@ialakey)
+
+The MIT License in LICENSE covers the source code of this application.
+
+It does NOT cover the relocation guide content bundled in
+`assets/data/guide.json`. That text is written and maintained by the authors of
+https://www.srb.guide/ and is mirrored into the app with their permission so it
+can be read offline. Every article in the app credits srb.guide and links back
+to the original page. If you fork this repository, you need your own permission
+from the guide's authors before redistributing that content.
+
+Exchange rates are scraped from the public pages of the exchange offices listed
+in `lib/service/parser/`. They are shown for information only and are not an
+offer; always confirm the rate at the counter.
