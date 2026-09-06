@@ -17,6 +17,19 @@ class AppTheme {
   /// Accent blue. Used for actions and emphasis, never for page backgrounds.
   static const Color seed = Color(0xFF1B5FA8);
 
+  /// Amber for "running out" states.
+  ///
+  /// Material 3 has no warning role, and `tertiary` derived from a blue seed
+  /// comes out mauve — decorative rather than urgent — so this is set by hand.
+  /// Both tones clear 4.5:1 against their own background.
+  static const Color _warningLight = Color(0xFFA35A00);
+  static const Color _warningDark = Color(0xFFFFB95C);
+
+  static Color warningOf(BuildContext context) =>
+      Theme.of(context).brightness == Brightness.dark
+          ? _warningDark
+          : _warningLight;
+
   static ThemeData light() => _build(Brightness.light);
 
   static ThemeData dark() => _build(Brightness.dark);
@@ -136,6 +149,11 @@ class AppTheme {
         backgroundColor: scheme.surface,
         surfaceTintColor: Colors.transparent,
       ),
+      // Both button themes ask for a full-width minimum. That reads well in a
+      // column, but a Row gives its children an unbounded main-axis width, so
+      // a button placed directly in a Row must be wrapped in Expanded or given
+      // a width of its own — otherwise it demands infinite width and the whole
+      // subtree fails to lay out.
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           minimumSize: const Size.fromHeight(52),
