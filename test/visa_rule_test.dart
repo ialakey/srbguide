@@ -166,7 +166,9 @@ void main() {
     });
 
     test('time of day never changes the answer', () {
-      final List<Stay> stays = <Stay>[Stay(entry: DateTime(2026, 1, 1, 23, 59))];
+      final List<Stay> stays = <Stay>[
+        Stay(entry: DateTime(2026, 1, 1, 23, 59))
+      ];
       final VisaStatus morning = calculateVisaStatus(
         rule: VisaRule.perEntry30,
         stays: stays,
