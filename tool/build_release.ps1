@@ -4,8 +4,9 @@
     then proves the signature is what Play expects.
 
 .DESCRIPTION
-    Mirrors .github/workflows/release.yml so a local build and a tagged CI build
-    produce the same artifact under the same checks:
+    This is the only place the upload key is used: .github/workflows/release.yml
+    holds no signing secrets and builds a debug-signed APK for sideloading, so
+    the Play artifact is made here. What it does:
 
       1. resolve the toolchain (Flutter, JDK, Android SDK build-tools);
       2. refuse to run without android/key.properties -- a debug-signed upload

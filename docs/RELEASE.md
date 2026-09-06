@@ -37,8 +37,9 @@ verifies this and fails if the key uses an older algorithm.
 ```
 
 It prompts for a password, runs the `keytool` invocation below, checks the
-certificate really is SHA-256, and writes `android/key.properties` for you.
-`-PrintBase64` also dumps the value for the CI secret.
+certificate really is SHA-256, and writes `android/key.properties` for you. The
+keystore stays on this machine: nothing copies it anywhere, and CI never sees
+it.
 
 ```bash
 keytool -genkeypair \
@@ -80,22 +81,21 @@ Compare what Play shows under **App integrity → App signing → Upload key
 certificate** with what `show_upload_key.ps1` prints. If they differ, the build
 will be rejected at upload with "the APK was signed with the wrong key".
 
-## 2. Add the repository secrets
+## 2. Keep the key off GitHub
 
-`Settings → Secrets and variables → Actions → New repository secret`:
+There is nothing to add. `release.yml` reads no secrets, and asserts that the
+APK it produced carries the debug certificate — an artifact signed with the
+real upload certificate would mean the key had reached a runner, and anyone
+holding that build could then publish as this app.
 
-| Secret | Value |
-|---|---|
-| `ANDROID_KEYSTORE_BASE64` | `base64 -w0 upload-keystore.jks` |
-| `ANDROID_KEYSTORE_PASSWORD` | store password |
-| `ANDROID_KEY_ALIAS` | `upload` |
-| `ANDROID_KEY_PASSWORD` | key password |
-
-On macOS use `base64 -i upload-keystore.jks | tr -d '\n'`.
+If `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`, `ANDROID_KEY_ALIAS`
+or `ANDROID_KEY_PASSWORD` are still set under
+`Settings → Secrets and variables → Actions`, delete them: nothing reads them
+any more, and a secret that exists is a secret that can leak.
 
 ## 3. Building locally
 
-`tool/build_release.ps1` does everything the workflow does. It resolves the
+`tool/build_release.ps1` is the only path to a Play-ready artifact. It resolves the
 Flutter SDK, JDK and Android build-tools by itself (SETUP.md records how they
 are pinned on this machine), so no PATH setup is needed.
 
@@ -158,18 +158,21 @@ git push origin v2.0.0
 
 The tag triggers `Release`, which:
 
-1. runs `flutter analyze` and the unit tests;
-2. verifies the signing secrets exist and that the key is `SHA256withRSA`;
-3. builds the AAB and APK;
-4. runs `apksigner verify` and requires **APK Signature Scheme v2** plus a
-   SHA-256 certificate digest, and fails if the artifact carries the Android
-   debug certificate;
-5. verifies the AAB with `jarsigner -verify`;
-6. asserts the merged manifest still has `targetSdkVersion="36"`;
-7. uploads both artifacts and opens a **draft** GitHub Release.
+1. runs `flutter analyze`, the unit tests and `tool/validate_guide.dart`;
+2. checks the tag against `version:` in `pubspec.yaml` — `v2.0.0` must be
+   `2.0.0`, so a tag can never claim a version the build does not carry;
+3. builds the APK at that exact `versionName`/`versionCode`, with no
+   `key.properties`, so Gradle falls back to the debug signing config;
+4. runs `apksigner verify` and requires the **debug** certificate, which is the
+   usual check inverted: a real certificate here would mean a leak;
+5. asserts the merged manifest still has `targetSdkVersion="36"`;
+6. uploads `srbguide-<version>-debug-signed.apk` with its SHA-256 and opens a
+   **draft** GitHub Release explaining what the artifact is.
 
-The run summary prints the certificate SHA-256 fingerprint — that is the value
-to compare against "Upload key certificate" in the Play Console.
+That APK is for putting a tagged build on a phone, not for Play. The bundle for
+Play comes from `tool/build_release.ps1` on the release machine, whose summary
+prints the certificate SHA-256 fingerprint — the value to compare against
+"Upload key certificate" in the Play Console.
 
 ## 5. Before uploading to Play
 

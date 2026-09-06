@@ -1,14 +1,19 @@
 name: Release
 
-# Builds a Play-ready, signed App Bundle and a signed APK, then proves the
-# signature is what Play expects (APK Signature Scheme v2/v3, SHA-256) before
-# publishing anything.
+# Builds the APK for a `v*` tag and attaches it to a draft GitHub Release.
 #
-# Required repository secrets — see docs/RELEASE.md for how to produce them:
-#   ANDROID_KEYSTORE_BASE64   base64 of the upload keystore (.jks)
-#   ANDROID_KEYSTORE_PASSWORD store password
-#   ANDROID_KEY_ALIAS         key alias
-#   ANDROID_KEY_PASSWORD      key password
+# It deliberately needs NO secrets. The upload key never leaves the release
+# machine, so what CI produces is signed with the throwaway Android debug key
+# (android/app/build.gradle.kts falls back to it when android/key.properties is
+# absent). That APK is for sideloading and manual QA:
+#
+#   - it cannot be uploaded to Play, which requires the upload key;
+#   - it cannot be installed over a build from Play, or over an APK from an
+#     earlier run — the runner generates a fresh debug key each time, and
+#     Android refuses an update whose signature changed. Uninstall first.
+#
+# The Play artifact is built on the release machine with tool/build_release.ps1,
+# which is the only place the upload key is used. See docs/RELEASE.md.
 
 on:
   push:
@@ -16,7 +21,7 @@ on:
   workflow_dispatch:
     inputs:
       publish_release:
-        description: "Attach artifacts to a GitHub Release"
+        description: "Attach the APK to a draft GitHub Release"
         type: boolean
         default: false
 
@@ -29,7 +34,7 @@ env:
 
 jobs:
   release:
-    name: Build signed release
+    name: Build the tag's APK
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -53,123 +58,93 @@ jobs:
           flutter analyze
           flutter test --exclude-tags live
 
-      - name: Fail fast if signing secrets are missing
-        env:
-          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
-          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: |
-          missing=0
-          for v in KEYSTORE STORE_PASSWORD KEY_ALIAS KEY_PASSWORD; do
-            if [ -z "${!v}" ]; then echo "::error::secret for $v is not set"; missing=1; fi
-          done
-          # A release signed with the debug key is worse than no release: Play
-          # rejects it and it can never be upgraded to a real key.
-          [ "$missing" = "0" ] || exit 1
+      - name: Validate the bundled guide
+        run: dart run tool/validate_guide.dart
 
-      - name: Restore keystore
-        env:
-          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+      - name: Read the version, and check the tag agrees with it
+        id: version
         run: |
-          echo "$KEYSTORE" | base64 --decode > "${RUNNER_TEMP}/upload-keystore.jks"
-          test -s "${RUNNER_TEMP}/upload-keystore.jks"
+          # versionName+versionCode both come from pubspec.yaml, which is what
+          # the build actually uses; a tag that disagrees with it would ship
+          # something other than what the tag says.
+          version="$(sed -nE 's/^version:[[:space:]]*([^[:space:]]+).*/\1/p' pubspec.yaml | head -1)"
+          name="${version%%+*}"
+          code="${version##*+}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "name=$name" >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          echo "pubspec: $version (versionName $name, versionCode $code)"
 
-      - name: Write android/key.properties
-        env:
-          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: |
-          cat > android/key.properties <<EOF
-          storeFile=${RUNNER_TEMP}/upload-keystore.jks
-          storePassword=${STORE_PASSWORD}
-          keyAlias=${KEY_ALIAS}
-          keyPassword=${KEY_PASSWORD}
-          EOF
-
-      - name: Check the signing key itself uses SHA-256
-        env:
-          STORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-        run: |
-          keytool -list -v \
-            -keystore "${RUNNER_TEMP}/upload-keystore.jks" \
-            -alias "$KEY_ALIAS" \
-            -storepass "$STORE_PASSWORD" > /tmp/keyinfo.txt
-          grep -E "Signature algorithm name:" /tmp/keyinfo.txt
-          if ! grep -qiE "Signature algorithm name:\s*SHA256with" /tmp/keyinfo.txt; then
-            echo "::error::upload key is not SHA-256; regenerate it with -sigalg SHA256withRSA"
-            exit 1
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            tag="${GITHUB_REF_NAME}"
+            if [ "$tag" != "v$name" ]; then
+              echo "::error::tag $tag does not match pubspec version $name — bump pubspec.yaml or retag"
+              exit 1
+            fi
           fi
-          grep -E "^\s+SHA256:" /tmp/keyinfo.txt | head -1
-
-      - name: Build App Bundle
-        run: flutter build appbundle --release
 
       - name: Build APK
-        run: flutter build apk --release
+        run: |
+          # No android/key.properties here on purpose: Gradle falls back to the
+          # debug signing config, and the step below proves that is what
+          # happened rather than a key having leaked into CI.
+          test ! -f android/key.properties
+          flutter build apk --release \
+            --build-name "${{ steps.version.outputs.name }}" \
+            --build-number "${{ steps.version.outputs.code }}"
 
-      - name: Verify APK signature
+      - name: Confirm the APK is not signed with the upload key
         run: |
           BUILD_TOOLS="$(ls -d "$ANDROID_SDK_ROOT"/build-tools/* | sort -V | tail -1)"
-          echo "Using $BUILD_TOOLS"
           "$BUILD_TOOLS/apksigner" verify --verbose --print-certs \
             build/app/outputs/flutter-apk/app-release.apk | tee /tmp/apksig.txt
 
-          # Play requires v2+; v2/v3 are SHA-256 based, unlike the old v1 JAR
-          # signing, so this is the check that "signed with SHA-256" means.
-          grep -q "Verified using v2 scheme (APK Signature Scheme v2): true" /tmp/apksig.txt \
-            || { echo "::error::APK is not signed with APK Signature Scheme v2"; exit 1; }
-          grep -qi "Signer #1 certificate SHA-256 digest" /tmp/apksig.txt \
-            || { echo "::error::no SHA-256 certificate digest reported"; exit 1; }
-          if grep -qi "CN=Android Debug" /tmp/apksig.txt; then
-            echo "::error::APK was signed with the debug key"; exit 1
-          fi
-
-      - name: Verify App Bundle signature
-        run: |
-          # No `-strict`, and no pipe. An app-signing certificate is self-signed
-          # by definition, which -strict counts as a severe warning and exits
-          # non-zero for; and piping into `tail` handed the step tail's exit
-          # code, so this check could never fail either way.
-          jarsigner -verify -verbose:summary \
-            build/app/outputs/bundle/release/app-release.aab > /tmp/jarsig.txt
-          tail -20 /tmp/jarsig.txt
-          grep -q "jar verified" /tmp/jarsig.txt \
-            || { echo "::error::jarsigner did not report the bundle as verified"; exit 1; }
-          if grep -qi "CN=Android Debug" /tmp/jarsig.txt; then
-            echo "::error::bundle was signed with the debug key"; exit 1
-          fi
-
-      - name: Report signing details
-        run: |
-          {
-            echo "### Signed release"
-            echo ""
-            echo "| Artifact | Size |"
-            echo "|---|---|"
-            echo "| app-release.aab | $(du -h build/app/outputs/bundle/release/app-release.aab | cut -f1) |"
-            echo "| app-release.apk | $(du -h build/app/outputs/flutter-apk/app-release.apk | cut -f1) |"
-            echo ""
-            echo '```'
-            grep -E "Verified using|Signer #1 certificate (DN|SHA-256)" /tmp/apksig.txt
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          # The usual check inverted. A CI artifact carrying the real upload
+          # certificate would mean the key had reached the runner, and anyone
+          # with the build could then publish as this app.
+          grep -qi "CN=Android Debug" /tmp/apksig.txt \
+            || { echo "::error::this APK is not debug-signed — is a keystore reaching CI?"; exit 1; }
 
       - name: Confirm the manifest targets Android 16
         run: |
           MANIFEST=build/app/intermediates/packaged_manifests/release/processReleaseManifestForPackage/AndroidManifest.xml
-          grep -oE 'android:(minSdkVersion|targetSdkVersion)="[^"]*"' "$MANIFEST" | sort -u
+          grep -oE 'android:(minSdkVersion|targetSdkVersion|versionCode|versionName)="[^"]*"' "$MANIFEST" | sort -u
           grep -q 'android:targetSdkVersion="36"' "$MANIFEST" \
             || { echo "::error::targetSdkVersion is not 36"; exit 1; }
 
+      - name: Name the artifact after the version
+        id: artifact
+        run: |
+          # The name has to say what it is: someone finding this on a Release
+          # page must not mistake it for the build that went to Play.
+          out="srbguide-${{ steps.version.outputs.version }}-debug-signed.apk"
+          cp build/app/outputs/flutter-apk/app-release.apk "$out"
+          sha256sum "$out" > "$out.sha256"
+          echo "path=$out" >> "$GITHUB_OUTPUT"
+          ls -lh "$out"
+
+      - name: Write the run summary
+        run: |
+          {
+            echo "### ${{ steps.version.outputs.version }}"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| APK | \`${{ steps.artifact.outputs.path }}\` ($(du -h "${{ steps.artifact.outputs.path }}" | cut -f1)) |"
+            echo "| Signed with | the Android debug key — **not** the upload key |"
+            echo "| Good for | sideloading and manual QA |"
+            echo "| Not good for | Play, or updating an install signed by anything else |"
+            echo ""
+            echo "The Play bundle is built on the release machine:"
+            echo "\`.\\tool\\build_release.ps1\`."
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - uses: actions/upload-artifact@v7
         with:
-          name: release-artifacts
+          name: apk-${{ steps.version.outputs.version }}
           path: |
-            build/app/outputs/bundle/release/app-release.aab
-            build/app/outputs/flutter-apk/app-release.apk
+            ${{ steps.artifact.outputs.path }}
+            ${{ steps.artifact.outputs.path }}.sha256
           retention-days: 30
 
       - name: Publish GitHub Release
@@ -178,10 +153,15 @@ jobs:
         with:
           draft: true
           generate_release_notes: true
-          files: |
-            build/app/outputs/bundle/release/app-release.aab
-            build/app/outputs/flutter-apk/app-release.apk
+          body: |
+            The attached APK is signed with the **Android debug key**, not the
+            Play upload key. Install it by sideloading, uninstalling any earlier
+            copy first — Android refuses an update whose signature changed, and
+            every CI run signs with a fresh debug key.
 
-      - name: Remove signing material
-        if: always()
-        run: rm -f android/key.properties "${RUNNER_TEMP}/upload-keystore.jks"
+            The Play build of this tag is produced separately with
+            `tool/build_release.ps1`, which is the only place the upload key is
+            used.
+          files: |
+            ${{ steps.artifact.outputs.path }}
+            ${{ steps.artifact.outputs.path }}.sha256

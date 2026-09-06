@@ -247,7 +247,7 @@ Signing, the checks that guard it and the Play upload procedure are in
 |---|---|---|
 | `ci.yml` | push / PR | format, analyze, tests, guide validation, debug build |
 | `sync-content.yml` | weekly | re-scrapes all four datasets, validates, commits real changes |
-| `release.yml` | tag `v*` | signed AAB + APK, verifies the signature, draft release |
+| `release.yml` | tag `v*` | APK for sideloading, draft release — no signing secrets |
 | `parsers.yml` | daily | runs the parsers against the live sites, opens an issue on failure |
 
 `sync-content.yml` commits third-party content unattended, so `tool/validate_guide.dart` gates
@@ -255,9 +255,12 @@ it: section and article counts, per-article length, duplicate source URLs, and a
 bundle shrank by more than 25% against the previous one. Only datasets whose payload actually
 changed are staged, so a new sync timestamp alone never produces a commit.
 
-`release.yml` refuses to publish anything questionable — it checks that the upload key is
-`SHA256withRSA`, that the APK carries APK Signature Scheme v2 with a SHA-256 certificate digest,
-that it is not the Android debug certificate, and that the merged manifest still targets SDK 36.
+`release.yml` needs no secrets, on purpose. The upload key never leaves the release machine, so a
+tagged build in CI is signed with the Android debug key and is for sideloading and manual QA; the
+workflow asserts that is what happened, because an artifact carrying the real certificate would
+mean the key had reached a runner. The Play bundle is built by `tool/build_release.ps1`, which is
+the only place the upload key is used, and which verifies the signature scheme, the certificate
+digest and the merged `targetSdk` before it writes anything to `dist/`.
 
 `parsers.yml` exists because scraper breakage is silent: an office redesigns its page, the parser
 returns nothing, and the screen simply looks empty. Running the live tests on a schedule means CI

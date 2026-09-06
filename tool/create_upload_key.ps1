@@ -26,9 +26,7 @@ param(
     [string]$Alias = 'upload',
     [string]$Dname = 'CN=Ilia Alakov, O=Serbia Guide, C=RS',
     # ~27 years. Play rejects certificates that expire before 2033.
-    [int]$ValidityDays = 10000,
-    # Write the base64 of the keystore next to it, for the GitHub secret.
-    [switch]$PrintBase64
+    [int]$ValidityDays = 10000
 )
 
 $ErrorActionPreference = 'Stop'
@@ -124,14 +122,6 @@ $ascii = -join ($propsText.ToCharArray() | ForEach-Object {
 Write-Detail 'written' $propsPath
 Write-Host '  (git-ignored; it holds the passwords in clear text)'
 
-if ($PrintBase64) {
-    Write-Section 'ANDROID_KEYSTORE_BASE64'
-    $b64Path = "$Keystore.base64.txt"
-    [Convert]::ToBase64String([IO.File]::ReadAllBytes($Keystore)) | Set-Content -Path $b64Path -Encoding ascii -NoNewline
-    Write-Detail 'written' $b64Path
-    Write-Host '  Paste its contents into the GitHub secret, then delete the file.'
-}
-
 # Play asks for the key one of two ways depending on the screen: a SHA-256
 # fingerprint to paste, or a PEM certificate to upload. Produce both.
 Write-Section 'For the Play Console'
@@ -143,6 +133,6 @@ Write-Host @"
      never update the existing Play listing.
   2. Register the key with Play (fingerprint or PEM, printed above).
   3. Build a release:  .\tool\build_release.ps1
-  4. For CI, add the four repository secrets listed in docs/RELEASE.md
-     (re-run this script with -PrintBase64 to get ANDROID_KEYSTORE_BASE64).
+  4. Keep the key off CI. The tag workflow builds a debug-signed APK for
+     sideloading and needs no secrets; see docs/RELEASE.md.
 "@
