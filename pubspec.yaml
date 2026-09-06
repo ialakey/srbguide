@@ -3,7 +3,10 @@ description: A new Flutter project.
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 1.0.0+1
+# versionName+versionCode for the Android build (android/app/build.gradle.kts
+# reads both from here). versionCode 12 is what is published on Google Play
+# (release 12 (1.0.0), 21 Jan 2024), so every upload has to raise it.
+version: 2.0.0+14
 
 environment:
   sdk: '>=3.5.0 <4.0.0'
@@ -17,7 +20,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   xml: ^6.5.0
   docx_template: ^0.4.0
-  webview_flutter: ^4.14.0
   url_launcher: ^6.3.1
   shared_preferences: ^2.5.3
   add_2_calendar: ^3.1.1

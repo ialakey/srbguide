@@ -574,6 +574,7 @@ class _StationPickerState extends State<_StationPicker> {
   List<TrainStation> _recent = const <TrainStation>[];
   Timer? _debounce;
   bool _loading = false;
+  String? _error;
 
   @override
   void initState() {
@@ -598,9 +599,21 @@ class _StationPickerState extends State<_StationPicker> {
       setState(() => _loading = true);
       try {
         final List<TrainStation> r = await _service.searchStations(value);
-        if (mounted) setState(() => _results = r);
-      } catch (_) {
-        if (mounted) setState(() => _results = const <TrainStation>[]);
+        if (mounted) {
+          setState(() {
+            _results = r;
+            _error = null;
+          });
+        }
+      } catch (e) {
+        // The station list comes over the network the first time, so a failure
+        // here is "we could not look", not "there is no such station".
+        if (mounted) {
+          setState(() {
+            _results = const <TrainStation>[];
+            _error = e.toString();
+          });
+        }
       } finally {
         if (mounted) setState(() => _loading = false);
       }
@@ -666,14 +679,18 @@ class _StationPickerState extends State<_StationPicker> {
             child: shown.isEmpty
                 ? Padding(
                     padding: const EdgeInsets.symmetric(vertical: 28),
-                    child: Center(
-                      child: Text(
-                        typing
-                            ? l10n.translate('nothing_found')
-                            : l10n.translate('search_station'),
-                        style: TextStyle(color: scheme.onSurfaceVariant),
-                      ),
-                    ),
+                    child: _error != null
+                        ? _ErrorNote(
+                            message: '${l10n.translate('load_error')}: $_error',
+                          )
+                        : Center(
+                            child: Text(
+                              typing
+                                  ? l10n.translate('nothing_found')
+                                  : l10n.translate('search_station'),
+                              style: TextStyle(color: scheme.onSurfaceVariant),
+                            ),
+                          ),
                   )
                 : ListView.separated(
                     shrinkWrap: true,

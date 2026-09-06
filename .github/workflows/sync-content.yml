@@ -1,10 +1,11 @@
 name: Sync content
 
-# Re-scrapes the three bundled datasets once a week so the offline copies do not
+# Re-scrapes the four bundled datasets once a week so the offline copies do not
 # drift from their sources:
 #
 #   assets/data/guide.json     <- srb.guide            (74 articles)
 #   assets/data/places.json    <- stats.srb.guide/map  (relocant businesses)
+#   assets/data/smoking.json   <- Google My Maps KML   (non-smoking venues)
 #   assets/data/tg_chats.json  <- stats.srb.guide      (chat directory)
 #
 # Everything is validated before anything is committed — see
@@ -30,6 +31,7 @@ env:
   FLUTTER_VERSION: "3.47.2"
   GUIDE: assets/data/guide.json
   PLACES: assets/data/places.json
+  SMOKING: assets/data/smoking.json
   CHATS: assets/data/tg_chats.json
 
 jobs:
@@ -52,6 +54,7 @@ jobs:
         run: |
           cp "$GUIDE"  /tmp/guide-baseline.json
           cp "$PLACES" /tmp/places-baseline.json
+          cp "$SMOKING" /tmp/smoking-baseline.json
           cp "$CHATS"  /tmp/chats-baseline.json
 
       - name: Scrape srb.guide
@@ -62,6 +65,9 @@ jobs:
 
       - name: Scrape the places catalogue
         run: dart run tool/sync_places.dart
+
+      - name: Scrape the non-smoking map
+        run: dart run tool/sync_smoking.dart
 
       - name: Scrape the chat directory
         run: dart run tool/sync_chats.dart
@@ -81,6 +87,10 @@ jobs:
           places_after=$(jq -S -c '.places' "$PLACES" | sha256sum | cut -d' ' -f1)
           [ "$places_before" != "$places_after" ] && changed="$changed $PLACES"
 
+          smoking_before=$(jq -S -c '.places' /tmp/smoking-baseline.json | sha256sum | cut -d' ' -f1)
+          smoking_after=$(jq -S -c '.places' "$SMOKING" | sha256sum | cut -d' ' -f1)
+          [ "$smoking_before" != "$smoking_after" ] && changed="$changed $SMOKING"
+
           chats_before=$(jq -S -c '.' /tmp/chats-baseline.json | sha256sum | cut -d' ' -f1)
           chats_after=$(jq -S -c '.' "$CHATS" | sha256sum | cut -d' ' -f1)
           [ "$chats_before" != "$chats_after" ] && changed="$changed $CHATS"
@@ -98,6 +108,7 @@ jobs:
           {
             echo "articles=$(jq '[.ru[].items[]] | length' "$GUIDE")"
             echo "places=$(jq '.places | length' "$PLACES")"
+            echo "smoking=$(jq '.places | length' "$SMOKING")"
             echo "chats=$(jq 'length' "$CHATS")"
           } >> "$GITHUB_OUTPUT"
 
@@ -111,6 +122,7 @@ jobs:
             echo "|---|---|"
             echo "| guide.json | ${{ steps.diff.outputs.articles }} articles |"
             echo "| places.json | ${{ steps.diff.outputs.places }} places |"
+            echo "| smoking.json | ${{ steps.diff.outputs.smoking }} venues |"
             echo "| tg_chats.json | ${{ steps.diff.outputs.chats }} chats |"
             echo ""
             echo "Changed: \`${{ steps.diff.outputs.files }}\`"
@@ -118,7 +130,7 @@ jobs:
 
       - name: Discard a no-op scrape
         if: steps.diff.outputs.changed != 'true'
-        run: git checkout -- "$GUIDE" "$PLACES" "$CHATS"
+        run: git checkout -- "$GUIDE" "$PLACES" "$SMOKING" "$CHATS"
 
       - name: Commit to master
         if: steps.diff.outputs.changed == 'true' && inputs.open_pull_request != true
@@ -133,6 +145,7 @@ jobs:
           Automated weekly scrape.
           guide ${{ steps.diff.outputs.articles }} articles ·
           places ${{ steps.diff.outputs.places }} ·
+          smoking ${{ steps.diff.outputs.smoking }} ·
           chats ${{ steps.diff.outputs.chats }}."
           git push
 
@@ -150,6 +163,7 @@ jobs:
             |---|---|
             | `guide.json` | ${{ steps.diff.outputs.articles }} articles |
             | `places.json` | ${{ steps.diff.outputs.places }} places |
+            | `smoking.json` | ${{ steps.diff.outputs.smoking }} venues |
             | `tg_chats.json` | ${{ steps.diff.outputs.chats }} chats |
 
             The guide was validated by `tool/validate_guide.dart` against the
@@ -157,4 +171,5 @@ jobs:
           add-paths: |
             ${{ env.GUIDE }}
             ${{ env.PLACES }}
+            ${{ env.SMOKING }}
             ${{ env.CHATS }}

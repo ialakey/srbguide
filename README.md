@@ -87,11 +87,22 @@ Serbian Railways' own site is awkward on a phone. The app talks to the same endp
 JSON station lookup, plus route search and a per-station departure/arrival board. Stations you have
 used are remembered, so the usual trip takes two taps.
 
-### Map of relocant-run businesses
-362 places — cafés, shops, salons, garages — from the stats.srb.guide catalogue, on an
-**OpenStreetMap** map. OSM needs no API key and no billing account, unlike the Google Maps SDK.
-The catalogue is bundled, so the list and filters work offline; only the tiles need a connection.
-Each place links out to Google Maps for directions.
+The lookup only understands Latin — its own front end strips anything else out of the term, and an
+empty term is answered with the entire network. So the app asks for that list once (396 stations,
+15 KB), caches it for a week, and matches on device: Cyrillic is transliterated, diacritics are
+folded, and each word gets one character of slack, so **Белград** finds `BEOGRAD CENTAR` and
+`centar` matches inside the name.
+
+### Map of relocant-run businesses and non-smoking venues
+362 places — cafés, shops, salons, garages — from the stats.srb.guide catalogue, plus 145
+non-smoking venues from the *Lokali bez dima* map, on one **OpenStreetMap** map. OSM needs no API
+key and no billing account, unlike the Google Maps SDK. Both catalogues are bundled, so the list
+and filters work offline; only the tiles need a connection. Each place links out to Google Maps
+for directions.
+
+Filter chips cover the smoking policy (banned outright, or smokeless devices only) alongside the
+business categories. A venue that is on both lists is matched by name and proximity and shown as
+one pin, not two.
 
 ### Visa-free stay calculator
 Enter your entry date and the app tracks the remaining days of the 29-day visa-free window, shows
@@ -101,12 +112,6 @@ the exit deadline, and can push the date into the system calendar via `add_2_cal
 Address registration means filling in the same form by hand every time you move. The app stores
 your data once and renders a ready-to-print `.docx` from a bundled template
 (`assets/template/cardboard.docx`) using `docx_template`, then hands it to the system share sheet.
-
-### Map of useful places
-A curated set of Google Maps links — exchange offices, cafés, expat-friendly venues — defined in
-`assets/data/locations.json` and shown in an embedded `webview_flutter` view with a dropdown.
-Requests that the page hands off to a native app (`intent://`, `geo:`) are opened through the
-platform instead of failing inside the web view.
 
 ### Telegram directory
 432 relocation chats and channels (`assets/data/tg_chats.json`), synced weekly from the
@@ -135,7 +140,7 @@ Russian, which is the language the guide itself is written in.
 | Scraping | `http` + `html` — exchange offices, the railway timetable, the sync tools |
 | Reminders | `flutter_local_notifications`, `timezone`, `flutter_timezone` |
 | Documents | `docx_template` + `xml`, `path_provider`, `open_file` / `share_plus` to export |
-| Integrations | `add_2_calendar`, `url_launcher`, `webview_flutter`, `photo_view` |
+| Integrations | `add_2_calendar`, `url_launcher`, `photo_view` |
 | CI | GitHub Actions — checks, weekly content sync, signed release, daily parser health |
 
 ---
@@ -165,10 +170,10 @@ lib/
 │   ├── deadlines.dart               #   reminders
 │   ├── exchange_rate.dart           #   best rate, NBS reference, converter
 │   ├── trains.dart                  #   route search + station board
-│   ├── places.dart                  #   OpenStreetMap map of the catalogue
+│   ├── places.dart                  #   OpenStreetMap map: businesses + non-smoking
 │   ├── calculator.dart              #   visa-free day counter + calendar export
 │   ├── white_cardboard.dart         #   .docx form generation
-│   ├── services.dart, map.dart, tg_chats.dart
+│   ├── services.dart, tg_chats.dart
 │   └── author.dart, settings.dart
 ├── service/
 │   ├── exchange_rate_service.dart   # parallel fetch, offline cache, best rate
@@ -185,6 +190,7 @@ lib/
 tool/
 ├── sync_guide.dart                  # srb.guide      -> assets/data/guide.json
 ├── sync_places.dart                 # map catalogue  -> assets/data/places.json
+├── sync_smoking.dart                # non-smoking map-> assets/data/smoking.json
 ├── sync_chats.dart                  # chat directory -> assets/data/tg_chats.json
 └── validate_guide.dart              # sanity gate before content is committed
 test/                                # unit tests + network-tagged live checks
@@ -222,7 +228,16 @@ dart run tool/sync_places.dart    # 362 map places
 dart run tool/sync_chats.dart     # 432 Telegram chats
 ```
 
-Release builds and signing are documented in [`docs/RELEASE.md`](docs/RELEASE.md).
+Build a signed, Play-ready bundle (Windows):
+
+```powershell
+.\tool\create_upload_key.ps1   # once, if there is no upload key yet
+.\tool\build_release.ps1       # -> dist/srbguide-<version>.aab and .apk
+```
+
+Signing, the checks that guard it and the Play upload procedure are in
+[`docs/RELEASE.md`](docs/RELEASE.md); what changed in each release is in
+[`docs/CHANGELOG.md`](docs/CHANGELOG.md).
 
 ---
 
@@ -231,7 +246,7 @@ Release builds and signing are documented in [`docs/RELEASE.md`](docs/RELEASE.md
 | Workflow | Trigger | What it does |
 |---|---|---|
 | `ci.yml` | push / PR | format, analyze, tests, guide validation, debug build |
-| `sync-content.yml` | weekly | re-scrapes all three datasets, validates, commits real changes |
+| `sync-content.yml` | weekly | re-scrapes all four datasets, validates, commits real changes |
 | `release.yml` | tag `v*` | signed AAB + APK, verifies the signature, draft release |
 | `parsers.yml` | daily | runs the parsers against the live sites, opens an issue on failure |
 

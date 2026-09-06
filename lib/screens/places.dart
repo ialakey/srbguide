@@ -10,11 +10,14 @@ import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 import 'package:srbguide/widget/guide_tiles.dart';
 
-/// Map of relocant-run businesses.
+/// Map of relocant-run businesses and non-smoking venues.
 ///
 /// Tiles come from OpenStreetMap, which needs no API key or billing account —
-/// the Google Maps SDK would need both. The catalogue itself is bundled, so the
+/// the Google Maps SDK would need both. Both catalogues are bundled, so the
 /// list works with no connection and only the tiles need one.
+///
+/// This screen replaced the old "Maps" screen, which was a dropdown of Google
+/// My Maps links in a WebView: the venues it pointed at are now pins here.
 class PlacesScreen extends StatefulWidget {
   const PlacesScreen({super.key});
 
@@ -29,8 +32,14 @@ class _PlacesScreenState extends State<PlacesScreen> {
   final MapController _map = MapController();
   final TextEditingController _search = TextEditingController();
 
+  /// Google Maps search the old maps screen linked to. There is no bundled
+  /// list of exchange offices — the search finds the ones that are open now.
+  static const String _exchangeOfficesUrl =
+      'https://www.google.com/maps/search/Мењачница';
+
   PlaceCatalogue _catalogue = PlaceCatalogue.empty;
   String? _category;
+  String? _smoking;
   bool _mapView = true;
   bool _loading = true;
 
@@ -49,13 +58,13 @@ class _PlacesScreenState extends State<PlacesScreen> {
 
   Future<void> _load() async {
     try {
-      final String raw = await rootBundle.loadString('assets/data/places.json');
-      final PlaceCatalogue catalogue = PlaceCatalogue.fromJson(
-        json.decode(raw) as Map<String, dynamic>,
-      );
+      final PlaceCatalogue businesses = await _asset('places.json');
+      // The non-smoking map is a separate feed with its own refresh cycle, so
+      // a failure there must not cost us the businesses.
+      final PlaceCatalogue smoking = await _asset('smoking.json');
       if (!mounted) return;
       setState(() {
-        _catalogue = catalogue;
+        _catalogue = businesses.mergedWith(smoking);
         _loading = false;
       });
     } catch (_) {
@@ -64,10 +73,20 @@ class _PlacesScreenState extends State<PlacesScreen> {
     }
   }
 
+  Future<PlaceCatalogue> _asset(String name) async {
+    try {
+      final String raw = await rootBundle.loadString('assets/data/$name');
+      return PlaceCatalogue.fromJson(json.decode(raw) as Map<String, dynamic>);
+    } catch (_) {
+      return PlaceCatalogue.empty;
+    }
+  }
+
   List<Place> get _visible {
     final String q = _search.text.trim().toLowerCase();
     return _catalogue.places.where((Place p) {
       if (_category != null && p.category != _category) return false;
+      if (_smoking != null && p.smoking != _smoking) return false;
       if (q.isNotEmpty && !p.searchIndex.contains(q)) return false;
       return true;
     }).toList();
@@ -97,6 +116,11 @@ class _PlacesScreenState extends State<PlacesScreen> {
                 : l10n.translate('map_view'),
             icon: Icon(_mapView ? Icons.list : Icons.map_outlined),
             onPressed: () => setState(() => _mapView = !_mapView),
+          ),
+          IconButton(
+            tooltip: l10n.translate('exchange_offices'),
+            icon: const Icon(Icons.currency_exchange),
+            onPressed: () => UrlLauncherHelper.launchURL(_exchangeOfficesUrl),
           ),
         ],
       ),
@@ -135,8 +159,31 @@ class _PlacesScreenState extends State<PlacesScreen> {
                         padding: const EdgeInsets.only(right: 8),
                         child: FilterChip(
                           label: Text(l10n.translate('all')),
-                          selected: _category == null,
-                          onSelected: (_) => setState(() => _category = null),
+                          selected: _category == null && _smoking == null,
+                          onSelected: (_) => setState(() {
+                            _category = null;
+                            _smoking = null;
+                          }),
+                        ),
+                      ),
+                      // Smoking first: it is the one filter people come to the
+                      // map with rather than browse by.
+                      ..._catalogue.smokingPolicies.map(
+                        (String v) => Padding(
+                          padding: const EdgeInsets.only(right: 8),
+                          child: FilterChip(
+                            avatar: Icon(
+                              smokingStyle(v).icon,
+                              size: 16,
+                              color: smokingStyle(v).color,
+                            ),
+                            label: Text(l10n.translate(placeSmokingKey(v))),
+                            selected: _smoking == v,
+                            onSelected: (bool on) => setState(() {
+                              _smoking = on ? v : null;
+                              _category = null;
+                            }),
+                          ),
                         ),
                       ),
                       ..._catalogue.categories.map(
@@ -150,8 +197,10 @@ class _PlacesScreenState extends State<PlacesScreen> {
                             ),
                             label: Text(l10n.translate(placeCategoryKey(c))),
                             selected: _category == c,
-                            onSelected: (bool on) =>
-                                setState(() => _category = on ? c : null),
+                            onSelected: (bool on) => setState(() {
+                              _category = on ? c : null;
+                              _smoking = null;
+                            }),
                           ),
                         ),
                       ),
@@ -260,7 +309,7 @@ class _Pin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ({IconData icon, Color color}) style = placeStyle(place.category);
+    final ({IconData icon, Color color}) style = placeMarkerStyle(place);
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -306,7 +355,7 @@ class _ListView extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(height: 8),
       itemBuilder: (BuildContext context, int i) {
         final Place p = places[i];
-        final ({IconData icon, Color color}) style = placeStyle(p.category);
+        final ({IconData icon, Color color}) style = placeMarkerStyle(p);
         return Card(
           child: InkWell(
             onTap: () => onTap(p),
@@ -347,6 +396,10 @@ class _ListView extends StatelessWidget {
                             ),
                           ),
                         ],
+                        if (p.smoking.isNotEmpty) ...<Widget>[
+                          const SizedBox(height: 6),
+                          _SmokingBadge(smoking: p.smoking),
+                        ],
                       ],
                     ),
                   ),
@@ -369,7 +422,7 @@ class _PlaceSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final ColorScheme scheme = Theme.of(context).colorScheme;
     final AppLocalizations l10n = AppLocalizations.of(context)!;
-    final ({IconData icon, Color color}) style = placeStyle(place.category);
+    final ({IconData icon, Color color}) style = placeMarkerStyle(place);
 
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 28),
@@ -415,6 +468,10 @@ class _PlaceSheet extends StatelessWidget {
               ),
             ],
           ),
+          if (place.smoking.isNotEmpty) ...<Widget>[
+            const SizedBox(height: 14),
+            _SmokingBadge(smoking: place.smoking),
+          ],
           if (place.description.isNotEmpty) ...<Widget>[
             const SizedBox(height: 14),
             Text(
@@ -430,6 +487,42 @@ class _PlaceSheet extends StatelessWidget {
               label: Text(l10n.translate('open_in_maps')),
             ),
           ],
+        ],
+      ),
+    );
+  }
+}
+
+/// Marks what the non-smoking map says about a venue.
+class _SmokingBadge extends StatelessWidget {
+  final String smoking;
+
+  const _SmokingBadge({required this.smoking});
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    final ({IconData icon, Color color}) style = smokingStyle(smoking);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: style.color.withValues(alpha: 0.12),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Icon(style.icon, size: 14, color: style.color),
+          const SizedBox(width: 5),
+          Text(
+            l10n.translate(placeSmokingKey(smoking)),
+            style: TextStyle(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w600,
+              color: style.color,
+            ),
+          ),
         ],
       ),
     );

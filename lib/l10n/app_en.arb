@@ -10,7 +10,6 @@
   "need_make_visa_run_by": "Need to make visa run by",
   "create_whiteboard": "Create whiteboard",
   "flat_tax_calculator": "Flat tax calculator",
-  "maps": "Maps",
   "guide": "Guide",
   "tg_chats": "Telegram chats",
   "settings": "Settings",
@@ -181,12 +180,12 @@
   "place_cat_sport": "Sport",
   "place_cat_misc": "Misc",
   "places": "Places",
-  "places_subtitle": "Relocant-run businesses on the map",
+  "places_subtitle": "Relocant-run businesses and non-smoking venues",
   "map_view": "Map",
   "list_view": "List",
   "open_in_maps": "Open in maps",
   "search_places": "Search by name",
-  "places_source": "Data: stats.srb.guide · tiles © OpenStreetMap",
+  "places_source": "Data: stats.srb.guide and lokalibezdima.rs · tiles © OpenStreetMap",
   "no_places_found": "Nothing found",
   "places_count": "places",
   "reset_filters": "Reset",
@@ -216,5 +215,9 @@
   "overstay_body": "The allowance has run out. Overstaying means a fine and possibly an entry ban — talk to a lawyer.",
   "how_days_counted": "How days are counted",
   "how_days_counted_body": "The entry day and the exit day both count: arrive on 1 January, leave on 2 January, and that is two days.\n\nUnder a 30-days-per-entry rule the counter restarts every time you cross the border. Under a rolling window it does not — every day spent in the country during the window counts, however many trips it took.",
-  "calc_disclaimer": "A guide, not legal advice. The officer at the border decides."
+  "calc_disclaimer": "A guide, not legal advice. The officer at the border decides.",
+  "places_group": "Places and transport",
+  "place_smoking_none": "Non-smoking",
+  "place_smoking_alternative": "Smokeless only",
+  "exchange_offices": "Exchange offices nearby"
 }

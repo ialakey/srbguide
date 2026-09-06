@@ -34,7 +34,11 @@ android {
         applicationId = "com.alakey.serbiaguide"
         minSdk = flutter.minSdkVersion
         targetSdk = 36
-        versionCode = 11
+        // Both come from `version:` in pubspec.yaml (`versionName+versionCode`)
+        // so there is a single place to bump. `flutter build` can override them
+        // with --build-name / --build-number; tool/build_release.ps1 always
+        // passes both explicitly.
+        versionCode = flutter.versionCode
         versionName = flutter.versionName
     }
 
