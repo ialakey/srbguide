@@ -10,6 +10,7 @@ import 'package:srbguide/data/guide_repository.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/provider/language_provider.dart';
 import 'package:srbguide/screens/app_shell.dart';
+import 'package:srbguide/service/content_update_service.dart';
 import 'package:srbguide/service/exchange_rate_service.dart';
 import 'package:srbguide/service/notification_service.dart';
 import 'package:srbguide/theme/app_theme.dart';
@@ -28,6 +29,8 @@ Future<void> main() async {
   // Warm the guide cache while the first frame is being built; the bundle is a
   // couple of megabytes and this keeps the guide tab instant.
   unawaited(GuideRepository.instance.load());
+  // Look for a guide published since this release, in the background.
+  unawaited(_refreshGuideInBackground());
   unawaited(ExchangeRateService.refreshSummary());
   unawaited(NotificationService.instance.init());
 
@@ -40,6 +43,13 @@ Future<void> main() async {
       ),
     ),
   );
+}
+
+/// Downloads a newer guide if one exists, then drops the parsed copy so the
+/// next screen to ask for it picks the new content up.
+Future<void> _refreshGuideInBackground() async {
+  final bool updated = await ContentUpdateService.instance.refreshIfDue();
+  if (updated) GuideRepository.instance.invalidate();
 }
 
 class MainScreen extends StatefulWidget {

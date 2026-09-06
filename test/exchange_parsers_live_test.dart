@@ -12,11 +12,13 @@ import 'package:srbguide/data/currency_rate.dart';
 import 'package:srbguide/service/parser/dok_parser.dart';
 import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 import 'package:srbguide/service/parser/funta_parser.dart';
+import 'package:srbguide/service/parser/nbs_parser.dart';
 import 'package:srbguide/service/parser/gaga_parser.dart';
 import 'package:srbguide/service/parser/promonet_parser.dart';
 
 void main() {
   final List<ExchangeRateParser> offices = <ExchangeRateParser>[
+    NbsParser(),
     ProMonetParser(),
     FuntaParser(),
     GagaParser(),

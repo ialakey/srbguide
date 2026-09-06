@@ -30,6 +30,12 @@ finds "банки" and "банковский" — a full morphological analyser 
 text, so only the query is stemmed and matched as a prefix. Results are ranked title-first, filter
 by section, and show the snippet that matched.
 
+Because the weekly workflow commits the re-scraped guide to `master`, the app also checks GitHub
+for a newer copy once a day, conditional on an `ETag` so an unchanged guide costs a single 304 and
+no body transfer. A correction on srb.guide therefore reaches users in days rather than waiting for
+a Play release. The download is validated before it is accepted and the bundled asset stays the
+fallback, so a bad fetch can never leave the app without content.
+
 ### "My path" checklist
 The guide explains *how* to do each thing; the checklist says *what to do next*. 24 steps across
 six stages, each linked to the article that explains it. Steps bind to articles by slug rather than
@@ -46,15 +52,26 @@ Scheduling is deliberately **inexact**: exact alarms require `SCHEDULE_EXACT_ALA
 reboot via the plugin's boot receiver.
 
 ### Live exchange rates
-Serbian exchange offices don't publish an API, so the app scrapes their public pages. Four parsers
-live in `lib/service/parser/` — one per office — each matching rows **by currency code** rather
-than by row and column position, because these sites renumber their tables and positional parsing
-fails silently.
+Five sources: the **National Bank of Serbia** official rate, plus four Belgrade exchange offices.
+The NBS publishes JSON; the offices don't, so their public pages are scraped by one parser each in
+`lib/service/parser/`, matching rows **by currency code** rather than by row and column position —
+these sites renumber their tables, and positional parsing fails silently when they do.
 
-Offices are queried in parallel and each card reports its own failure with a retry, so one dead
-site doesn't empty the screen. The best rate across offices is highlighted, the National Bank of
-Serbia reference rate is shown as a yardstick, the last successful fetch is cached for offline use,
-and a converter uses the best rate.
+Sources are queried in parallel and each card reports its own failure with a retry, so one dead
+site doesn't empty the screen. The best rate is highlighted (the NBS reference is excluded — it
+isn't a counter you can walk up to), the last successful fetch is cached for offline use, and a
+converter uses the best rate.
+
+### Train timetable
+Serbian Railways' own site is awkward on a phone. The app talks to the same endpoints it does: a
+JSON station lookup, plus route search and a per-station departure/arrival board. Stations you have
+used are remembered, so the usual trip takes two taps.
+
+### Map of relocant-run businesses
+362 places — cafés, shops, salons, garages — from the stats.srb.guide catalogue, on an
+**OpenStreetMap** map. OSM needs no API key and no billing account, unlike the Google Maps SDK.
+The catalogue is bundled, so the list and filters work offline; only the tiles need a connection.
+Each place links out to Google Maps for directions.
 
 ### Visa-free stay calculator
 Enter your entry date and the app tracks the remaining days of the 29-day visa-free window, shows
@@ -72,8 +89,9 @@ Requests that the page hands off to a native app (`intent://`, `geo:`) are opene
 platform instead of failing inside the web view.
 
 ### Telegram directory
-A curated list of relocation chats and channels (`assets/data/tg_chats.json`), opened in the
-Telegram app through `url_launcher`.
+432 relocation chats and channels (`assets/data/tg_chats.json`), synced weekly from the
+stats.srb.guide catalogue along with their topic, size and whether they are still active, and
+opened in the Telegram app through `url_launcher`.
 
 ### Personalisation
 Light/dark theme, RU/EN interface, a configurable start tab, and per-article text size — persisted
@@ -88,12 +106,13 @@ Russian, which is the language the guide itself is written in.
 |---|---|
 | Framework | Flutter 3.47, Dart 3 |
 | Android | AGP 9.1, Gradle 9.3.1, Kotlin 2.4, Java 17, `compileSdk`/`targetSdk` 36, `minSdk` 24 |
-| UI | Material 3, one seeded `ColorScheme` for light and dark |
+| UI | Material 3 — one seeded `ColorScheme`, surface family kept neutral |
+| Maps | `flutter_map` + OpenStreetMap tiles (no API key) |
 | State | `provider` for the locale, `setState` for local screen state |
 | Persistence | `shared_preferences` (theme, language, start tab, favourites, deadlines, checklist) |
 | Localisation | `flutter_localizations` + ARB files (`lib/l10n/app_en.arb`, `app_ru.arb`), `intl` |
 | Content | Offline JSON + Markdown in `assets/data/`, rendered with `flutter_markdown_plus` |
-| Scraping | `http` + `html` — one parser class per exchange office |
+| Scraping | `http` + `html` — exchange offices, the railway timetable, the sync tools |
 | Reminders | `flutter_local_notifications`, `timezone`, `flutter_timezone` |
 | Documents | `docx_template` + `xml`, `path_provider`, `open_file` / `share_plus` to export |
 | Integrations | `add_2_calendar`, `url_launcher`, `webview_flutter`, `photo_view` |
@@ -112,6 +131,8 @@ lib/
 │   ├── deadline.dart                #   deadline kinds and their default schedules
 │   ├── deadline_repository.dart
 │   ├── journey.dart                 #   the relocation checklist
+│   ├── place.dart                   #   map catalogue
+│   ├── train.dart                   #   timetable model
 │   └── currency_rate.dart
 ├── screens/
 │   ├── app_shell.dart               #   NavigationBar: Home / Guide / Services / Saved
@@ -123,24 +144,30 @@ lib/
 │   ├── journey.dart                 #   "my path" checklist
 │   ├── deadlines.dart               #   reminders
 │   ├── exchange_rate.dart           #   best rate, NBS reference, converter
+│   ├── trains.dart                  #   route search + station board
+│   ├── places.dart                  #   OpenStreetMap map of the catalogue
 │   ├── calculator.dart              #   visa-free day counter + calendar export
 │   ├── white_cardboard.dart         #   .docx form generation
 │   ├── services.dart, map.dart, tg_chats.dart
 │   └── author.dart, settings.dart
 ├── service/
 │   ├── exchange_rate_service.dart   # parallel fetch, offline cache, best rate
+│   ├── srbijavoz_service.dart       # railway timetable
+│   ├── content_update_service.dart  # ETag-conditional guide refresh
 │   ├── notification_service.dart    # reminder scheduling
 │   ├── document_generate.dart       # .docx rendering from template
 │   ├── url_launcher_helper.dart
-│   └── parser/                      # one scraper per exchange office
-├── theme/app_theme.dart             # Material 3 light + dark from one seed
+│   └── parser/                      # NBS + one scraper per exchange office
+├── theme/app_theme.dart             # Material 3, neutral surfaces + blue accent
 ├── utils/                           # search stemming, section icons
 ├── widget/                          # markdown renderer, tiles, form fields
 ├── dialogs/, localization/, l10n/, provider/
 tool/
-├── sync_guide.dart                  # re-scrape srb.guide -> assets/data/guide.json
-└── validate_guide.dart              # sanity gate before that content is committed
-test/                                # unit tests + a network-tagged parser check
+├── sync_guide.dart                  # srb.guide      -> assets/data/guide.json
+├── sync_places.dart                 # map catalogue  -> assets/data/places.json
+├── sync_chats.dart                  # chat directory -> assets/data/tg_chats.json
+└── validate_guide.dart              # sanity gate before content is committed
+test/                                # unit tests + network-tagged live checks
 ```
 
 ---
@@ -167,10 +194,12 @@ flutter test test/exchange_parsers_live_test.dart   # hits the real exchange sit
 dart run tool/validate_guide.dart
 ```
 
-Refresh the bundled guide from the website:
+Refresh the bundled datasets from their sources:
 
 ```bash
-dart run tool/sync_guide.dart
+dart run tool/sync_guide.dart     # 74 guide articles
+dart run tool/sync_places.dart    # 362 map places
+dart run tool/sync_chats.dart     # 432 Telegram chats
 ```
 
 Release builds and signing are documented in [`docs/RELEASE.md`](docs/RELEASE.md).
@@ -182,13 +211,14 @@ Release builds and signing are documented in [`docs/RELEASE.md`](docs/RELEASE.md
 | Workflow | Trigger | What it does |
 |---|---|---|
 | `ci.yml` | push / PR | format, analyze, tests, guide validation, debug build |
-| `sync-guide.yml` | weekly | re-scrapes srb.guide, validates, commits only real content changes |
+| `sync-content.yml` | weekly | re-scrapes all three datasets, validates, commits real changes |
 | `release.yml` | tag `v*` | signed AAB + APK, verifies the signature, draft release |
 | `parsers.yml` | daily | runs the parsers against the live sites, opens an issue on failure |
 
-`sync-guide.yml` commits third-party content unattended, so `tool/validate_guide.dart` gates it:
-section and article counts, per-article length, duplicate source URLs, and a rejection if the
-bundle shrank by more than 25% against the previous one.
+`sync-content.yml` commits third-party content unattended, so `tool/validate_guide.dart` gates
+it: section and article counts, per-article length, duplicate source URLs, and a rejection if the
+bundle shrank by more than 25% against the previous one. Only datasets whose payload actually
+changed are staged, so a new sync timestamp alone never produces a commit.
 
 `release.yml` refuses to publish anything questionable — it checks that the upload key is
 `SHA256withRSA`, that the APK carries APK Signature Scheme v2 with a SHA-256 certificate digest,
@@ -210,9 +240,13 @@ target, below what the current plugin set requires.
 
 ## Notes
 
-The exchange-rate parsers depend on the HTML of third-party sites and will break when those sites
-are redesigned. Each parser is isolated so a broken office degrades that one card rather than the
-screen.
+The exchange-rate and timetable parsers depend on the HTML of third-party sites and will break
+when those sites are redesigned. Each parser is isolated so a broken source degrades that one card
+rather than the screen, and each reports its own failure with a retry.
+
+Map tiles come from the public OpenStreetMap tile servers, which are donation-funded. The app
+identifies itself as their tile usage policy requires; if it ever grows into heavy traffic, the
+right move is a dedicated tile provider rather than leaning harder on theirs.
 
 Guide content belongs to the authors of srb.guide and is used with their permission; see
 [`NOTICE`](NOTICE). The MIT licence in [`LICENSE`](LICENSE) covers the source code only.

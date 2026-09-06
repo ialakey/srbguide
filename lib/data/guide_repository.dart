@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:srbguide/data/guide_dto.dart';
+import 'package:srbguide/service/content_update_service.dart';
 import 'package:srbguide/utils/search_stem.dart';
 
 /// Loads the bundled guide once and serves it to every screen.
@@ -31,13 +32,31 @@ class GuideRepository {
   }
 
   Future<GuideContent> _read() async {
-    final String raw = await rootBundle.loadString('assets/data/guide.json');
+    // A guide downloaded since the last release wins over the bundled copy;
+    // the asset is the fallback when there is none or it failed validation.
+    String raw = '';
+    try {
+      raw = await ContentUpdateService.instance.cachedContent() ?? '';
+    } catch (_) {
+      raw = '';
+    }
+    if (raw.isEmpty) {
+      raw = await rootBundle.loadString('assets/data/guide.json');
+    }
+
     final GuideContent content = GuideContent.fromJson(
       json.decode(raw) as Map<String, dynamic>,
     );
     _cache = content;
     _pending = null;
     return content;
+  }
+
+  /// Forgets the parsed guide so the next [load] re-reads it. Used after a
+  /// content update lands.
+  void invalidate() {
+    _cache = null;
+    _pending = null;
   }
 
   /// Search across titles, summaries and body text.
@@ -57,9 +76,9 @@ class GuideRepository {
     for (final GuideArticle a in content.allArticles) {
       if (sectionSlug != null && a.sectionSlug != sectionSlug) continue;
 
-      final String title = a.title.toLowerCase();
-      final String lead = a.lead.toLowerCase();
-      final String body = a.description.toLowerCase();
+      final String title = a.lowerTitle;
+      final String lead = a.lowerLead;
+      final String body = a.lowerBody;
 
       if (!terms.every((String t) =>
           title.contains(t) || lead.contains(t) || body.contains(t))) {

@@ -17,6 +17,10 @@ abstract class ExchangeRateParser {
   /// Public page the rates come from; also opened when the user taps the card.
   String get url;
 
+  /// True for the official reference rate rather than a place you can walk
+  /// into. Reference sources are excluded from "best rate" comparisons.
+  bool get isReference => false;
+
   /// Fetches the current rates. Throws [ExchangeRateException] on failure so
   /// the UI can tell "office is down" apart from "office has no rates".
   Future<List<CurrencyRate>> fetch();

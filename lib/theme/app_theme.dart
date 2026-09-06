@@ -2,24 +2,73 @@ import 'package:flutter/material.dart';
 
 /// Material 3 theming for the app.
 ///
-/// Both themes are generated from one seed so light and dark stay in step, and
-/// component styles live here rather than being re-specified with hardcoded
+/// Both themes come from one seed so light and dark stay in step, and component
+/// styles live here rather than being re-specified with hardcoded
 /// `TextStyle(fontSize: 18, fontWeight: bold)` on every screen.
+///
+/// The surface family is deliberately **neutral** rather than seed-tinted.
+/// `ColorScheme.fromSeed` tints every surface with the seed hue, which turns
+/// the whole app into a wash of one colour. Colour is reserved for things that
+/// mean something — actions, the active tab, an urgent deadline — while
+/// backgrounds and cards stay grey.
 class AppTheme {
   AppTheme._();
 
-  /// Serbian flag red, desaturated enough to work as a UI accent.
-  static const Color seed = Color(0xFFC6363C);
+  /// Accent blue. Used for actions and emphasis, never for page backgrounds.
+  static const Color seed = Color(0xFF1B5FA8);
 
   static ThemeData light() => _build(Brightness.light);
 
   static ThemeData dark() => _build(Brightness.dark);
 
-  static ThemeData _build(Brightness brightness) {
-    final ColorScheme scheme = ColorScheme.fromSeed(
+  // --- Neutral surface ramps -----------------------------------------------
+
+  static const Color _lightSurface = Color(0xFFFAFAFA);
+  static const Color _lightLowest = Color(0xFFFFFFFF);
+  static const Color _lightLow = Color(0xFFF6F6F8);
+  static const Color _lightContainer = Color(0xFFF1F1F4);
+  static const Color _lightHigh = Color(0xFFEBEBEF);
+  static const Color _lightHighest = Color(0xFFE4E5EA);
+  static const Color _lightOn = Color(0xFF1A1C1E);
+  static const Color _lightOnVariant = Color(0xFF5A6068);
+  static const Color _lightOutline = Color(0xFF8C9198);
+  static const Color _lightOutlineVariant = Color(0xFFDBDDE2);
+
+  static const Color _darkSurface = Color(0xFF121316);
+  static const Color _darkLowest = Color(0xFF0C0D0F);
+  static const Color _darkLow = Color(0xFF17181B);
+  static const Color _darkContainer = Color(0xFF1C1D21);
+  static const Color _darkHigh = Color(0xFF232428);
+  static const Color _darkHighest = Color(0xFF2A2C31);
+  static const Color _darkOn = Color(0xFFE4E5E9);
+  static const Color _darkOnVariant = Color(0xFFA7ADB6);
+  static const Color _darkOutline = Color(0xFF71777F);
+  static const Color _darkOutlineVariant = Color(0xFF33363C);
+
+  static ColorScheme _scheme(Brightness brightness) {
+    final ColorScheme base = ColorScheme.fromSeed(
       seedColor: seed,
       brightness: brightness,
     );
+    final bool isDark = brightness == Brightness.dark;
+
+    return base.copyWith(
+      surface: isDark ? _darkSurface : _lightSurface,
+      surfaceContainerLowest: isDark ? _darkLowest : _lightLowest,
+      surfaceContainerLow: isDark ? _darkLow : _lightLow,
+      surfaceContainer: isDark ? _darkContainer : _lightContainer,
+      surfaceContainerHigh: isDark ? _darkHigh : _lightHigh,
+      surfaceContainerHighest: isDark ? _darkHighest : _lightHighest,
+      onSurface: isDark ? _darkOn : _lightOn,
+      onSurfaceVariant: isDark ? _darkOnVariant : _lightOnVariant,
+      outline: isDark ? _darkOutline : _lightOutline,
+      outlineVariant: isDark ? _darkOutlineVariant : _lightOutlineVariant,
+      surfaceTint: Colors.transparent,
+    );
+  }
+
+  static ThemeData _build(Brightness brightness) {
+    final ColorScheme scheme = _scheme(brightness);
     final bool isDark = brightness == Brightness.dark;
 
     return ThemeData(
@@ -30,9 +79,9 @@ class AppTheme {
       appBarTheme: AppBarTheme(
         backgroundColor: scheme.surface,
         foregroundColor: scheme.onSurface,
-        surfaceTintColor: scheme.surfaceTint,
+        surfaceTintColor: Colors.transparent,
         elevation: 0,
-        scrolledUnderElevation: 3,
+        scrolledUnderElevation: 0,
         centerTitle: false,
         titleTextStyle: TextStyle(
           fontSize: 22,
@@ -42,44 +91,50 @@ class AppTheme {
       ),
       cardTheme: CardThemeData(
         elevation: 0,
-        color:
-            isDark ? scheme.surfaceContainerHigh : scheme.surfaceContainerLow,
+        color: isDark ? scheme.surfaceContainer : scheme.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
         margin: EdgeInsets.zero,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(18),
+          // A hairline keeps cards legible now that they are not tinted.
+          side: BorderSide(color: scheme.outlineVariant),
         ),
         clipBehavior: Clip.antiAlias,
       ),
       listTileTheme: ListTileThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: 16,
-          vertical: 6,
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
       ),
       navigationBarTheme: NavigationBarThemeData(
         height: 68,
-        backgroundColor: scheme.surfaceContainer,
+        backgroundColor: isDark ? _darkLow : _lightLowest,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: scheme.secondaryContainer,
+        elevation: 0,
+        indicatorColor: scheme.primary.withValues(alpha: isDark ? 0.24 : 0.12),
         labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        iconTheme: WidgetStateProperty.resolveWith<IconThemeData>(
+          (Set<WidgetState> states) => IconThemeData(
+            size: 24,
+            color: states.contains(WidgetState.selected)
+                ? scheme.primary
+                : scheme.onSurfaceVariant,
+          ),
+        ),
         labelTextStyle: WidgetStateProperty.resolveWith<TextStyle>(
           (Set<WidgetState> states) => TextStyle(
             fontSize: 12,
             fontWeight: states.contains(WidgetState.selected)
                 ? FontWeight.w600
                 : FontWeight.w500,
-            color: scheme.onSurface,
+            color: states.contains(WidgetState.selected)
+                ? scheme.primary
+                : scheme.onSurfaceVariant,
           ),
         ),
       ),
       navigationDrawerTheme: NavigationDrawerThemeData(
         backgroundColor: scheme.surface,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: scheme.secondaryContainer,
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
@@ -93,14 +148,22 @@ class AppTheme {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           minimumSize: const Size.fromHeight(52),
+          side: BorderSide(color: scheme.outlineVariant),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
       ),
+      segmentedButtonTheme: SegmentedButtonThemeData(
+        style: ButtonStyle(
+          side: WidgetStatePropertyAll<BorderSide>(
+            BorderSide(color: scheme.outlineVariant),
+          ),
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: scheme.surfaceContainerHighest,
+        fillColor: isDark ? _darkHigh : _lightHigh,
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
         border: OutlineInputBorder(
@@ -117,27 +180,32 @@ class AppTheme {
         ),
       ),
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        side: BorderSide.none,
-        backgroundColor: scheme.surfaceContainerHighest,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        side: BorderSide(color: scheme.outlineVariant),
+        backgroundColor: isDark ? _darkHigh : _lightHigh,
       ),
       dividerTheme: DividerThemeData(
         color: scheme.outlineVariant,
         thickness: 1,
         space: 1,
       ),
+      tabBarTheme: TabBarThemeData(
+        labelColor: scheme.primary,
+        unselectedLabelColor: scheme.onSurfaceVariant,
+        indicatorColor: scheme.primary,
+        dividerColor: scheme.outlineVariant,
+      ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(24),
-        ),
+        backgroundColor: isDark ? _darkHigh : _lightLowest,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: isDark ? _darkLow : _lightLowest,
+        surfaceTintColor: Colors.transparent,
       ),
       progressIndicatorTheme: ProgressIndicatorThemeData(
         color: scheme.primary,
