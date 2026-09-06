@@ -189,6 +189,7 @@ lib/
 ├── dialogs/, localization/, l10n/, provider/
 tool/
 ├── sync_guide.dart                  # srb.guide      -> assets/data/guide.json
+│                                    #   (resolves lazyload srcsets to real images)
 ├── sync_places.dart                 # map catalogue  -> assets/data/places.json
 ├── sync_smoking.dart                # non-smoking map-> assets/data/smoking.json
 ├── sync_chats.dart                  # chat directory -> assets/data/tg_chats.json
