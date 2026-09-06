@@ -6,7 +6,6 @@ import 'package:srbguide/screens/calculator.dart';
 import 'package:srbguide/screens/deadlines.dart';
 import 'package:srbguide/screens/exchange_rate.dart';
 import 'package:srbguide/screens/journey.dart';
-import 'package:srbguide/screens/map.dart';
 import 'package:srbguide/screens/places.dart';
 import 'package:srbguide/screens/settings.dart';
 import 'package:srbguide/screens/tg_chats.dart';
@@ -14,7 +13,7 @@ import 'package:srbguide/screens/trains.dart';
 import 'package:srbguide/screens/white_cardboard.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
-/// Everything that is not the guide itself: calculators, rates, maps, chats
+/// Everything that is not the guide itself: calculators, rates, places, chats
 /// and the external links that used to live in the navigation drawer.
 class ServicesScreen extends StatelessWidget {
   const ServicesScreen({super.key});
@@ -64,11 +63,6 @@ class ServicesScreen extends StatelessWidget {
         push: (_) => const PlacesScreen(),
       ),
       _Entry(
-        icon: Icons.map_outlined,
-        title: l10n.translate('maps'),
-        push: (_) => const MapScreen(),
-      ),
-      _Entry(
         icon: Icons.train_outlined,
         title: l10n.translate('trains'),
         push: (_) => const TrainsScreen(),
@@ -113,7 +107,7 @@ class ServicesScreen extends StatelessWidget {
               delegate: SliverChildListDelegate(<Widget>[
                 _Group(title: l10n.translate('quick_actions'), entries: tools),
                 const SizedBox(height: 20),
-                _Group(title: l10n.translate('maps'), entries: places),
+                _Group(title: l10n.translate('places_group'), entries: places),
                 const SizedBox(height: 20),
                 _Group(title: l10n.translate('help'), entries: about),
               ]),
