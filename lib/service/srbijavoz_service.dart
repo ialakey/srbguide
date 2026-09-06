@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:srbguide/data/train.dart';
+import 'package:srbguide/utils/station_search.dart';
 
 /// Reads the Serbian Railways timetable at w3.srbvoz.rs.
 ///
@@ -14,6 +15,11 @@ import 'package:srbguide/data/train.dart';
 /// therefore clean JSON; the timetables have to be read out of the result
 /// tables, which is why the row layouts are pinned down in one place here
 /// rather than scattered through the UI.
+///
+/// The station lookup only understands Latin, so it is used the way the site's
+/// own front end uses it for a term it cannot send — once, with no term, which
+/// returns the whole network. Matching then happens on device, where a Russian
+/// spelling can be transliterated. See `utils/station_search.dart`.
 class SrbijavozService {
   SrbijavozService._();
 
@@ -21,6 +27,12 @@ class SrbijavozService {
 
   static const String _base = 'https://w3.srbvoz.rs/redvoznje';
   static const String _recentKey = 'recentTrainStations';
+  static const String _stationsKey = 'trainStations';
+  static const String _stationsAtKey = 'trainStationsFetchedAt';
+
+  /// The network barely changes, and a stale list still resolves to the same
+  /// codes, so this only guards against a station being added and never seen.
+  static const Duration _stationsTtl = Duration(days: 7);
 
   static const Map<String, String> _headers = <String, String>{
     'User-Agent':
@@ -28,22 +40,89 @@ class SrbijavozService {
     'Accept-Language': 'sr,en;q=0.8',
   };
 
-  /// Cache for the station lookup — the field re-queries on every keystroke
-  /// and the station list barely changes.
-  final Map<String, List<TrainStation>> _stationCache =
-      <String, List<TrainStation>>{};
+  /// The whole network, once it has been fetched.
+  List<TrainStation>? _stations;
 
-  /// Autocomplete over station names.
+  /// Autocomplete over station names, matched on device.
   Future<List<TrainStation>> searchStations(String term) async {
     final String q = term.trim();
     if (q.length < 2) return const <TrainStation>[];
+    return matchStations(await stations(), q);
+  }
 
-    final String key = q.toLowerCase();
-    final List<TrainStation>? cached = _stationCache[key];
-    if (cached != null) return cached;
+  /// Every station the timetable knows, from memory, storage or the network.
+  ///
+  /// 396 rows and 15 KB, so it is worth holding: the picker then answers every
+  /// keystroke without a request, and works while the connection is flaky.
+  Future<List<TrainStation>> stations() async {
+    final List<TrainStation>? held = _stations;
+    if (held != null) return held;
 
+    final ({List<TrainStation> stations, bool fresh}) stored =
+        await _storedStations();
+    if (stored.stations.isNotEmpty && stored.fresh) {
+      return _stations = stored.stations;
+    }
+
+    try {
+      final List<TrainStation> fetched = await _fetchStations();
+      if (fetched.isNotEmpty) {
+        await _storeStations(fetched);
+        return _stations = fetched;
+      }
+    } catch (e) {
+      // An expired list still names every station people search for.
+      if (stored.stations.isEmpty) {
+        throw TrainServiceException('network error ($e)');
+      }
+    }
+
+    if (stored.stations.isEmpty) {
+      throw const TrainServiceException('station list unavailable');
+    }
+    return _stations = stored.stations;
+  }
+
+  /// The stored copy and whether it is still within its TTL. Storage failing —
+  /// as it does in a plain test binding — only costs us the cache.
+  Future<({List<TrainStation> stations, bool fresh})> _storedStations() async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      final DateTime? fetchedAt =
+          DateTime.tryParse(prefs.getString(_stationsAtKey) ?? '');
+      return (
+        stations: _decodeStations(
+          prefs.getStringList(_stationsKey) ?? const <String>[],
+        ),
+        fresh: fetchedAt != null &&
+            DateTime.now().difference(fetchedAt) < _stationsTtl,
+      );
+    } catch (_) {
+      return (stations: const <TrainStation>[], fresh: false);
+    }
+  }
+
+  Future<void> _storeStations(List<TrainStation> stations) async {
+    try {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(
+        _stationsKey,
+        stations.map((TrainStation s) => json.encode(s.toJson())).toList(),
+      );
+      await prefs.setString(
+        _stationsAtKey,
+        DateTime.now().toIso8601String(),
+      );
+    } catch (_) {
+      // Nothing to do — the list is held in memory for this run either way.
+    }
+  }
+
+  /// Asks the lookup with no term, which is what the operator's own front end
+  /// does with a term it cannot encode, and is answered with every station.
+  Future<List<TrainStation>> _fetchStations() async {
     final Uri uri = Uri.parse('$_base/api/stanica/')
-        .replace(queryParameters: <String, String>{'term': q});
+        .replace(queryParameters: <String, String>{'term': ''});
     final http.Response response = await http.get(uri,
         headers: <String, String>{
           ..._headers,
@@ -56,15 +135,24 @@ class SrbijavozService {
 
     final List<dynamic> decoded =
         json.decode(utf8.decode(response.bodyBytes)) as List<dynamic>;
-    final List<TrainStation> stations = decoded
+    return decoded
         .cast<Map<String, dynamic>>()
         .map(TrainStation.fromJson)
         .where((TrainStation s) => s.isValid)
         .toList();
-
-    _stationCache[key] = stations;
-    return stations;
   }
+
+  List<TrainStation> _decodeStations(List<String> raw) => raw
+      .map((String s) {
+        try {
+          return TrainStation.fromJson(json.decode(s) as Map<String, dynamic>);
+        } catch (_) {
+          return null;
+        }
+      })
+      .whereType<TrainStation>()
+      .where((TrainStation s) => s.isValid)
+      .toList();
 
   /// Direct services between two stations on [date].
   Future<List<TrainConnection>> connections({
@@ -177,20 +265,7 @@ class SrbijavozService {
 
   Future<List<TrainStation>> recentStations() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final List<String> raw = prefs.getStringList(_recentKey) ?? <String>[];
-    return raw
-        .map((String s) {
-          try {
-            return TrainStation.fromJson(
-              json.decode(s) as Map<String, dynamic>,
-            );
-          } catch (_) {
-            return null;
-          }
-        })
-        .whereType<TrainStation>()
-        .where((TrainStation s) => s.isValid)
-        .toList();
+    return _decodeStations(prefs.getStringList(_recentKey) ?? <String>[]);
   }
 
   Future<void> rememberStation(TrainStation station) async {

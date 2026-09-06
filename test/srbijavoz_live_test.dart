@@ -23,6 +23,21 @@ void main() {
     expect(stations.every((TrainStation s) => s.isValid), isTrue);
   }, timeout: const Timeout(Duration(seconds: 60)));
 
+  test('the whole network is fetched, and searchable in Russian', () async {
+    final List<TrainStation> all = await service.stations();
+    // ignore: avoid_print
+    print('network: ${all.length} stations');
+    // The lookup answers a term it cannot spell with everything it has; if that
+    // ever stops being true, the picker is back to one request per keystroke.
+    expect(all.length, greaterThan(300));
+
+    final List<TrainStation> found = await service.searchStations('Белград');
+    // ignore: avoid_print
+    print('Белград -> ${found.map((TrainStation s) => s.name).join(', ')}');
+    expect(found, isNotEmpty);
+    expect(found.first.name, contains('BEOGRAD'));
+  }, timeout: const Timeout(Duration(seconds: 60)));
+
   test('direct connections parse', () async {
     final List<TrainStation> from =
         await service.searchStations('beograd centar');
