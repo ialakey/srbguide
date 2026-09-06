@@ -129,8 +129,18 @@ jobs:
 
       - name: Verify App Bundle signature
         run: |
-          jarsigner -verify -strict -verbose:summary \
-            build/app/outputs/bundle/release/app-release.aab | tail -20
+          # No `-strict`, and no pipe. An app-signing certificate is self-signed
+          # by definition, which -strict counts as a severe warning and exits
+          # non-zero for; and piping into `tail` handed the step tail's exit
+          # code, so this check could never fail either way.
+          jarsigner -verify -verbose:summary \
+            build/app/outputs/bundle/release/app-release.aab > /tmp/jarsig.txt
+          tail -20 /tmp/jarsig.txt
+          grep -q "jar verified" /tmp/jarsig.txt \
+            || { echo "::error::jarsigner did not report the bundle as verified"; exit 1; }
+          if grep -qi "CN=Android Debug" /tmp/jarsig.txt; then
+            echo "::error::bundle was signed with the debug key"; exit 1
+          fi
 
       - name: Report signing details
         run: |
