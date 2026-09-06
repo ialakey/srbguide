@@ -6,7 +6,9 @@ import 'package:srbguide/dialogs/confirm.dart';
 import 'package:srbguide/dialogs/success.dart';
 import 'package:srbguide/localization/app_localizations.dart';
 import 'package:srbguide/main.dart';
+import 'package:srbguide/data/guide_repository.dart';
 import 'package:srbguide/provider/language_provider.dart';
+import 'package:srbguide/service/content_update_service.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -50,6 +52,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _setLocale(String code) async {
     Provider.of<LanguageProvider>(context, listen: false)
         .updateLocale(Locale(code, ''));
+  }
+
+  bool _checkingUpdate = false;
+
+  Future<void> _checkForGuideUpdate() async {
+    setState(() => _checkingUpdate = true);
+    final bool updated =
+        await ContentUpdateService.instance.refreshIfDue(force: true);
+    if (updated) GuideRepository.instance.invalidate();
+    if (!mounted) return;
+    setState(() => _checkingUpdate = false);
+
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(
+        SnackBar(
+          content: Text(l10n
+              .translate(updated ? 'guide_updated_ok' : 'guide_up_to_date')),
+        ),
+      );
   }
 
   void _confirmClear() {
@@ -160,6 +183,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Card(
                   child: Column(
                     children: <Widget>[
+                      ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        leading: Icon(Icons.cloud_download_outlined,
+                            color: Theme.of(context).colorScheme.primary),
+                        title: Text(l10n.translate('check_updates')),
+                        trailing: _checkingUpdate
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child:
+                                    CircularProgressIndicator(strokeWidth: 2),
+                              )
+                            : null,
+                        onTap: _checkingUpdate ? null : _checkForGuideUpdate,
+                      ),
+                      const Divider(height: 1, indent: 56),
                       ListTile(
                         shape: const RoundedRectangleBorder(),
                         leading: Icon(Icons.delete_outline,

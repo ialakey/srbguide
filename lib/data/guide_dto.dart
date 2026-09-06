@@ -3,6 +3,7 @@
 /// The JSON is produced by `tool/sync_guide.dart` from srb.guide and bundled
 /// as `assets/data/guide.json`, so the app works with no network at all.
 class GuideArticle {
+  // Note: not `const` — the lowercase caches below are filled lazily.
   /// Leading emoji from the article title, e.g. `📇`.
   final String smile;
 
@@ -27,7 +28,7 @@ class GuideArticle {
   /// Section slug, e.g. `personal`.
   final String sectionSlug;
 
-  const GuideArticle({
+  GuideArticle({
     required this.smile,
     required this.title,
     required this.lead,
@@ -60,9 +61,22 @@ class GuideArticle {
     );
   }
 
-  /// Lowercased haystack used by the search field.
+  /// Lowercased title/summary/body, built once and reused.
+  ///
+  /// Search runs on every keystroke; lowercasing 1.5 MB of article text each
+  /// time made typing stutter. These are computed on first use and then held
+  /// for the life of the (cached) article.
+  String get lowerTitle => _lowerTitle ??= title.toLowerCase();
+  String get lowerLead => _lowerLead ??= lead.toLowerCase();
+  String get lowerBody => _lowerBody ??= description.toLowerCase();
+
+  String? _lowerTitle;
+  String? _lowerLead;
+  String? _lowerBody;
+
+  /// Lowercased haystack used when matching across every field at once.
   String get searchIndex =>
-      '$title $lead $sectionTitle $description'.toLowerCase();
+      '$lowerTitle $lowerLead ${sectionTitle.toLowerCase()} $lowerBody';
 }
 
 /// A top-level group of articles, e.g. "🏦 Банки".

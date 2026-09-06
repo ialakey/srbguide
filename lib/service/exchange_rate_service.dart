@@ -6,6 +6,7 @@ import 'package:srbguide/data/currency_rate.dart';
 import 'package:srbguide/service/parser/dok_parser.dart';
 import 'package:srbguide/service/parser/exchange_rate_parser.dart';
 import 'package:srbguide/service/parser/funta_parser.dart';
+import 'package:srbguide/service/parser/nbs_parser.dart';
 import 'package:srbguide/service/parser/gaga_parser.dart';
 import 'package:srbguide/service/parser/promonet_parser.dart';
 
@@ -34,6 +35,7 @@ class ExchangeRateService {
   static const String _cacheAtKey = 'exchangeRatesCachedAt';
 
   static List<ExchangeRateParser> buildOffices() => <ExchangeRateParser>[
+        NbsParser(),
         ProMonetParser(),
         FuntaParser(),
         GagaParser(),
@@ -85,6 +87,7 @@ class ExchangeRateService {
           <String, dynamic>{
             'name': r.office.name,
             'url': r.office.url,
+            'reference': r.office.isReference,
             'rates': r.rates.map((CurrencyRate c) => c.toJson()).toList(),
           },
       ]),
@@ -109,6 +112,7 @@ class ExchangeRateService {
                   office: _CachedOffice(
                     e['name'] as String? ?? '',
                     e['url'] as String? ?? '',
+                    (e['reference'] ?? false) as bool,
                   ),
                   rates: ((e['rates'] ?? <dynamic>[]) as List<dynamic>)
                       .cast<Map<String, dynamic>>()
@@ -128,7 +132,7 @@ class ExchangeRateService {
   static BestRate? bestSell(List<OfficeRates> results, String code) {
     BestRate? best;
     for (final OfficeRates office in results) {
-      if (office.hasError) continue;
+      if (office.hasError || office.office.isReference) continue;
       for (final CurrencyRate rate in office.rates) {
         if (rate.code != code) continue;
         final double? value = rate.sellValue;
@@ -141,8 +145,15 @@ class ExchangeRateService {
     return best;
   }
 
-  /// NBS reference rate for [code], if any office published one.
+  /// The official NBS rate for [code], preferring the bank's own feed over an
+  /// office that happens to reprint it.
   static String? referenceRate(List<OfficeRates> results, String code) {
+    for (final OfficeRates office in results) {
+      if (!office.office.isReference) continue;
+      for (final CurrencyRate rate in office.rates) {
+        if (rate.code == code && rate.nbs != null) return rate.nbs;
+      }
+    }
     for (final OfficeRates office in results) {
       for (final CurrencyRate rate in office.rates) {
         if (rate.code == code && rate.nbs != null) return rate.nbs;
@@ -155,6 +166,7 @@ class ExchangeRateService {
   /// a failed refresh just leaves the previously cached value in place.
   static Future<void> refreshSummary() async {
     for (final ExchangeRateParser office in buildOffices()) {
+      if (office.isReference) continue;
       try {
         final List<CurrencyRate> rates = await office.fetch();
         final CurrencyRate eur = rates.firstWhere(
@@ -193,10 +205,14 @@ class BestRate {
 
 /// Stands in for a real parser when rates come back from the offline cache.
 class _CachedOffice extends ExchangeRateParser {
-  _CachedOffice(this._name, this._url);
+  _CachedOffice(this._name, this._url, this._isReference);
 
   final String _name;
   final String _url;
+  final bool _isReference;
+
+  @override
+  bool get isReference => _isReference;
 
   @override
   String get name => _name;

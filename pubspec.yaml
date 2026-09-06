@@ -31,6 +31,11 @@ dependencies:
   photo_view: ^0.15.0
   flutter_xlider: ^3.5.0
 
+  # Map of relocant-run businesses. OpenStreetMap tiles need no API key,
+  # unlike the Google Maps SDK.
+  flutter_map: ^8.3.0
+  latlong2: ^0.10.0
+
   # Deadline reminders (visa run, ВНЖ renewal, paušal tax, eco tax).
   flutter_local_notifications: ^22.3.0
   timezone: ^0.11.0

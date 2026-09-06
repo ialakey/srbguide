@@ -1,0 +1,160 @@
+name: Sync content
+
+# Re-scrapes the three bundled datasets once a week so the offline copies do not
+# drift from their sources:
+#
+#   assets/data/guide.json     <- srb.guide            (74 articles)
+#   assets/data/places.json    <- stats.srb.guide/map  (relocant businesses)
+#   assets/data/tg_chats.json  <- stats.srb.guide      (chat directory)
+#
+# Everything is validated before anything is committed — see
+# tool/validate_guide.dart — because this commits third-party content with no
+# human in the loop.
+
+on:
+  schedule:
+    # Mondays, 04:00 UTC (06:00 Belgrade).
+    - cron: "0 4 * * 1"
+  workflow_dispatch:
+    inputs:
+      open_pull_request:
+        description: "Open a PR instead of committing to master"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+env:
+  FLUTTER_VERSION: "3.47.2"
+  GUIDE: assets/data/guide.json
+  PLACES: assets/data/places.json
+  CHATS: assets/data/tg_chats.json
+
+jobs:
+  sync:
+    name: Scrape, validate, commit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Keep the current datasets for comparison
+        run: |
+          cp "$GUIDE"  /tmp/guide-baseline.json
+          cp "$PLACES" /tmp/places-baseline.json
+          cp "$CHATS"  /tmp/chats-baseline.json
+
+      - name: Scrape srb.guide
+        run: dart run tool/sync_guide.dart
+
+      - name: Validate the guide
+        run: dart run tool/validate_guide.dart --baseline /tmp/guide-baseline.json
+
+      - name: Scrape the places catalogue
+        run: dart run tool/sync_places.dart
+
+      - name: Scrape the chat directory
+        run: dart run tool/sync_chats.dart
+
+      # `syncedAt` changes on every run, so compare the payload rather than the
+      # file — otherwise we would commit a no-op diff every week.
+      - name: Detect real content changes
+        id: diff
+        run: |
+          changed=""
+
+          guide_before=$(jq -S -c '.ru' /tmp/guide-baseline.json | sha256sum | cut -d' ' -f1)
+          guide_after=$(jq -S -c '.ru' "$GUIDE" | sha256sum | cut -d' ' -f1)
+          [ "$guide_before" != "$guide_after" ] && changed="$changed $GUIDE"
+
+          places_before=$(jq -S -c '.places' /tmp/places-baseline.json | sha256sum | cut -d' ' -f1)
+          places_after=$(jq -S -c '.places' "$PLACES" | sha256sum | cut -d' ' -f1)
+          [ "$places_before" != "$places_after" ] && changed="$changed $PLACES"
+
+          chats_before=$(jq -S -c '.' /tmp/chats-baseline.json | sha256sum | cut -d' ' -f1)
+          chats_after=$(jq -S -c '.' "$CHATS" | sha256sum | cut -d' ' -f1)
+          [ "$chats_before" != "$chats_after" ] && changed="$changed $CHATS"
+
+          changed=$(echo "$changed" | xargs || true)
+          echo "files=$changed" >> "$GITHUB_OUTPUT"
+          if [ -z "$changed" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nothing changed."
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "Changed: $changed"
+          fi
+
+          {
+            echo "articles=$(jq '[.ru[].items[]] | length' "$GUIDE")"
+            echo "places=$(jq '.places | length' "$PLACES")"
+            echo "chats=$(jq 'length' "$CHATS")"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Write the run summary
+        if: always()
+        run: |
+          {
+            echo "### Content sync"
+            echo ""
+            echo "| Dataset | Records |"
+            echo "|---|---|"
+            echo "| guide.json | ${{ steps.diff.outputs.articles }} articles |"
+            echo "| places.json | ${{ steps.diff.outputs.places }} places |"
+            echo "| tg_chats.json | ${{ steps.diff.outputs.chats }} chats |"
+            echo ""
+            echo "Changed: \`${{ steps.diff.outputs.files }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Discard a no-op scrape
+        if: steps.diff.outputs.changed != 'true'
+        run: git checkout -- "$GUIDE" "$PLACES" "$CHATS"
+
+      - name: Commit to master
+        if: steps.diff.outputs.changed == 'true' && inputs.open_pull_request != true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # Stage only what actually changed, so a dataset whose sole diff is
+          # its sync timestamp is left out of the commit.
+          git add -- ${{ steps.diff.outputs.files }}
+          git commit -m "content: sync bundled datasets
+
+          Automated weekly scrape.
+          guide ${{ steps.diff.outputs.articles }} articles ·
+          places ${{ steps.diff.outputs.places }} ·
+          chats ${{ steps.diff.outputs.chats }}."
+          git push
+
+      - name: Open a pull request
+        if: steps.diff.outputs.changed == 'true' && inputs.open_pull_request == true
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: content-sync
+          title: "content: sync bundled datasets"
+          commit-message: "content: sync bundled datasets"
+          body: |
+            Automated scrape of srb.guide and stats.srb.guide.
+
+            | Dataset | Records |
+            |---|---|
+            | `guide.json` | ${{ steps.diff.outputs.articles }} articles |
+            | `places.json` | ${{ steps.diff.outputs.places }} places |
+            | `tg_chats.json` | ${{ steps.diff.outputs.chats }} chats |
+
+            The guide was validated by `tool/validate_guide.dart` against the
+            previous bundle.
+          add-paths: |
+            ${{ env.GUIDE }}
+            ${{ env.PLACES }}
+            ${{ env.CHATS }}

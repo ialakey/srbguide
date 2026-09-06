@@ -7,8 +7,10 @@ import 'package:srbguide/screens/deadlines.dart';
 import 'package:srbguide/screens/exchange_rate.dart';
 import 'package:srbguide/screens/journey.dart';
 import 'package:srbguide/screens/map.dart';
+import 'package:srbguide/screens/places.dart';
 import 'package:srbguide/screens/settings.dart';
 import 'package:srbguide/screens/tg_chats.dart';
+import 'package:srbguide/screens/trains.dart';
 import 'package:srbguide/screens/white_cardboard.dart';
 import 'package:srbguide/service/url_launcher_helper.dart';
 
@@ -57,9 +59,19 @@ class ServicesScreen extends StatelessWidget {
 
     final List<_Entry> places = <_Entry>[
       _Entry(
+        icon: Icons.place_outlined,
+        title: l10n.translate('places'),
+        push: (_) => const PlacesScreen(),
+      ),
+      _Entry(
         icon: Icons.map_outlined,
         title: l10n.translate('maps'),
         push: (_) => const MapScreen(),
+      ),
+      _Entry(
+        icon: Icons.train_outlined,
+        title: l10n.translate('trains'),
+        push: (_) => const TrainsScreen(),
       ),
       _Entry(
         icon: Icons.forum_outlined,
