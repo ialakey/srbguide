@@ -42,8 +42,13 @@ class TrainConnection {
   /// Reported delay; empty when the operator has not published one.
   final String delay;
 
-  /// Service class (`Soko`, `Regio`, ...) when given.
+  /// Service class (`SOKO`, `REGIO VOZ`, ...) when given. The timetable
+  /// publishes it as an icon, so this is the icon's title.
   final String rank;
+
+  /// What the service carries — travel classes, bicycles — again read off the
+  /// icons, joined with `·`.
+  final String offer;
 
   final String note;
 
@@ -56,6 +61,7 @@ class TrainConnection {
     required this.duration,
     required this.delay,
     required this.rank,
+    this.offer = '',
     required this.note,
   });
 

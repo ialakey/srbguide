@@ -274,6 +274,14 @@ class _ConnectionCard extends StatelessWidget {
                   ),
               ],
             ),
+            if (connection.offer.isNotEmpty) ...<Widget>[
+              const SizedBox(height: 8),
+              Text(
+                connection.offer,
+                style:
+                    TextStyle(fontSize: 11.5, color: scheme.onSurfaceVariant),
+              ),
+            ],
             if (connection.note.isNotEmpty) ...<Widget>[
               const SizedBox(height: 8),
               Text(

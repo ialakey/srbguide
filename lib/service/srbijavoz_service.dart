@@ -177,6 +177,7 @@ class SrbijavozService {
             delay: c[5],
             duration: c[6],
             rank: c[7],
+            offer: c[8],
             note: c[9],
           ),
         )
@@ -239,13 +240,29 @@ class SrbijavozService {
       final List<Element> cells = tr.querySelectorAll('td');
       if (cells.length < expectedCells) continue;
 
-      final List<String> values =
-          cells.map((Element c) => c.text.trim()).toList();
+      final List<String> values = cells.map(_cellValue).toList();
       // The last cell is a "Detaljnije" link, and a run always has a number.
       if (values.first.isEmpty) continue;
       rows.add(values);
     }
     return rows;
+  }
+
+  /// One cell's value.
+  ///
+  /// The class of train and what it offers are published as icons, not text —
+  /// `<img title="REGIO VOZ">`, `<img title="Bicikla - Ograničen broj mesta">`
+  /// — so reading the cell's text alone left those columns empty.
+  static String _cellValue(Element cell) {
+    final String text = cell.text.trim();
+    if (text.isNotEmpty) return text;
+
+    return cell
+        .querySelectorAll('img')
+        .map((Element img) =>
+            (img.attributes['title'] ?? img.attributes['alt'] ?? '').trim())
+        .where((String title) => title.isNotEmpty)
+        .join(' · ');
   }
 
   /// The timetable expects the station name with spaces and no dots.

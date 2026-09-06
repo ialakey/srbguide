@@ -19,6 +19,10 @@ import 'package:html/dom.dart';
 import 'package:html/parser.dart' as html_parser;
 import 'package:http/http.dart' as http;
 
+/// Widest image the app links to. The reader is a phone screen, and the site
+/// publishes each image at up to 2268px.
+const int kMaxImageWidth = 1280;
+
 const String kSite = 'https://www.srb.guide';
 const String kDefaultOut = 'assets/data/guide.json';
 
@@ -506,11 +510,57 @@ String _figure(Element el) {
 }
 
 String _image(Element el) {
-  final String src =
-      _absolute(el.attributes['src'] ?? el.attributes['data-src'] ?? '');
+  final String src = _absolute(imageSourceOf(el));
   if (src.isEmpty) return '';
   final String alt = (el.attributes['alt'] ?? '').replaceAll(']', '');
   return '\n![$alt]($src)\n';
+}
+
+/// The real file behind a lazy-loaded image.
+///
+/// The site runs Hugo behind lazysizes: `src` is a blurred placeholder of a few
+/// hundred bytes and the image itself is in `data-srcset` / `data-src`. Reading
+/// `src` first is how the guide came to bundle blurred thumbnails.
+String imageSourceOf(Element el) {
+  final String fromSet = widestUnderCap(
+    el.attributes['data-srcset'] ?? el.attributes['srcset'] ?? '',
+  );
+  if (fromSet.isNotEmpty) return fromSet;
+
+  final String dataSrc = el.attributes['data-src'] ?? '';
+  if (dataSrc.isNotEmpty) return dataSrc;
+
+  // Not lazy-loaded: `src` is the image.
+  return el.attributes['src'] ?? '';
+}
+
+/// The widest candidate no wider than [kMaxImageWidth], or the smallest one
+/// when every candidate is bigger.
+///
+/// A phone never shows more than that, and the site publishes widths up to
+/// 2268 — twelve times the bytes of the 480w, for pixels no screen here has.
+String widestUnderCap(String srcset) {
+  String best = '';
+  int bestWidth = 0;
+  String smallest = '';
+  int smallestWidth = 0;
+
+  for (final String candidate in srcset.split(',')) {
+    final List<String> parts = candidate.trim().split(RegExp(r'\s+'));
+    if (parts.length < 2 || parts.first.isEmpty) continue;
+    final int width = int.tryParse(parts[1].replaceAll('w', '')) ?? 0;
+    if (width <= 0) continue;
+
+    if (smallest.isEmpty || width < smallestWidth) {
+      smallest = parts.first;
+      smallestWidth = width;
+    }
+    if (width <= kMaxImageWidth && width > bestWidth) {
+      best = parts.first;
+      bestWidth = width;
+    }
+  }
+  return best.isNotEmpty ? best : smallest;
 }
 
 String _alertMarker(Element el) {

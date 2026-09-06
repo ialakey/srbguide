@@ -70,6 +70,11 @@ slug, so it survives a guide re-sync.
 Route search and a per-station departure/arrival board over the Serbian
 Railways timetable at w3.srbvoz.rs, with recently used stations remembered.
 
+**The class of train is back.** `Soko`, `InterCity`, `BG:Voz` and what a
+service carries — travel classes, bicycles, whether a reservation is required —
+are published as icons rather than text, so reading the cell's text left those
+columns empty and the badge never appeared. Both are now read off the icons.
+
 **Stations can be searched in Russian.** The operator's lookup only understands
 Latin: its own front end strips everything else out of the term, and an empty
 term is answered with all 396 stations — so typing "Белград" produced an
@@ -99,6 +104,21 @@ Google Maps SDK.
   pins, and the exchange-office search moved into the map's toolbar. The
   "black list of apartments" link had been returning a Google 403 for a while
   and is dropped. `webview_flutter` goes with it.
+
+### Images in the guide
+
+- **The guide bundled blurred thumbnails instead of photos.** srb.guide runs
+  Hugo behind lazysizes: every `<img>` carries a blurred placeholder of a few
+  hundred bytes in `src` and the real file in `data-srcset` / `data-src`. The
+  scraper read `src`, so 257 of the guide's 283 images were smudges. It now
+  takes the widest published variant a phone can use — up to 1280px, rather
+  than the 2268px original, which is twelve times the bytes for pixels no
+  phone has.
+- **Tap an image to open it full screen**, then pinch, double-tap or use the
+  toolbar buttons to zoom in and out. Inline images are capped at half a screen
+  so a portrait screenshot no longer pushes the article off the page, and both
+  the inline image and the viewer report a failed load instead of leaving a
+  blank space.
 
 ### Exchange rates
 

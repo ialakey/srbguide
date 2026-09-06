@@ -54,10 +54,22 @@ void main() {
     print('${from.first.name} -> ${to.first.name}: ${runs.length} runs');
     for (final TrainConnection c in runs.take(3)) {
       // ignore: avoid_print
-      print(
-          '  ${c.number}  ${c.departureTime} -> ${c.arrivalTime}  (${c.duration})');
+      print('  ${c.number}  ${c.departureTime} -> ${c.arrivalTime}  '
+          '(${c.duration})  ${c.rank}  ${c.offer}');
     }
     expect(runs, isNotEmpty);
+    // The class of train and what it carries are published as icons; if the
+    // parser goes back to reading cell text, both columns go quietly empty.
+    expect(
+      runs.any((TrainConnection c) => c.rank.isNotEmpty),
+      isTrue,
+      reason: 'no service class on any run',
+    );
+    expect(
+      runs.any((TrainConnection c) => c.offer.isNotEmpty),
+      isTrue,
+      reason: 'no travel classes on any run',
+    );
     for (final TrainConnection c in runs) {
       expect(c.number, isNotEmpty);
       expect(RegExp(r'^\d{1,2}:\d{2}$').hasMatch(c.departureTime), isTrue,
@@ -78,9 +90,14 @@ void main() {
     print('board ${station.first.name}: ${board.length} entries');
     for (final StationBoardEntry e in board.take(3)) {
       // ignore: avoid_print
-      print('  ${e.time}  ${e.station}  (${e.number})');
+      print('  ${e.time}  ${e.station}  (${e.number})  ${e.rank}');
     }
     expect(board, isNotEmpty);
+    expect(
+      board.any((StationBoardEntry e) => e.rank.isNotEmpty),
+      isTrue,
+      reason: 'no service class on any departure',
+    );
     for (final StationBoardEntry e in board) {
       expect(e.number, isNotEmpty);
       expect(e.station, isNotEmpty);
