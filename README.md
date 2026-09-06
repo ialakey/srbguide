@@ -15,6 +15,26 @@ is, how to fill in a *beli karton*, and where today's best exchange rate is.
 
 ---
 
+## Screenshots
+
+<p float="left">
+  <img src="docs/screenshots/home.png" width="200" alt="Home: today's rate, the next deadline and checklist progress"/>
+  <img src="docs/screenshots/guide.png" width="200" alt="Guide: 74 articles in collapsible sections"/>
+  <img src="docs/screenshots/article-dark.png" width="200" alt="Article reader in dark theme"/>
+  <img src="docs/screenshots/my-path.png" width="200" alt="My path: the relocation checklist"/>
+</p>
+<p float="left">
+  <img src="docs/screenshots/deadlines.png" width="200" alt="Deadlines with local reminders"/>
+  <img src="docs/screenshots/trains.png" width="200" alt="Train timetable: route search"/>
+  <img src="docs/screenshots/places.png" width="200" alt="Map of relocant-run businesses on OpenStreetMap"/>
+  <img src="docs/screenshots/rates.png" width="200" alt="Exchange rates from five sources"/>
+</p>
+
+<sub>Android 16 emulator. Interface is shown in English; it also ships in
+Russian, which is the language the guide content itself is written in.</sub>
+
+---
+
 ## Features
 
 ### Guide
